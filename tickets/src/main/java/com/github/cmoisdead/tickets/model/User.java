@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
@@ -32,8 +33,12 @@ public class User {
 
   @Builder.Default
   private List<String> phoneNumbers = Collections.emptyList();
+
+  @DBRef
   @Builder.Default
-  private List<String> purchasesIds = Collections.emptyList();;
+  private List<Purchase> purchases = Collections.emptyList();;
+
+  @DBRef
   @Builder.Default
-  private List<String> couponsIds = Collections.emptyList();;
+  private List<Coupon> coupons = Collections.emptyList();;
 }

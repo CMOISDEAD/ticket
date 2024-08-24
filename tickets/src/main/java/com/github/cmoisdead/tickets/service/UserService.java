@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.github.cmoisdead.tickets.dto.UserCreateDTO;
+import com.github.cmoisdead.tickets.dto.user.UserCreateDTO;
 import com.github.cmoisdead.tickets.model.User;
 import com.github.cmoisdead.tickets.repository.UserRepository;
 

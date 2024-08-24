@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
@@ -26,5 +27,7 @@ public class Purchase {
   private boolean isPaid;
   private Payment payment;
   private List<Item> items;
-  private List<String> couponsIds;
+
+  @DBRef
+  private List<Coupon> coupons;
 }
