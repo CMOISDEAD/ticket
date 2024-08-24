@@ -7,20 +7,23 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 @AllArgsConstructor
 @Document(collection = "purchases")
 public class Purchase {
 
   @Id
-  private String id;
+  @Builder.Default
+  private String id = null;
 
   private String userId;
   private double total;
   private LocalDateTime date;
-  private boolean isCancelled;
+  private boolean isPaid;
   private Payment payment;
   private List<Item> items;
   private List<String> couponsIds;

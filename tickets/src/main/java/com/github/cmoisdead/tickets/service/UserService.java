@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.github.cmoisdead.tickets.dto.UserCreateDTO;
 import com.github.cmoisdead.tickets.model.User;
 import com.github.cmoisdead.tickets.repository.UserRepository;
 
@@ -26,7 +27,17 @@ public class UserService {
     return userRepository.findByEmail(email).orElse(null);
   }
 
-  public User save(User user) {
+  public User save(UserCreateDTO userdto) {
+    User user = User.builder()
+        .role("USER")
+        .firstname(userdto.firstname())
+        .lastname(userdto.lastname())
+        .address(userdto.address())
+        .email(userdto.email())
+        .password(userdto.password())
+        .isActive(true)
+        .dateOfBirth(userdto.dateOfBirth())
+        .build();
     return userRepository.save(user);
   }
 
