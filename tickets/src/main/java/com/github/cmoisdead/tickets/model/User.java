@@ -23,6 +23,7 @@ public class User {
   private String id = null;
 
   private String role;
+  private String username;
   private String firstname;
   private String lastname;
   private String address;
@@ -36,9 +37,9 @@ public class User {
 
   @DBRef
   @Builder.Default
-  private List<Purchase> purchases = Collections.emptyList();;
+  private List<Purchase> purchases = Collections.emptyList();
 
   @DBRef
   @Builder.Default
-  private List<Coupon> coupons = Collections.emptyList();;
+  private List<Coupon> coupons = Collections.emptyList();
 }

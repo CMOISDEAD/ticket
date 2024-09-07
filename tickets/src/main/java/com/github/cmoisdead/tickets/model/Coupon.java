@@ -1,8 +1,10 @@
 package com.github.cmoisdead.tickets.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
@@ -22,7 +24,15 @@ public class Coupon {
   private String code;
   private String name;
   private String userId;
-  private boolean isUsed;
   private double discount;
+  private boolean isUsed;
+  private boolean isExpired;
+  private boolean isGlobal;
+  private LocalDate usedDate;
   private LocalDate expiryDate;
+
+  @DBRef
+  private String userid;
+
+  private List<String> usedByUsers;
 }
