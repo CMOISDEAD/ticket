@@ -1,18 +1,24 @@
 package com.github.cmoisdead.tickets.service;
 
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.github.cmoisdead.tickets.dto.auth.AuthLoginDTO;
 import com.github.cmoisdead.tickets.dto.auth.AuthRegisterDTO;
+import com.github.cmoisdead.tickets.dto.utils.TokenDTO;
 import com.github.cmoisdead.tickets.model.User;
 import com.github.cmoisdead.tickets.repository.UserRepository;
+import com.github.cmoisdead.tickets.utils.CryptUtils;
+import com.github.cmoisdead.tickets.utils.JwtUtils;
 
 @Service
 public class AuthService {
-  // TODO: Implement JWT and Bcrypt for passwords
+  private JwtUtils jwtUtils;
+  private CryptUtils cryptUtils;
 
   @Autowired
   private UserRepository userRepository;
@@ -23,13 +29,15 @@ public class AuthService {
     if (!found.isEmpty())
       throw new Error("Another user with email or username.");
 
+    String encryptedPassword = cryptUtils.encryptPassword(dto.password());
+
     User user = User.builder()
         .role("USER")
         .firstname(dto.firstname())
         .lastname(dto.lastname())
         .address(dto.address())
         .email(dto.email())
-        .password(dto.password())
+        .password(encryptedPassword)
         .isActive(true)
         .dateOfBirth(dto.dateOfBirth())
         .build();
@@ -38,17 +46,23 @@ public class AuthService {
     return user;
   }
 
-  public User Login(AuthLoginDTO dto) throws Exception {
+  public TokenDTO Login(AuthLoginDTO dto) throws Exception {
     Optional<User> optional = userRepository.findByEmail(dto.email());
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     if (optional.isEmpty())
       throw new Exception("Invalid email or password");
 
     User user = optional.get();
 
-    if (user.getPassword() != dto.password())
+    if (!encoder.matches(dto.password(), user.getPassword()))
       throw new Exception("Invalid email or password");
 
-    return user;
+    Map<String, Object> claims = Map.of(
+        "id", user.getId(),
+        "role", user.getRole(),
+        "email", user.getEmail());
+
+    return new TokenDTO(jwtUtils.generateToken(user.getEmail(), claims));
   }
 }
