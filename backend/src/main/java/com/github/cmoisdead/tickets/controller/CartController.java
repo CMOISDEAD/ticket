@@ -1,5 +1,6 @@
 package com.github.cmoisdead.tickets.controller;
 
+import com.github.cmoisdead.tickets.dto.cart.CartCreateDTO;
 import com.github.cmoisdead.tickets.model.Cart;
 import com.github.cmoisdead.tickets.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,14 +8,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/cart")
+@RequestMapping("/cart")
 public class CartController {
 
   @Autowired
   private CartService cartService;
+
+  @GetMapping("/")
+  public ResponseEntity<List<Cart>> getCart() {
+    return ResponseEntity.status(HttpStatus.OK).body(cartService.findAll());
+  }
 
   @GetMapping("/{id}")
   public ResponseEntity<Cart> getCartById(@PathVariable String id) {
@@ -25,14 +32,13 @@ public class CartController {
   }
 
   @PostMapping
-  public ResponseEntity<Cart> createCart(@RequestBody Cart cart) {
-    Cart savedCart = cartService.save(cart);
+  public ResponseEntity<Cart> createCart(@RequestBody CartCreateDTO dto) {
+    Cart savedCart = cartService.save(dto);
     return ResponseEntity.ok(savedCart);
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<Cart> updateCart(@PathVariable String id, @RequestBody Cart cart) {
-    cart.setId(id);
     Cart updatedCart = cartService.updateCart(cart);
     return ResponseEntity.ok(updatedCart);
   }
@@ -43,7 +49,7 @@ public class CartController {
     return ResponseEntity.ok().build();
   }
 
-  @PostMapping("/{id}/clear")
+  @PostMapping("/clear/{id}")
   public ResponseEntity<Void> clearCart(@PathVariable String id) throws Exception {
     cartService.clearCart(id);
     return ResponseEntity.ok().build();

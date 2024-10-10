@@ -1,18 +1,21 @@
 package com.github.cmoisdead.tickets.model;
 
+import java.util.List;
+
+import org.springframework.data.annotation.Id;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 public class Cart {
-  private String id;
+  @Id
+  @Builder.Default
+  private String id = null;
+
   private String userId;
   private List<String> eventIds;
   private double totalPrice;

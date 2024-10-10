@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.github.cmoisdead.tickets.dto.user.UserCreateDTO;
@@ -15,7 +16,8 @@ import com.github.cmoisdead.tickets.utils.JwtUtils;
 
 @Service
 public class UserService {
-  private JwtUtils jwtUtils;
+  private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+  private final JwtUtils jwtUtils = new JwtUtils();
 
   @Autowired
   private UserRepository userRepository;
@@ -49,6 +51,10 @@ public class UserService {
    */
   public Optional<User> findByEmail(String email) {
     return userRepository.findByEmail(email);
+  }
+
+  public Optional<User> findByUsername(String username) {
+    return userRepository.findByUsername(username);
   }
 
   /**
@@ -130,7 +136,8 @@ public class UserService {
       throw new Error("User not found");
     }
     User user = optional.get();
-    user.setPassword(password);
+    String encryptedPassword = encoder.encode(password);
+    user.setPassword(encryptedPassword);
     return userRepository.save(user);
   }
 
@@ -148,11 +155,17 @@ public class UserService {
    *         password.
    */
   public String sendPasswordResetEmail(String email) {
+    Optional<User> optional = findByEmail(email);
+    if (optional.isEmpty()) {
+      throw new Error("User not found");
+    }
+    User user = optional.get();
     Map<String, Object> claims = Map.of(
+        "id", user.getId(),
         "email", email,
         "action", "reset-password");
     TokenDTO resetToken = new TokenDTO(jwtUtils.generateToken(email, claims));
-    String resetLink = "http://localhost:8080/auth/reset-password/" + resetToken; // TODO: this probably change...
+    String resetLink = resetToken.toString();
     return resetLink;
   }
 }

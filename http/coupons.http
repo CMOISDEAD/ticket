@@ -1,0 +1,40 @@
+### Get coupons
+
+GET http://localhost:8080/coupons
+
+### Get coupon by id
+
+GET http://localhost:8080/coupons/
+
+### create a new coupon
+
+POST http://localhost:8080/coupons
+content-type: application/json
+
+{
+  "code": "code",
+  "name": "coupon name",
+  "userId": "670840b39ab6de65663035fd",
+  "isUsed": false,
+  "discount": 0,
+  "expiryDate": "2020-12-31T15:53:16",
+}
+
+### Update a coupon
+
+PUT http://localhost:8080/coupons/6708504240e7896c7cf2e89e
+content-type: application/json
+
+{
+  "id": "6708504240e7896c7cf2e89e",
+  "code": "code",
+  "name": "coupon name",
+  "userId": "670840b39ab6de65663035fd",
+  "isUsed": false,
+  "discount": 0,
+  "expiryDate": "2020-12-31T15:53:16",
+}
+
+### Delete a coupon
+
+DELETE http://localhost:8080/coupons/

@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.cmoisdead.tickets.dto.auth.AuthLoginDTO;
+import com.github.cmoisdead.tickets.dto.auth.AuthRecoverDTO;
 import com.github.cmoisdead.tickets.dto.auth.AuthRegisterDTO;
 import com.github.cmoisdead.tickets.dto.user.UserGeneratePasswordDTO;
 import com.github.cmoisdead.tickets.dto.utils.EmailDTO;
@@ -20,6 +22,7 @@ import com.github.cmoisdead.tickets.service.AuthService;
 import com.github.cmoisdead.tickets.service.EmailService;
 import com.github.cmoisdead.tickets.service.UserService;
 import com.github.cmoisdead.tickets.utils.JwtUtils;
+import com.mercadopago.net.HttpStatus;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -28,7 +31,7 @@ import io.jsonwebtoken.Jws;
 @RequestMapping("/auth")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AuthController {
-  private JwtUtils jwtUtils;
+  private final JwtUtils jwtUtils = new JwtUtils();
 
   @Autowired
   AuthService authService;
@@ -63,9 +66,9 @@ public class AuthController {
    *                   401 Unauthorized - Invalid email or password.
    */
   @PostMapping("/login")
-  public ResponseEntity<TokenDTO> login(@RequestBody AuthLoginDTO request) throws Exception {
+  public ResponseEntity<String> login(@RequestBody AuthLoginDTO request) throws Exception {
     TokenDTO token = authService.login(request);
-    return ResponseEntity.status(200).body(token);
+    return ResponseEntity.status(HttpStatus.OK).body(token.toString());
   }
 
   /**
@@ -180,10 +183,9 @@ public class AuthController {
    *                   500 Internal Server Error - Failed to reset password.
    */
   @PostMapping("/recover")
-  public User recover(@RequestBody String token, @RequestBody String password) throws Exception {
-    Jws<Claims> jwt = jwtUtils.parseToken(token);
+  public User recover(@RequestBody AuthRecoverDTO dto) throws Exception {
+    Jws<Claims> jwt = jwtUtils.parseToken(dto.token());
     Claims payload = jwt.getPayload();
-    User user = userService.updatePassword(payload.get("id").toString(), password);
-    return user;
+    return userService.updatePassword(payload.get("id").toString(), dto.password());
   }
 }

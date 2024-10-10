@@ -12,13 +12,12 @@ import com.github.cmoisdead.tickets.dto.auth.AuthRegisterDTO;
 import com.github.cmoisdead.tickets.dto.utils.TokenDTO;
 import com.github.cmoisdead.tickets.model.User;
 import com.github.cmoisdead.tickets.repository.UserRepository;
-import com.github.cmoisdead.tickets.utils.CryptUtils;
 import com.github.cmoisdead.tickets.utils.JwtUtils;
 
 @Service
 public class AuthService {
-  private JwtUtils jwtUtils;
-  private CryptUtils cryptUtils;
+  private final JwtUtils jwtUtils = new JwtUtils();
+  private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
   @Autowired
   private UserRepository userRepository;
@@ -56,7 +55,7 @@ public class AuthService {
     if (!found.isEmpty())
       throw new Error("Another user with email or username.");
 
-    String encryptedPassword = cryptUtils.encryptPassword(dto.password());
+    String encryptedPassword = encoder.encode(dto.password());
 
     User user = User.builder()
         .role("USER")
@@ -98,7 +97,6 @@ public class AuthService {
    */
   public TokenDTO login(AuthLoginDTO dto) throws Exception {
     Optional<User> optional = userRepository.findByEmail(dto.email());
-    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     if (optional.isEmpty())
       throw new Exception("Invalid email or password");

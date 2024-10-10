@@ -1,10 +1,10 @@
 package com.github.cmoisdead.tickets.controller;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.cmoisdead.tickets.dto.MessageDTO;
+import com.github.cmoisdead.tickets.dto.payment.PaymentPayDTO;
 import com.github.cmoisdead.tickets.model.Payment;
-import com.github.cmoisdead.tickets.resource.MercadopagoResource;
 import com.github.cmoisdead.tickets.service.PaymentService;
+import com.mercadopago.net.HttpStatus;
+import com.mercadopago.resources.preference.Preference;
 
 import lombok.AllArgsConstructor;
 
@@ -30,47 +33,34 @@ public class PaymentController {
   @Autowired
   private final PaymentService paymentService;
 
-  @PostMapping
-  public MercadopagoResource generatePreference() throws Exception {
-    return paymentService.generatePreference();
+  @GetMapping("/")
+  public ResponseEntity<List<Payment>> getAllPayments() {
+    return ResponseEntity.status(HttpStatus.OK).body(paymentService.getAllPayments());
   }
 
-  @PostMapping("/notifications")
-  public ResponseEntity paymentNotifications(
-      @RequestParam(required = false) Long id,
-      @RequestParam(name = "data.id", required = false) Long dataId,
-      @RequestParam(required = false) String type,
-      @RequestParam(required = false) String topic,
-      @RequestBody Map<String, Object> requestBody) {
-    if (id != null && topic != null) {
-      // Instant Payment Notification
-      System.out.println("=========== RECEIVED IPN ===========");
-      System.out.println("Id: " + id);
-      System.out.println("Topic: " + topic);
-      System.out.println(requestBody);
-      System.out.println("====================================");
-      paymentService.paymentNotification("IPN_" + id + "_" + topic, requestBody.toString());
-    } else if (dataId != null && type != null) {
-      // WebHook Notification
-      System.out.println("=========== NEW WEB HOOK ===========");
-      System.out.println("Data Id: " + dataId);
-      System.out.println("Topic: " + type);
-      System.out.println(requestBody);
-      System.out.println("====================================");
-      paymentService.paymentNotification("WH_" + dataId + "_" + type, requestBody.toString());
-    } else {
-      return ResponseEntity.badRequest().build();
-    }
-    return ResponseEntity.ok(200);
+  @GetMapping("/{id}")
+  public ResponseEntity<Payment> getPayment(@RequestParam String id) throws Exception {
+    Optional<Payment> optional = paymentService.getPayment(id);
+    if (optional.isEmpty())
+      throw new Exception("payment dont exist");
+    Payment payment = optional.get();
+    return ResponseEntity.status(HttpStatus.OK).body(payment);
   }
 
-  @GetMapping
-  public Page<Payment> getAllPayments(Pageable pageable) {
-    return paymentService.getAllPayments(pageable);
+  @PostMapping("/realize-pay")
+  public ResponseEntity<MessageDTO<Preference>> realizarPagoProfe(@RequestBody PaymentPayDTO dto)
+      throws Exception {
+    return ResponseEntity.ok().body(new MessageDTO<>(false, paymentService.realizePay(dto.id())));
   }
 
-  @DeleteMapping
-  public ResponseEntity deletePayments() {
-    return paymentService.deleteAllPayments();
+  @PostMapping("/notify-pay")
+  public void recibirNotificacionMercadoPago(@RequestBody Map<String, Object> request) {
+    paymentService.receiveNotifications(request);
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<String> deletePayments(@RequestParam String id) {
+    paymentService.deletePayment(id);
+    return ResponseEntity.status(HttpStatus.OK).body("Removed payment");
   }
 }

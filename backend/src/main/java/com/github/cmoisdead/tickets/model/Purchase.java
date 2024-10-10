@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
@@ -24,10 +23,15 @@ public class Purchase {
   private String userId;
   private double total;
   private LocalDateTime date;
-  private boolean isPaid;
-  private Payment payment;
   private List<Item> items;
+  private String code;
 
-  @DBRef
-  private List<Coupon> coupons;
+  @Builder.Default
+  private boolean isPaid = false;
+
+  @Builder.Default
+  private Payment payment = null;
+
+  @Builder.Default
+  private List<Coupon> coupons = null;
 }

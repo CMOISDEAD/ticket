@@ -33,6 +33,9 @@ public class User {
   private LocalDate dateOfBirth;
 
   @Builder.Default
+  private String cartId = null;
+
+  @Builder.Default
   private List<String> phoneNumbers = Collections.emptyList();
 
   @DBRef

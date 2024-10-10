@@ -1,0 +1,39 @@
+### get cart
+
+GET http://localhost:8080/cart/
+
+### get cart by id
+
+GET http://localhost:8080/cart/
+
+### create a new cart
+
+POST http://localhost:8080/cart
+Content-Type: application/json
+
+{
+  "userId": "670840b39ab6de65663035fd",
+  "eventIds": [],
+  "totalPrice": 0
+}
+
+### Update a cart
+
+PUT http://localhost:8080/cart/67085c2ab7a6f424903adeea
+Content-Type: application/json
+
+{
+  "id": "67085c2ab7a6f424903adeea",
+  "userId": "670840b39ab6de65663035fd",
+  "eventIds": ["cualquier evento"],
+  "totalPrice": 0
+}
+
+### clear a cart
+
+POST http://localhost:8080/cart/clear/67085c2ab7a6f424903adeea
+
+
+### delete cart
+
+DELETE http://localhost:8080/cart/67085c66b7a6f424903adeec

@@ -57,6 +57,14 @@ public class UserController {
     return ResponseEntity.status(HttpStatus.OK).body(optional.get());
   }
 
+  @GetMapping("/username/{username}")
+  public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
+    Optional<User> optional = userService.findByUsername(username);
+    if (optional.isEmpty())
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    return ResponseEntity.status(HttpStatus.OK).body(optional.get());
+  }
+
   /**
    * Creates a new user.
    *

@@ -1,0 +1,24 @@
+### get all
+
+GET http://localhost:8080/payments
+
+### get by id
+
+GET http://localhost:8080/payments
+
+### realize-pay 
+
+POST http://localhost:8080/payments/realize-pay
+content-type: application/json
+
+{
+  "id": "67085f5ccc6f5b5e62e842a6"
+}
+
+###  notify
+
+POST http://localhost:8080/payments/realize-pay
+
+### delete payment
+
+DELETE http://localhost:8080/payments/realize-pay

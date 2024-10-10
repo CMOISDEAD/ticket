@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.github.cmoisdead.tickets.dto.coupon.CouponCreateDTO;
 import com.github.cmoisdead.tickets.model.Coupon;
 import com.github.cmoisdead.tickets.repository.CouponRepository;
 
@@ -40,7 +41,15 @@ public class CouponService {
    * @param coupon coupon to save
    * @return coupon dbObject
    */
-  public Coupon save(Coupon coupon) {
+  public Coupon save(CouponCreateDTO dto) {
+    Coupon coupon = Coupon.builder()
+        .code(dto.code())
+        .name(dto.name())
+        .userId(dto.userId())
+        .isUsed(dto.isUsed())
+        .discount(dto.discount())
+        .expiryDate(dto.expiryDate())
+        .build();
     return couponRepository.save(coupon);
   }
 

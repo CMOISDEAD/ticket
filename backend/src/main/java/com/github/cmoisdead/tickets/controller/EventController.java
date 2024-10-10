@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.cmoisdead.tickets.dto.event.EventCreateDTO;
 import com.github.cmoisdead.tickets.model.Event;
 import com.github.cmoisdead.tickets.service.EventService;
 
@@ -57,7 +58,7 @@ public class EventController {
    * @return ResponseEntity with the created event.
    */
   @PostMapping
-  public ResponseEntity<Event> createEvent(@RequestBody Event event) {
+  public ResponseEntity<Event> createEvent(@RequestBody EventCreateDTO event) {
     Event createdEvent = eventService.save(event);
     return ResponseEntity.status(HttpStatus.CREATED).body(createdEvent);
   }
@@ -70,14 +71,13 @@ public class EventController {
    * @return ResponseEntity with the updated event.
    */
   @PutMapping("/{id}")
-  public ResponseEntity<Event> updateEvent(@PathVariable String id, @RequestBody Event event) {
-    Optional<Event> existingEvent = eventService.findById(id);
-    if (existingEvent.isEmpty()) {
+  public ResponseEntity<Event> updateEvent(@PathVariable String id, @RequestBody EventCreateDTO dto) {
+    Optional<Event> optional = eventService.findById(id);
+    if (optional.isEmpty()) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
-    event.setId(id);
-    Event updatedEvent = eventService.save(event);
-    return ResponseEntity.status(HttpStatus.OK).body(updatedEvent);
+    Event event = eventService.save(dto);
+    return ResponseEntity.status(HttpStatus.OK).body(event);
   }
 
   /**

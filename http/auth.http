@@ -1,0 +1,40 @@
+### register
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{
+  "firstname": "camilo",
+  "lastname": "davila",
+  "username": "cmoisdead",
+  "address": "address",
+  "email": "camilo@gmail.com",
+  "password": "password",
+  "dateOfBirth": "1990-01-01"
+}
+
+### login
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "email": "camilodavina@gmail.com",
+  "password": "password"
+}
+
+### generate password reset link
+POST http://localhost:8080/auth/generate
+Content-Type: application/json
+
+{
+  "email": "camilodavina@gmail.com"
+}
+
+### recover password
+
+POST http://localhost:8080/auth/recover
+Content-Type: application/json
+
+{
+  "token": "eyJhbGciOiJIUzM4NCJ9.eyJpZCI6IjY3MDg0MGIzOWFiNmRlNjU2NjMwMzVmZCIsImFjdGlvbiI6InJlc2V0LXBhc3N3b3JkIiwiZW1haWwiOiJjYW1pbG9kYXZpbmFAZ21haWwuY29tIiwiaWF0IjoxNzI4NTk3NzEyLCJleHAiOjE3Mjg2MDEzMTJ9.0G5xrTgxMNFt4wg9VgSWym7my9dPRbX0SFg4dNZ-MKwX5-hHxJ2z9QhPAKM6VXI2",
+  "password": "password"
+}

@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.github.cmoisdead.tickets.dto.purchase.PurchaseCreateDTO;
 import com.github.cmoisdead.tickets.model.Purchase;
 import com.github.cmoisdead.tickets.repository.PurchaseRepository;
 
@@ -72,7 +73,18 @@ public class PurchaseService {
    * }
    * </pre>
    */
-  public Purchase save(Purchase purchase) {
+  public Purchase save(PurchaseCreateDTO dto) {
+    Purchase purchase = Purchase.builder()
+        .userId(dto.userId())
+        .total(dto.total())
+        .date(dto.date())
+        .items(dto.items())
+        .build();
+
+    return purchaseRepository.save(purchase);
+  }
+
+  public Purchase updatePurchase(Purchase purchase) {
     return purchaseRepository.save(purchase);
   }
 

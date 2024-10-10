@@ -1,5 +1,6 @@
 package com.github.cmoisdead.tickets.controller;
 
+import com.github.cmoisdead.tickets.dto.purchase.PurchaseCreateDTO;
 import com.github.cmoisdead.tickets.model.Purchase;
 import com.github.cmoisdead.tickets.service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,8 +50,8 @@ public class PurchaseController {
    * @return ResponseEntity with the created purchase.
    */
   @PostMapping
-  public ResponseEntity<Purchase> createPurchase(@RequestBody Purchase purchase) {
-    Purchase createdPurchase = purchaseService.save(purchase);
+  public ResponseEntity<Purchase> createPurchase(@RequestBody PurchaseCreateDTO dto) {
+    Purchase createdPurchase = purchaseService.save(dto);
     return ResponseEntity.status(HttpStatus.CREATED).body(createdPurchase);
   }
 
@@ -67,7 +68,7 @@ public class PurchaseController {
     if (existingPurchase.isEmpty())
       return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     purchase.setId(id);
-    Purchase updatedPurchase = purchaseService.save(purchase);
+    Purchase updatedPurchase = purchaseService.updatePurchase(purchase);
     return ResponseEntity.status(HttpStatus.OK).body(updatedPurchase);
   }
 

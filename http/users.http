@@ -1,0 +1,52 @@
+### Get Users
+
+GET http://localhost:8080/users
+
+### Get User by Id
+
+GET http://localhost:8080/users/670840b39ab6de65663035fd
+
+### Get User by Username
+
+GET http://localhost:8080/users/username/camilo
+
+### Get User by Email
+
+GET http://localhost:8080/users/email/jhon@gmail.com
+
+### Create a new user
+
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "role": "user",
+  "firstname": "John",
+  "lastname": "Doe",
+  "username": "Jhon",
+  "address": "lo quesea",
+  "email": "jhon@gmail.com",
+  "password": "123456",
+  "dateOfBirth": "1990-01-01"
+}
+
+
+### Update a user
+
+PUT http://localhost:8080/users/670840b39ab6de65663035fd
+Content-Type: application/json
+
+{
+  "role": "user",
+  "firstname": "camilo",
+  "lastname": "davila",
+  "username": "camilo",
+  "address": "address",
+  "email": "camilodavina@gmail.com",
+  "password": "$2a$10$7Hpbyd0WfqrKy1oC/mF0Seyrtw1jpL1HLKeBV6PsZCwYchF9OP8EO",
+  "dateOfBirth": "1990-01-01"
+}
+
+### Delete a user
+
+DELETE http://localhost:8080/users/670835fb1ce597340b02bb22
