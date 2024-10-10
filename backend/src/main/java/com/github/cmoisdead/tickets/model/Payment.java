@@ -16,6 +16,8 @@ public class Payment {
   private Status status; // "approved", "declined", "pending"
   private LocalDateTime date;
   private double amount;
+  private String parameters;
+  private String body;
 }
 
 enum Methods {
