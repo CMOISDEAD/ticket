@@ -1,0 +1,33 @@
+* TODO list
+
+~ Cumplimiento de los Requisitos.
+~ Registro de usuarios. 
+~ Compra de entradas. 
+~ Gestión de cupones. 
+~ Pasarela de pagos.
+~ Generación de reportes.
+~ Carrito de compras. 
+~ Envío de QR. Se genera y envía por correo electrónico un código QR con los detalles de la compra una vez realizada la transacción
+~ Arquitectura y Diseño.
+~ Diagrama de clases.
+~ Diseño modular. ¿El sistema está diseñado de manera modular, separando la lógica del negocio, la lógica de la presentación y la persistencia de datos en capas claras (backend con Spring Boot y frontend con Angular)?
+~ Uso de la Tecnología.
+~ Spring Boot.
+~ Angular.
+~ MongoDB.
+
+~ Calidad del Código y Control de Versiones.
+~ Código limpio. 
+~ GitHub.
+
+~ Seguridad y Validación.
+~ Verificación de cuenta y recuperación de contraseña. ¿Se implementó el sistema de verificación por correo electrónico y recuperación de contraseña usando códigos válidos durante 15 minutos?
+~ Validaciones en compras. 
+~ Protección de datos. 
+~ Pruebas (Testing).
+~ Pruebas unitarias.
+~ Pruebas de integración.
+~ Pruebas end-to-end.
+
+~ Documentación y Reportes.
+~ Documentación técnica.
