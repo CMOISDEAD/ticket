@@ -53,13 +53,14 @@ public class CouponController {
   }
 
   @PostMapping("/")
-  public ResponseEntity<Coupon> createCoupon(@RequestBody CouponCreateDTO dto) {
+  public ResponseEntity<Coupon> createCoupon(@RequestBody CouponCreateDTO dto) throws Exception {
     Coupon coupon = couponService.save(dto);
     return ResponseEntity.status(200).body(coupon);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Coupon> updateCoupon(@PathVariable String id, @RequestBody CouponCreateDTO dto) {
+  public ResponseEntity<Coupon> updateCoupon(@PathVariable String id, @RequestBody CouponCreateDTO dto)
+      throws Exception {
     Optional<Coupon> coupon = couponService.findById(id);
     if (coupon.isEmpty())
       return ResponseEntity.status(404).body(null);

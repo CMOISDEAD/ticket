@@ -4,20 +4,20 @@ GET http://localhost:8080/coupons
 
 ### Get coupon by id
 
-GET http://localhost:8080/coupons/
+GET http://localhost:8080/coupons/670865234852a32f09378005
 
 ### create a new coupon
 
-POST http://localhost:8080/coupons
+POST http://localhost:8080/coupons/
 content-type: application/json
 
 {
   "code": "code",
-  "name": "coupon name",
-  "userId": "670840b39ab6de65663035fd",
+  "name": "10% Halloween",
+  "userId": "67088d31f15c8707c334e880",
   "isUsed": false,
-  "discount": 0,
-  "expiryDate": "2020-12-31T15:53:16",
+  "discount": 10,
+  "expiryDate": "2024-12-31T15:53:16"
 }
 
 ### Update a coupon
@@ -37,4 +37,4 @@ content-type: application/json
 
 ### Delete a coupon
 
-DELETE http://localhost:8080/coupons/
+DELETE http://localhost:8080/coupons/67088d32f15c8707c334e881

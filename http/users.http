@@ -4,7 +4,7 @@ GET http://localhost:8080/users
 
 ### Get User by Id
 
-GET http://localhost:8080/users/670840b39ab6de65663035fd
+GET http://localhost:8080/users/67088df4f15c8707c334e882
 
 ### Get User by Username
 
@@ -12,7 +12,7 @@ GET http://localhost:8080/users/username/camilo
 
 ### Get User by Email
 
-GET http://localhost:8080/users/email/jhon@gmail.com
+GET http://localhost:8080/users/email/camiloesteban661@gmail.com
 
 ### Create a new user
 
@@ -24,12 +24,11 @@ Content-Type: application/json
   "firstname": "John",
   "lastname": "Doe",
   "username": "Jhon",
-  "address": "lo quesea",
-  "email": "jhon@gmail.com",
+  "address": "miami",
+  "email": "camiloesteban661@gmail.com",
   "password": "123456",
-  "dateOfBirth": "1990-01-01"
+  "dateOfBirth": "1990-01-01",
 }
-
 
 ### Update a user
 
@@ -37,16 +36,22 @@ PUT http://localhost:8080/users/670840b39ab6de65663035fd
 Content-Type: application/json
 
 {
-  "role": "user",
-  "firstname": "camilo",
-  "lastname": "davila",
-  "username": "camilo",
-  "address": "address",
-  "email": "camilodavina@gmail.com",
-  "password": "$2a$10$7Hpbyd0WfqrKy1oC/mF0Seyrtw1jpL1HLKeBV6PsZCwYchF9OP8EO",
-  "dateOfBirth": "1990-01-01"
+  "id": "67088df4f15c8707c334e882",
+  "role": "USER",
+  "username": null,
+  "firstname": "John",
+  "lastname": "Doe",
+  "address": "miami",
+  "email": "camiloesteban661@gmail.com",
+  "password": "123456",
+  "dateOfBirth": "1990-01-01",
+  "cartId": null,
+  "phoneNumbers": ["123", "456"],
+  "purchases": [],
+  "coupons": [],
+  "active": true
 }
 
 ### Delete a user
 
-DELETE http://localhost:8080/users/670835fb1ce597340b02bb22
+DELETE http://localhost:8080/users/67088df4f15c8707c334e882

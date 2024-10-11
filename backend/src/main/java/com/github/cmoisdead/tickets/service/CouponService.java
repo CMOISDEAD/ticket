@@ -8,13 +8,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.github.cmoisdead.tickets.dto.coupon.CouponCreateDTO;
+import com.github.cmoisdead.tickets.dto.utils.EmailDTO;
 import com.github.cmoisdead.tickets.model.Coupon;
+import com.github.cmoisdead.tickets.model.User;
 import com.github.cmoisdead.tickets.repository.CouponRepository;
+import com.github.cmoisdead.tickets.repository.UserRepository;
 
 @Service
 public class CouponService {
   @Autowired
   private CouponRepository couponRepository;
+  @Autowired
+  private EmailService emailService;
+  @Autowired
+  private UserRepository userRepository;
 
   /**
    * find all coupons on the database
@@ -40,9 +47,15 @@ public class CouponService {
    *
    * @param coupon coupon to save
    * @return coupon dbObject
+   * @throws Exception
    */
-  public Coupon save(CouponCreateDTO dto) {
-    Coupon coupon = Coupon.builder()
+  public Coupon save(CouponCreateDTO dto) throws Exception {
+    Optional<User> optional = userRepository.findById(dto.userId());
+
+    if (optional.isEmpty())
+      throw new Error("User not found");
+
+    Coupon build = Coupon.builder()
         .code(dto.code())
         .name(dto.name())
         .userId(dto.userId())
@@ -50,7 +63,21 @@ public class CouponService {
         .discount(dto.discount())
         .expiryDate(dto.expiryDate())
         .build();
-    return couponRepository.save(coupon);
+
+    Coupon coupon = couponRepository.save(build);
+
+    User user = optional.get();
+    user.getCoupons().add(coupon.getId());
+    userRepository.save(user);
+
+    EmailDTO message = new EmailDTO(
+        "Nuevo Cupon Recibido",
+        user.getEmail(),
+        "QueBoleta.com",
+        "Felicidades recibiste el siguiente cupon: " + coupon.getName());
+    emailService.sendEmail(message);
+
+    return coupon;
   }
 
   /**

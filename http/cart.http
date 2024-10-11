@@ -12,7 +12,7 @@ POST http://localhost:8080/cart
 Content-Type: application/json
 
 {
-  "userId": "670840b39ab6de65663035fd",
+  "userId": "67088d31f15c8707c334e880",
   "eventIds": [],
   "totalPrice": 0
 }
@@ -23,17 +23,16 @@ PUT http://localhost:8080/cart/67085c2ab7a6f424903adeea
 Content-Type: application/json
 
 {
-  "id": "67085c2ab7a6f424903adeea",
-  "userId": "670840b39ab6de65663035fd",
-  "eventIds": ["cualquier evento"],
-  "totalPrice": 0
+    "id": "67088f30f15c8707c334e883",
+    "userId": "67088d31f15c8707c334e880",
+    "eventIds": [],
+    "totalPrice": 10
 }
 
 ### clear a cart
 
-POST http://localhost:8080/cart/clear/67085c2ab7a6f424903adeea
-
+POST http://localhost:8080/cart/clear/67088f30f15c8707c334e883
 
 ### delete cart
 
-DELETE http://localhost:8080/cart/67085c66b7a6f424903adeec
+DELETE http://localhost:8080/cart/67088f30f15c8707c334e883

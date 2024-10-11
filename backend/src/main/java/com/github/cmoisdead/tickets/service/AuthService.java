@@ -1,5 +1,6 @@
 package com.github.cmoisdead.tickets.service;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.github.cmoisdead.tickets.dto.auth.AuthLoginDTO;
 import com.github.cmoisdead.tickets.dto.auth.AuthRegisterDTO;
+import com.github.cmoisdead.tickets.dto.coupon.CouponCreateDTO;
+import com.github.cmoisdead.tickets.dto.utils.EmailDTO;
 import com.github.cmoisdead.tickets.dto.utils.TokenDTO;
 import com.github.cmoisdead.tickets.model.User;
 import com.github.cmoisdead.tickets.repository.UserRepository;
@@ -21,6 +24,10 @@ public class AuthService {
 
   @Autowired
   private UserRepository userRepository;
+  @Autowired
+  private CouponService couponService;
+  @Autowired
+  private EmailService emailService;
 
   /**
    * Registers a new user in the system.
@@ -33,13 +40,15 @@ public class AuthService {
    * @param dto An AuthRegisterDTO containing user registration details such as
    *            email, username, password, and personal information.
    * @return User The newly registered user.
-   * @throws Error If a user with the same email or username already exists,
-   *               an error is thrown with the message "Another user with email or
-   *               username".
+   * @throws Exception
+   * @throws Error     If a user with the same email or username already exists,
+   *                   an error is thrown with the message "Another user with
+   *                   email or
+   *                   username".
    * 
-   *               Example usage:
+   *                   Example usage:
    * 
-   *               <pre>
+   *                   <pre>
    *               {@code
    * AuthRegisterDTO registerData = new AuthRegisterDTO(
    *     "user@example.com", "username123", "password123", "John", "Doe", 
@@ -49,7 +58,7 @@ public class AuthService {
    * </pre>
    * }
    */
-  public User Register(AuthRegisterDTO dto) {
+  public User Register(AuthRegisterDTO dto) throws Exception {
     Optional<User> found = userRepository.findByEmailOrUsername(dto.email(), dto.username());
 
     if (!found.isEmpty())
@@ -57,17 +66,38 @@ public class AuthService {
 
     String encryptedPassword = encoder.encode(dto.password());
 
-    User user = User.builder()
+    User newUser = User.builder()
         .role("USER")
+        .username(dto.username())
         .firstname(dto.firstname())
         .lastname(dto.lastname())
         .address(dto.address())
         .email(dto.email())
         .password(encryptedPassword)
         .isActive(true)
+        .coupons(Collections.emptyList())
         .dateOfBirth(dto.dateOfBirth())
         .build();
-    userRepository.save(user);
+
+    User user = userRepository.save(newUser);
+
+    CouponCreateDTO coupon = CouponCreateDTO.builder()
+        .code("NEW_USER")
+        .name("New User Coupon")
+        .userId(user.getId())
+        .isUsed(false)
+        .discount(10.0)
+        .expiryDate(null)
+        .build();
+
+    couponService.save(coupon);
+
+    EmailDTO message = new EmailDTO(
+        "Felicidades por crear una cuenta",
+        user.getEmail(),
+        "QueBoleta.com",
+        "Felicidades por crear una nueva cuenta en QueBoleta");
+    emailService.sendEmail(message);
 
     return user;
   }
@@ -111,6 +141,15 @@ public class AuthService {
         "role", user.getRole(),
         "email", user.getEmail());
 
-    return new TokenDTO(jwtUtils.generateToken(user.getEmail(), claims));
+    TokenDTO token = new TokenDTO(jwtUtils.generateToken(user.getEmail(), claims));
+
+    EmailDTO message = new EmailDTO(
+        "Nuevo inicio de sesion registrado.",
+        user.getEmail(),
+        "QueBoleta.com",
+        "Hemos registrado un nuevo inicio de sesion.");
+    emailService.sendEmail(message);
+
+    return token;
   }
 }

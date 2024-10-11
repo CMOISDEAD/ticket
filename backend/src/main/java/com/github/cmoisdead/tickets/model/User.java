@@ -38,11 +38,9 @@ public class User {
   @Builder.Default
   private List<String> phoneNumbers = Collections.emptyList();
 
-  @DBRef
   @Builder.Default
   private List<Purchase> purchases = Collections.emptyList();
 
-  @DBRef
   @Builder.Default
-  private List<Coupon> coupons = Collections.emptyList();
+  private List<String> coupons = Collections.emptyList();
 }

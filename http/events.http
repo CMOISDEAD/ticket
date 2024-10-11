@@ -12,11 +12,11 @@ POST http://localhost:8080/events
 content-type: application/json
 
 {
-  "name": "event",
-  "description": "description",
-  "address": "location",
-  "city": "city",
-  "type": "type",
+  "name": "concierto",
+  "description": "descirpcion del concierto",
+  "address": "miami",
+  "city": "miamia",
+  "type": "concierto",
   "poster": "",
   "images": [],
   "date": "2020-12-31T15:53:16"
@@ -24,20 +24,21 @@ content-type: application/json
 
 ### Update a event
 
-PUT http://localhost:8080/events/6708504240e7896c7cf2e89e
+PUT http://localhost:8080/events/670890a4f15c8707c334e885
 content-type: application/json
 
 {
-  "name": "Concierto",
-  "description": "description",
-  "address": "location",
-  "city": "city",
-  "type": "type",
-  "poster": "",
-  "images": [],
-  "date": "2020-12-31T15:53:16"
+    "id": "670890a4f15c8707c334e885",
+    "name": "concierto",
+    "description": "descirpcion del concierto",
+    "address": "miami",
+    "city": "miamia",
+    "type": "concierto",
+    "poster": "",
+    "images": [],
+    "date": "2025-12-31T15:53:16"
 }
 
 ### Delete a event
 
-DELETE http://localhost:8080/events/6708504240e7896c7cf2e89e
+DELETE http://localhost:8080/events/670890ebf15c8707c334e886
