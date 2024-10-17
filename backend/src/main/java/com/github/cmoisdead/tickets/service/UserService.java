@@ -91,6 +91,13 @@ public class UserService {
     return userRepository.save(user);
   }
 
+  /**
+   * Change the user status by ther uniquie ID.
+   *
+   * @param id user id
+   * @throws Exception user not found
+   * @throws throw     new Exception("User not found"); user not found
+   */
   public void removeById(String id) throws Exception {
     Optional<User> optional = userRepository.findById(id);
     if (optional.isEmpty()) {
