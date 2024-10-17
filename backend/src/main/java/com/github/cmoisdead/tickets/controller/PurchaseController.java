@@ -60,6 +60,8 @@ public class PurchaseController {
     for (Item item : items) {
       if (item.getCurrentPeople() + item.getUnits() >= item.getCapacity()) {
         throw new Exception("Capacidad maxima alcanzada");
+      } else {
+        item.setCurrentPeople(item.getCurrentPeople() + item.getUnits());
       }
     }
 
@@ -71,7 +73,6 @@ public class PurchaseController {
     }
 
     Purchase createdPurchase = purchaseService.save(dto, calculatedTotal);
-
     return ResponseEntity.status(HttpStatus.CREATED).body(createdPurchase);
   }
 
