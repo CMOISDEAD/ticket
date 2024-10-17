@@ -1,6 +1,8 @@
 package com.github.cmoisdead.tickets.controller;
 
 import com.github.cmoisdead.tickets.dto.purchase.PurchaseCreateDTO;
+import com.github.cmoisdead.tickets.model.Coupon;
+import com.github.cmoisdead.tickets.model.Item;
 import com.github.cmoisdead.tickets.model.Purchase;
 import com.github.cmoisdead.tickets.service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,10 +50,28 @@ public class PurchaseController {
    *
    * @param purchase The purchase details to create.
    * @return ResponseEntity with the created purchase.
+   * @throws Exception
    */
   @PostMapping
-  public ResponseEntity<Purchase> createPurchase(@RequestBody PurchaseCreateDTO dto) {
-    Purchase createdPurchase = purchaseService.save(dto);
+  public ResponseEntity<Purchase> createPurchase(@RequestBody PurchaseCreateDTO dto) throws Exception {
+    List<Item> items = dto.items();
+
+    // veritfy max capacity of the event
+    for (Item item : items) {
+      if (item.getCurrentPeople() + item.getUnits() >= item.getCapacity()) {
+        throw new Exception("Capacidad maxima alcanzada");
+      }
+    }
+
+    // Apply the coupons
+    List<Coupon> coupons = dto.coupons();
+    double calculatedTotal = dto.total();
+    for (Coupon coupon : coupons) {
+      calculatedTotal = (dto.total() * coupon.getDiscount()) / 100;
+    }
+
+    Purchase createdPurchase = purchaseService.save(dto, calculatedTotal);
+
     return ResponseEntity.status(HttpStatus.CREATED).body(createdPurchase);
   }
 

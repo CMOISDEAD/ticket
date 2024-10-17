@@ -26,6 +26,7 @@ public class Event {
   private String city;
   private String type;
   private String poster;
+  private Integer capacity;
   private List<String> images;
   private LocalDateTime date;
 }

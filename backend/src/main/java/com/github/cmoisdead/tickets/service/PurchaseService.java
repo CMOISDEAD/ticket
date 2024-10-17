@@ -73,10 +73,10 @@ public class PurchaseService {
    * }
    * </pre>
    */
-  public Purchase save(PurchaseCreateDTO dto) {
+  public Purchase save(PurchaseCreateDTO dto, double total) {
     Purchase purchase = Purchase.builder()
         .userId(dto.userId())
-        .total(dto.total())
+        .total(total)
         .date(dto.date())
         .items(dto.items())
         .build();

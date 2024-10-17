@@ -91,6 +91,16 @@ public class UserService {
     return userRepository.save(user);
   }
 
+  public void removeById(String id) throws Exception {
+    Optional<User> optional = userRepository.findById(id);
+    if (optional.isEmpty()) {
+      throw new Exception("User not found");
+    }
+
+    User user = optional.get();
+    user.setActive(false);
+  }
+
   /**
    * Deletes a user by their unique ID.
    * 

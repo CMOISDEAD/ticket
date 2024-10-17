@@ -9,5 +9,7 @@ public class Item {
   private String id;
   private int units;
   private String eventid;
+  private Integer capacity;
+  private Integer currentPeople;
   private double price;
 }
