@@ -55,10 +55,12 @@ public class PurchaseController {
   @PostMapping
   public ResponseEntity<Purchase> createPurchase(@RequestBody PurchaseCreateDTO dto) throws Exception {
     List<Item> items = dto.items();
+    double calculatedTotal = 0;
 
     // veritfy max capacity of the event
     for (Item item : items) {
       if (item.getCurrentPeople() + item.getUnits() >= item.getCapacity()) {
+        calculatedTotal += item.getPrice() * item.getUnits();
         throw new Exception("Capacidad maxima alcanzada");
       } else {
         item.setCurrentPeople(item.getCurrentPeople() + item.getUnits());
@@ -67,7 +69,6 @@ public class PurchaseController {
 
     // Apply the coupons
     List<Coupon> coupons = dto.coupons();
-    double calculatedTotal = dto.total();
     for (Coupon coupon : coupons) {
       calculatedTotal = (dto.total() * coupon.getDiscount()) / 100;
     }

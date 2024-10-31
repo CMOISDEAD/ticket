@@ -78,7 +78,7 @@ public class PaymentService {
     PreferenceBackUrlsRequest backUrls = PreferenceBackUrlsRequest.builder()
         .success("URL SUCCESS PAY")
         .failure("URL ERROR PAY")
-        .pending("URL PEDDING PAY")
+        .pending("URL PENDING PAY")
         .build();
 
     // Contruct the gateway preference with the items, metadata and return urls
