@@ -31,41 +31,35 @@ const spaceMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Kaminari",
+  title: "QueBoleta",
   generator: "Next.js",
-  applicationName: "Kaminari",
+  applicationName: "QueBoleta",
   referrer: "origin-when-cross-origin",
-  keywords: [
-    "Next.js",
-    "React",
-    "JavaScript",
-    "Boilerplate",
-    "Template",
-    "shadcn-ui",
-  ],
-  authors: [{ name: "Virgil", url: "https://obedd.vercel.app" }],
-  creator: "Virgil",
-  publisher: "Virgil",
+  keywords: ["Boletas", "Eventos", "Conciertos", "Next.js", "shadcn-ui"],
+  authors: [{ name: "CMOISDEAD", url: "https://camilodavila.vercel.app" }],
+  creator: "CMOISDEAD",
+  publisher: "CMOISDEAD",
   alternates: {},
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://kaminari.vercel.app"),
+  metadataBase: new URL("https://queboleta.vercel.app"),
   openGraph: {
-    title: "Kaminari",
-    description: "Next.js, TailwindCSS and shadcn-ui Starter Template",
-    url: "https://kaminari.vercel.app",
-    siteName: "Kaminari",
+    title: "QueBoleta",
+    description:
+      "QueBoleta es una plataforma que te permite comprar boletas para eventos de manera rápida y segura.",
+    url: "https://queboleta.vercel.app",
+    siteName: "QueBoleta",
     images: [
       {
-        url: "https://kaminari.vercel.app/og.png",
+        url: "https://queboleta.vercel.app/og.png",
         width: 800,
         height: 600,
       },
       {
-        url: "https://kaminari.vercel.app/og-dark.png",
+        url: "https://queboleta.vercel.app/og-dark.png",
         width: 1800,
         height: 1600,
         alt: "Next.js, TailwindCSS and shadcn-ui Starter Template",
