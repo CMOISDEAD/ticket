@@ -67,7 +67,17 @@ export default function Navbar() {
               </div>
             </DropdownMenuContent>
           </DropdownMenu>
-          <ThemeToggle />
+          <div className="hidden md:flex">
+            <ThemeToggle />
+          </div>
+          <div className="flex">
+            <Button asChild variant="link" size="sm">
+              <Link href="/auth/login">Login</Link>
+            </Button>
+            <Button asChild variant="link" size="sm">
+              <Link href="/auth/register">Register</Link>
+            </Button>
+          </div>
           <Sheet>
             <SheetTrigger asChild>
               <Button
@@ -90,6 +100,7 @@ export default function Navbar() {
                     {link.name}
                   </Link>
                 ))}
+                <ThemeToggle />
               </div>
             </SheetContent>
           </Sheet>

@@ -49,9 +49,9 @@ export default function Register() {
 
   return (
     <div className="flex h-screen flex-row justify-between">
-      <div className="flex flex-1 flex-col content-center items-center">
-        <div className="w-full p-20">
-          <h1 className="text-foregound text-3xl font-bold capitalize text-white">
+      <div className="flex flex-1 flex-col content-center items-center justify-between p-5 md:p-20">
+        <div className="w-full">
+          <h1 className="text-foregound text-3xl font-bold capitalize">
             Register
           </h1>
           <Form {...form}>
@@ -178,15 +178,31 @@ export default function Register() {
               </Button>
             </form>
           </Form>
-          <p className="text-sm italic">
-            Already have an account?{" "}
-            <Link href="/auth/login" className="not-italic">
-              Login
+          <p className="text-center text-sm italic md:text-start">
+            Already have an account?
+            <Button asChild variant="link">
+              <Link href="/auth/login" className="not-italic">
+                Login
+              </Link>
+            </Button>
+          </p>
+        </div>
+        <div className="flex flex-col items-center text-center text-sm">
+          <p className="text-muted-foreground">
+            By registering you agree to our{" "}
+            <Link href="#" className="text-blue-500">
+              terms and conditions
+            </Link>
+          </p>
+          <p className="text-muted-foreground">
+            Go back to{" "}
+            <Link href="/" className="text-blue-500">
+              home
             </Link>
           </p>
         </div>
       </div>
-      <div className="relative w-2/3">
+      <div className="relative hidden w-2/3 md:flex">
         <Image
           src={concertImage}
           alt="Register"
@@ -194,7 +210,7 @@ export default function Register() {
           height={undefined}
           className="h-full w-full object-cover object-center"
         />
-        <p className="absolute bottom-5 right-5">
+        <p className="absolute bottom-5 right-5 text-white">
           Get the best prices of tickets.
         </p>
       </div>

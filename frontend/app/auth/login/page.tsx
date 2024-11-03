@@ -44,9 +44,9 @@ export default function Login() {
 
   return (
     <div className="flex h-screen flex-row justify-between">
-      <div className="flex flex-1 flex-col content-center items-center">
-        <div className="w-full p-20">
-          <h1 className="text-foregound text-3xl font-bold capitalize text-white">
+      <div className="flex flex-1 flex-col content-center items-center justify-between p-5 md:p-20">
+        <div className="w-full">
+          <h1 className="text-foregound text-3xl font-bold capitalize">
             Login
           </h1>
           <Form {...form}>
@@ -63,7 +63,7 @@ export default function Login() {
                     <FormControl>
                       <Input placeholder="jhondoe" {...field} />
                     </FormControl>
-                    <FormDescription>Insert our username.</FormDescription>
+                    <FormDescription>Insert your username.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -92,16 +92,32 @@ export default function Login() {
             </form>
           </Form>
           <div>
-            <p className="text-sm italic">
-              You dont have an account?{" "}
-              <Link href="/auth/register" className="not-italic">
-                register
-              </Link>
+            <p className="text-center text-sm italic md:text-start">
+              You dont have an account?
+              <Button asChild variant="link">
+                <Link href="/auth/register" className="not-italic">
+                  register
+                </Link>
+              </Button>
             </p>
           </div>
         </div>
+        <div className="flex flex-col items-center text-center text-sm">
+          <p className="text-muted-foreground">
+            By loginin you agree to our{" "}
+            <Link href="#" className="text-blue-500">
+              terms and conditions
+            </Link>
+          </p>
+          <p className="text-muted-foreground">
+            Go back to{" "}
+            <Link href="/" className="text-blue-500">
+              home
+            </Link>
+          </p>
+        </div>
       </div>
-      <div className="relative w-2/3">
+      <div className="relative hidden w-2/3 md:flex">
         <Image
           src={concertImage}
           alt="login"
@@ -109,7 +125,7 @@ export default function Login() {
           height={undefined}
           className="h-full w-full object-cover object-center"
         />
-        <p className="absolute bottom-5 right-5">
+        <p className="absolute bottom-5 right-5 text-white">
           Get the best prices of tickets.
         </p>
       </div>
