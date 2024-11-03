@@ -28,7 +28,7 @@ export default function ThemeToggle() {
           key={i}
           onClick={() => setTheme(mode.name)}
           className={`mr-1 p-2 ${
-            theme === mode.name && "bg-muted rounded-full shadow-xl"
+            theme === mode.name ? "bg-muted rounded-full shadow-xl" : ""
           }`}
         >
           <mode.icon className="text-muted-foreground h-5 w-5" />
