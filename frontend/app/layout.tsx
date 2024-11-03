@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Provider } from "@/components/provider";
 
 import localFont from "next/font/local";
+import Navbar from "@/components/navbar/navbar";
 
 const spaceMono = localFont({
   src: [
@@ -87,11 +88,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${spaceMono.className}`}>
         <Provider attribute="class" defaultTheme="system" enableSystem>
-          <main
-            className={`text-zinc-700 bg-white dark:text-zinc-400 dark:bg-black`}
-          >
-            {children}
-          </main>
+          <Navbar />
+          <main className="container mx-auto my-5">{children}</main>
         </Provider>
       </body>
     </html>
