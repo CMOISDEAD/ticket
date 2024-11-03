@@ -70,7 +70,7 @@ export default function Navbar() {
           <div className="hidden md:flex">
             <ThemeToggle />
           </div>
-          <div className="flex">
+          <div className="hidden md:flex">
             <Button asChild variant="link" size="sm">
               <Link href="/auth/login">Login</Link>
             </Button>
@@ -81,8 +81,8 @@ export default function Navbar() {
           <Sheet>
             <SheetTrigger asChild>
               <Button
-                variant="ghost"
                 size="icon"
+                variant="ghost"
                 className="rounded-full md:hidden"
               >
                 <Menu className="h-5 w-5 text-gray-500 dark:text-gray-400" />
@@ -100,6 +100,12 @@ export default function Navbar() {
                     {link.name}
                   </Link>
                 ))}
+                <Button asChild variant="link" size="sm">
+                  <Link href="/auth/login">Login</Link>
+                </Button>
+                <Button asChild variant="link" size="sm">
+                  <Link href="/auth/register">Register</Link>
+                </Button>
                 <ThemeToggle />
               </div>
             </SheetContent>
