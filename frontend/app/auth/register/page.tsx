@@ -20,6 +20,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { PasswordInput } from "@/components/ui/password-input";
 
 const schema = z
   .object({
@@ -180,11 +181,7 @@ export default function Register() {
                     <FormItem className="w-full">
                       <FormLabel>Password</FormLabel>
                       <FormControl>
-                        <Input
-                          type="password"
-                          placeholder="*******"
-                          {...field}
-                        />
+                        <PasswordInput placeholder="********" {...field} />
                       </FormControl>
                       <FormDescription>Type your password.</FormDescription>
                       <FormMessage />
@@ -198,11 +195,7 @@ export default function Register() {
                     <FormItem className="w-full">
                       <FormLabel>Repeat</FormLabel>
                       <FormControl>
-                        <Input
-                          type="password"
-                          placeholder="*******"
-                          {...field}
-                        />
+                        <PasswordInput placeholder="********" {...field} />
                       </FormControl>
                       <FormDescription>Repeat your password.</FormDescription>
                       <FormMessage />

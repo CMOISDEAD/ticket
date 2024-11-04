@@ -20,6 +20,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { PasswordInput } from "@/components/ui/password-input";
 
 const schema = z.object({
   email: z.string().email(),
@@ -114,11 +115,7 @@ export default function Login() {
                   <FormItem className="w-full">
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="*********"
-                        {...field}
-                      />
+                      <PasswordInput placeholder="********" {...field} />
                     </FormControl>
                     <FormDescription>Your password.</FormDescription>
                     <FormMessage />
