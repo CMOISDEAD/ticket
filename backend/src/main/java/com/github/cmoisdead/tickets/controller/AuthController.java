@@ -66,8 +66,15 @@ public class AuthController {
    */
   @PostMapping("/login")
   public ResponseEntity<TokenDTO> login(@RequestBody AuthLoginDTO request) throws Exception {
-    TokenDTO token = authService.login(request);
-    return ResponseEntity.status(HttpStatus.OK).body(token);
+    try {
+      TokenDTO token = authService.login(request);
+      return ResponseEntity.status(HttpStatus.OK).body(token);
+    } catch (Exception error) {
+      if (error.getMessage().equals("Invalid email or password"))
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+      else
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
   }
 
   /**
@@ -108,11 +115,14 @@ public class AuthController {
    */
   @PostMapping("/register")
   public ResponseEntity<User> register(@RequestBody AuthRegisterDTO request) throws Exception {
-    Optional<User> optional = userService.findByEmail(request.email());
-    if (optional.isPresent())
-      return ResponseEntity.status(400).build();
-    User user = authService.Register(request);
-    return ResponseEntity.status(200).body(user);
+    try {
+      User user = authService.register(request);
+      return ResponseEntity.status(200).body(user);
+    } catch (Exception error) {
+       if (error.getMessage().equals("Another user with email or username."))
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+      else return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
   }
 
   /**

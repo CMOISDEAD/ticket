@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const schema = z.object({
   email: z.string().email(),
@@ -27,6 +28,8 @@ const schema = z.object({
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
+
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -35,25 +38,43 @@ export default function Login() {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof schema>) => {
-    setLoading(true);
-    fetch("http://localhost:8080/auth/login", {
-      method: "POST",
-      body: JSON.stringify(values),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        setLoading(false);
+  const onSubmit = async (values: z.infer<typeof schema>) => {
+    try {
+      setLoading(true);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`,
+        {
+          method: "POST",
+          body: JSON.stringify(values),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+      if (!response.ok) {
+        if (response.status === 401 || response.status === 403)
+          throw new Error("Invalid credentials.");
+        throw new Error(
+          "An error occurred while logging in. Please try again later.",
+        );
+      }
+
+      const data = await response.json();
+      console.log(data);
+
+      toast({
+        title: "Success 🎉",
+        description: "You have successfully logged in.",
       });
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Error 😥",
+        description: error.message,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

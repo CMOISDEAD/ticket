@@ -58,11 +58,11 @@ public class AuthService {
    * </pre>
    * }
    */
-  public User Register(AuthRegisterDTO dto) throws Exception {
+  public User register(AuthRegisterDTO dto) throws Exception {
     Optional<User> found = userRepository.findByEmailOrUsername(dto.email(), dto.username());
 
     if (!found.isEmpty())
-      throw new Error("Another user with email or username.");
+      throw new Exception("Another user with email or username.");
 
     String encryptedPassword = encoder.encode(dto.password());
 

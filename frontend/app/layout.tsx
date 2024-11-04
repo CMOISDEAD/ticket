@@ -1,7 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Provider } from "@/components/provider";
-
+import { Toaster } from "@/components/ui/toaster";
 import localFont from "next/font/local";
 
 const spaceMono = localFont({
@@ -82,6 +82,7 @@ export default function RootLayout({
       <body className={`${spaceMono.className}`}>
         <Provider attribute="class" defaultTheme="system" enableSystem>
           {children}
+          <Toaster />
         </Provider>
       </body>
     </html>

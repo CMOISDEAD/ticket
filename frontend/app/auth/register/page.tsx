@@ -17,19 +17,30 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
-const schema = z.object({
-  firstname: z.string(),
-  lastname: z.string(),
-  username: z.string().min(4),
-  email: z.string().email(),
-  password: z.string().min(6),
-  repeatPassword: z.string().min(6),
-  adress: z.string(),
-  dob: z.date(),
-});
+const schema = z
+  .object({
+    firstname: z.string(),
+    lastname: z.string(),
+    username: z.string().min(4),
+    email: z.string().email(),
+    password: z.string().min(6),
+    repeatPassword: z.string().min(6).optional(),
+    adress: z.string(),
+    dob: z.date(),
+  })
+  .refine((data) => data.password === data.repeatPassword, {
+    message: "Passwords must match.",
+    path: ["repeatPassword"],
+  });
 
 export default function Register() {
+  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
+
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -38,13 +49,53 @@ export default function Register() {
       username: "",
       email: "",
       password: "",
+      repeatPassword: "",
       adress: "",
       dob: new Date(),
     },
   });
 
-  const onSubmit = (values: z.infer<typeof schema>) => {
-    console.log(values);
+  const onSubmit = async (values: z.infer<typeof schema>) => {
+    delete values.repeatPassword;
+    try {
+      setLoading(true);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/register`,
+        {
+          method: "POST",
+          body: JSON.stringify(values),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+
+      if (!response.ok) {
+        if (response.status === 400)
+          throw new Error("Username or email already in use.");
+        throw new Error(
+          "An error occurred while registering. Please try again later.",
+        );
+      }
+
+      const data = await response.json();
+      console.log(data);
+
+      toast({
+        title: "Success 🎉",
+        description:
+          "You have beeen succesfully register, you will be redirect in a few seconds...",
+      });
+    } catch (error: any) {
+      console.error(error);
+      toast({
+        variant: "destructive",
+        title: "Error 😥",
+        description: error.message,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -173,18 +224,17 @@ export default function Register() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full">
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading && <Loader2 className="mr-2 h-5 w-5 animate-spin" />}
                 Register
               </Button>
             </form>
           </Form>
           <p className="text-center text-sm italic md:text-start">
             Already have an account?
-            <Button asChild variant="link">
-              <Link href="/auth/login" className="not-italic">
-                Login
-              </Link>
-            </Button>
+            <Link href="/auth/login" className="text-blue-500">
+              Login
+            </Link>
           </p>
         </div>
         <div className="flex flex-col items-center text-center text-sm">
