@@ -1,5 +1,6 @@
 package com.github.cmoisdead.tickets.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import com.github.cmoisdead.tickets.dto.user.UserCreateDTO;
 import com.github.cmoisdead.tickets.model.User;
 import com.github.cmoisdead.tickets.service.UserService;
@@ -13,6 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserController {
 
   @Autowired

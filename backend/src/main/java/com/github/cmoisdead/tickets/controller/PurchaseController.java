@@ -1,5 +1,6 @@
 package com.github.cmoisdead.tickets.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import com.github.cmoisdead.tickets.dto.purchase.PurchaseCreateDTO;
 import com.github.cmoisdead.tickets.model.Coupon;
 import com.github.cmoisdead.tickets.model.Item;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/purchases")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PurchaseController {
 
   @Autowired

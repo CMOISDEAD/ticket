@@ -17,29 +17,43 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
 const schema = z.object({
-  firstname: z.string(),
-  lastname: z.string(),
-  username: z.string().min(4),
   email: z.string().email(),
   password: z.string().min(6),
-  repeatPassword: z.string().min(6),
-  adress: z.string(),
-  dob: z.date(),
 });
 
 export default function Login() {
+  const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   });
 
   const onSubmit = (values: z.infer<typeof schema>) => {
-    console.log(values);
+    setLoading(true);
+    fetch("http://localhost:8080/auth/login", {
+      method: "POST",
+      body: JSON.stringify(values),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -56,14 +70,18 @@ export default function Login() {
             >
               <FormField
                 control={form.control}
-                name="username"
+                name="email"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel>Username</FormLabel>
+                    <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input placeholder="jhondoe" {...field} />
+                      <Input
+                        type="email"
+                        placeholder="jhondoe@ibm.com"
+                        {...field}
+                      />
                     </FormControl>
-                    <FormDescription>Insert your username.</FormDescription>
+                    <FormDescription>Insert your user email.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -86,7 +104,8 @@ export default function Login() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full">
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading && <Loader2 className="mr-2 h-5 w-5 animate-spin" />}
                 Login
               </Button>
             </form>

@@ -1,5 +1,6 @@
 package com.github.cmoisdead.tickets.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import com.github.cmoisdead.tickets.dto.cart.CartCreateDTO;
 import com.github.cmoisdead.tickets.model.Cart;
 import com.github.cmoisdead.tickets.service.CartService;
@@ -13,6 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/cart")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class CartController {
 
   @Autowired

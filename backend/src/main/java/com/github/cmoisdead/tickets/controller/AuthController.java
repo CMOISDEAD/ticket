@@ -65,9 +65,9 @@ public class AuthController {
    *                   401 Unauthorized - Invalid email or password.
    */
   @PostMapping("/login")
-  public ResponseEntity<String> login(@RequestBody AuthLoginDTO request) throws Exception {
+  public ResponseEntity<TokenDTO> login(@RequestBody AuthLoginDTO request) throws Exception {
     TokenDTO token = authService.login(request);
-    return ResponseEntity.status(HttpStatus.OK).body(token.toString());
+    return ResponseEntity.status(HttpStatus.OK).body(token);
   }
 
   /**
