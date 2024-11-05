@@ -12,10 +12,6 @@ import ThemeToggle from "../theme-toggle";
 
 const links = [
   {
-    name: "Home",
-    href: "/",
-  },
-  {
     name: "Events",
     href: "/events",
   },
@@ -31,10 +27,11 @@ const links = [
 
 export default function Navbar() {
   return (
-    <header className="bg-background border-border sticky top-0 z-50 w-full border-b">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background">
       <div className="container mx-auto flex h-16 max-w-6xl items-center justify-between px-4 md:px-6">
         <Link href="#" className="flex items-center gap-2" prefetch={false}>
-          <Ticket className="h-6 w-6" />
+          <Ticket className="h-7 w-7" />
+          <h1 className="text-lg font-bold">QueBoleta</h1>
           <span className="sr-only">QueBoleta</span>
         </Link>
         <nav className="hidden items-center gap-6 text-sm font-medium md:flex">
@@ -56,7 +53,7 @@ export default function Navbar() {
                 <span className="sr-only">Search</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-background text-foreground border-border w-[300px] p-4">
+            <DropdownMenuContent className="w-[300px] border-border bg-background p-4 text-foreground">
               <div className="relative">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500 dark:text-gray-400" />
                 <Input

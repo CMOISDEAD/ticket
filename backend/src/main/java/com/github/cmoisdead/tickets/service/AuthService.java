@@ -125,7 +125,7 @@ public class AuthService {
    * }
    * </pre>
    */
-  public TokenDTO login(AuthLoginDTO dto) throws Exception {
+  public String login(AuthLoginDTO dto) throws Exception {
     Optional<User> optional = userRepository.findByEmail(dto.email());
 
     if (optional.isEmpty())
@@ -138,6 +138,7 @@ public class AuthService {
 
     Map<String, Object> claims = Map.of(
         "id", user.getId(),
+        "username", user.getUsername(),
         "role", user.getRole(),
         "email", user.getEmail());
 
@@ -150,6 +151,6 @@ public class AuthService {
         "Hemos registrado un nuevo inicio de sesion.");
     emailService.sendEmail(message);
 
-    return token;
+    return token.token();
   }
 }

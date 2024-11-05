@@ -16,7 +16,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/purchases")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PurchaseController {
 
   @Autowired

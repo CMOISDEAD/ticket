@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import concertImage from "@/public/images/concert.webp";
+import concertImage from "@/public/images/concert.jpg";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,9 +18,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useState } from "react";
-import { Loader2 } from "lucide-react";
+import { Loader2, Ticket } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { PasswordInput } from "@/components/ui/password-input";
+import { axiosClient } from "@/lib/axiosClient";
+import { useRouter } from "next/navigation";
 
 const schema = z
   .object({
@@ -40,6 +42,7 @@ const schema = z
 
 export default function Register() {
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof schema>>({
@@ -60,39 +63,23 @@ export default function Register() {
     delete values.repeatPassword;
     try {
       setLoading(true);
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/register`,
-        {
-          method: "POST",
-          body: JSON.stringify(values),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
-      );
-
-      if (!response.ok) {
-        if (response.status === 400)
-          throw new Error("Username or email already in use.");
-        throw new Error(
-          "An error occurred while registering. Please try again later.",
-        );
-      }
-
-      const data = await response.json();
-      console.log(data);
+      const response = await axiosClient.post("/auth/register", values);
+      console.log(response);
 
       toast({
         title: "Success 🎉",
         description:
           "You have beeen succesfully register, you will be redirect in a few seconds...",
       });
+      setTimeout(() => router.push("/auth/login"), 1500);
     } catch (error: any) {
       console.error(error);
       toast({
         variant: "destructive",
         title: "Error 😥",
-        description: error.message,
+        description: error.message.includes("Wrong request")
+          ? "username or email already in use."
+          : error.message,
       });
     } finally {
       setLoading(false);
@@ -224,15 +211,15 @@ export default function Register() {
             </form>
           </Form>
           <p className="text-center text-sm italic md:text-start">
-            Already have an account?
-            <Link href="/auth/login" className="text-blue-500">
+            Already have an account?{" "}
+            <Link href="/auth/login" className="not-italic text-blue-500">
               Login
             </Link>
           </p>
         </div>
         <div className="flex flex-col items-center text-center text-sm">
           <p className="text-muted-foreground">
-            By registering you agree to our{" "}
+            By continue you agree to our{" "}
             <Link href="#" className="text-blue-500">
               terms and conditions
             </Link>
@@ -245,16 +232,25 @@ export default function Register() {
           </p>
         </div>
       </div>
-      <div className="relative hidden w-2/3 md:flex">
+      <div className="relative hidden w-2/3 p-5 md:flex">
         <Image
           src={concertImage}
-          alt="Register"
+          alt="login"
           width={undefined}
           height={undefined}
-          className="h-full w-full object-cover object-center"
+          className="h-full w-full rounded-lg object-cover object-center"
         />
-        <p className="absolute bottom-5 right-5 text-white">
-          Get the best prices of tickets.
+        <div className="absolute left-10 top-10 max-w-sm text-white">
+          <div className="flex items-center gap-2">
+            <Ticket className="h-14 w-14" />
+            <h1 className="text-4xl font-bold">QueBoleta</h1>
+          </div>
+          <p className="text-sm italic">
+            The best place to live the best experiences, moments and magic
+          </p>
+        </div>
+        <p className="absolute bottom-10 right-10 text-white">
+          Rap Festival 2024.
         </p>
       </div>
     </div>

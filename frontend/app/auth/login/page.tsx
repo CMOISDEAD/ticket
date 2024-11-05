@@ -1,7 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import concertImage from "@/public/images/concert.webp";
+import concertImage from "@/public/images/concert.jpg";
+import githubLogo from "@/public/github.svg";
+import googleLogo from "@/public/google.svg";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,9 +20,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useState } from "react";
-import { Loader2 } from "lucide-react";
+import { Loader2, Ticket } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { PasswordInput } from "@/components/ui/password-input";
+import { ButtonGroup } from "@/components/ui/button-group";
+import { axiosClient } from "@/lib/axiosClient";
 
 const schema = z.object({
   email: z.string().email(),
@@ -42,26 +46,8 @@ export default function Login() {
   const onSubmit = async (values: z.infer<typeof schema>) => {
     try {
       setLoading(true);
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`,
-        {
-          method: "POST",
-          body: JSON.stringify(values),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
-      );
-      if (!response.ok) {
-        if (response.status === 401 || response.status === 403)
-          throw new Error("Invalid credentials.");
-        throw new Error(
-          "An error occurred while logging in. Please try again later.",
-        );
-      }
-
-      const data = await response.json();
-      console.log(data);
+      const response = await axiosClient.post("/auth/login", values);
+      console.log(response);
 
       toast({
         title: "Success 🎉",
@@ -130,18 +116,19 @@ export default function Login() {
           </Form>
           <div>
             <p className="text-center text-sm italic md:text-start">
-              You dont have an account?
-              <Button asChild variant="link">
-                <Link href="/auth/register" className="not-italic">
-                  register
-                </Link>
-              </Button>
+              You dont have an account?{" "}
+              <Link href="/auth/register" className="not-italic text-blue-500">
+                register
+              </Link>
             </p>
+          </div>
+          <div className="my-4 w-full">
+            <SocialLogin />
           </div>
         </div>
         <div className="flex flex-col items-center text-center text-sm">
           <p className="text-muted-foreground">
-            By loginin you agree to our{" "}
+            By continue you agree to our{" "}
             <Link href="#" className="text-blue-500">
               terms and conditions
             </Link>
@@ -154,18 +141,46 @@ export default function Login() {
           </p>
         </div>
       </div>
-      <div className="relative hidden w-2/3 md:flex">
+      <div className="relative hidden w-2/3 p-5 md:flex">
         <Image
           src={concertImage}
           alt="login"
           width={undefined}
           height={undefined}
-          className="h-full w-full object-cover object-center"
+          className="h-full w-full rounded-lg object-cover object-center"
         />
-        <p className="absolute bottom-5 right-5 text-white">
-          Get the best prices of tickets.
+        <div className="absolute left-10 top-10 max-w-sm text-white">
+          <div className="flex items-center gap-2">
+            <Ticket className="h-14 w-14" />
+            <h1 className="text-4xl font-bold">QueBoleta</h1>
+          </div>
+          <p className="text-sm italic">
+            The best place to live the best experiences, moments and magic
+          </p>
+        </div>
+        <p className="absolute bottom-10 right-10 text-white">
+          Rap Festival 2024.
         </p>
       </div>
     </div>
   );
 }
+
+const SocialLogin = () => {
+  return (
+    <ButtonGroup>
+      <Button className="w-full" size="lg">
+        <Image
+          src={githubLogo}
+          alt="github"
+          width={20}
+          height={20}
+          className="dark:invert"
+        />
+      </Button>
+      <Button className="w-full" size="lg">
+        <Image src={googleLogo} alt="google" width={20} height={20} />
+      </Button>
+    </ButtonGroup>
+  );
+};

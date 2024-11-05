@@ -27,7 +27,6 @@ import lombok.AllArgsConstructor;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/payments")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PaymentController {
 
   @Autowired

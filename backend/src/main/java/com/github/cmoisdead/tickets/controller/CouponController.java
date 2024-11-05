@@ -22,7 +22,6 @@ import com.github.cmoisdead.tickets.service.CouponService;
 
 @RestController
 @RequestMapping("/coupons")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class CouponController {
   @Autowired
   private CouponService couponService;

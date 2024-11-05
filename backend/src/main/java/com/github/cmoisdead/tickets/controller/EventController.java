@@ -22,7 +22,6 @@ import com.github.cmoisdead.tickets.service.EventService;
 
 @RestController
 @RequestMapping("/events")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class EventController {
 
   @Autowired

@@ -3,7 +3,7 @@ import { EventCard } from "./eventCard";
 
 export const EventList = () => {
   return (
-    <div>
+    <div className="my-4">
       <header>
         <h3 className="text-2xl font-bold">Hot Events</h3>
         <p className="text-sm text-muted-foreground">
