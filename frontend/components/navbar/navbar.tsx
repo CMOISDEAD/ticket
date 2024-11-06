@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,7 +10,9 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
 } from "@/components/ui/dropdown-menu";
-import ThemeToggle from "../theme-toggle";
+import { ThemeToggle } from "../theme-toggle";
+import { useTicketStore } from "@/store/useTicketStore";
+import UserDropdown from "./user-dropdown";
 
 const links = [
   {
@@ -29,7 +33,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background">
       <div className="container mx-auto flex h-16 max-w-6xl items-center justify-between px-4 md:px-6">
-        <Link href="#" className="flex items-center gap-2" prefetch={false}>
+        <Link href="/" className="flex items-center gap-2" prefetch={false}>
           <Ticket className="h-7 w-7" />
           <h1 className="text-lg font-bold">QueBoleta</h1>
           <span className="sr-only">QueBoleta</span>
@@ -68,12 +72,7 @@ export default function Navbar() {
             <ThemeToggle />
           </div>
           <div className="hidden md:flex">
-            <Button asChild variant="link" size="sm">
-              <Link href="/auth/login">Login</Link>
-            </Button>
-            <Button asChild variant="link" size="sm">
-              <Link href="/auth/register">Register</Link>
-            </Button>
+            <AuthSection />
           </div>
           <Sheet>
             <SheetTrigger asChild>
@@ -97,12 +96,7 @@ export default function Navbar() {
                     {link.name}
                   </Link>
                 ))}
-                <Button asChild variant="link" size="sm">
-                  <Link href="/auth/login">Login</Link>
-                </Button>
-                <Button asChild variant="link" size="sm">
-                  <Link href="/auth/register">Register</Link>
-                </Button>
+                <AuthSection />
                 <ThemeToggle />
               </div>
             </SheetContent>
@@ -112,3 +106,20 @@ export default function Navbar() {
     </header>
   );
 }
+
+const AuthSection = () => {
+  const { isAuth } = useTicketStore((state) => state);
+
+  return isAuth ? (
+    <UserDropdown />
+  ) : (
+    <>
+      <Button asChild variant="link" size="sm">
+        <Link href="/auth/login">Login</Link>
+      </Button>
+      <Button asChild variant="link" size="sm">
+        <Link href="/auth/register">Register</Link>
+      </Button>
+    </>
+  );
+};

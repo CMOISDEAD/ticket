@@ -21,16 +21,15 @@ export const EventCard = ({ event }: Props) => {
     <Card className="flex h-[28-rem] max-h-[28rem] flex-col justify-between">
       <CardHeader>
         <img
-          src={event.image}
-          alt={event.name}
           width={600}
           height={400}
-          className="object-cover"
+          src="https://placehold.co/600x400"
+          alt={event.name}
+          className="rounded-lg object-cover"
         />
         <CardTitle>{event.name}</CardTitle>
         <CardDescription className="line-clamp-1">
           {formatDistanceToNow(event.date, { addSuffix: true })} -{" "}
-          {event.location}
         </CardDescription>
       </CardHeader>
       <CardContent>

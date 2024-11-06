@@ -1,4 +1,3 @@
-import { throws } from "assert";
 import axios from "axios";
 
 export const axiosClient = axios.create({
@@ -9,18 +8,21 @@ export const axiosClient = axios.create({
   },
 });
 
-// FIX: this should be better
+// TODO: fix some issues
 axiosClient.interceptors.response.use(
   (response) => response,
   (error) => {
     console.error(error);
     if (error.response) {
       if (error.response.status === 400) {
-        throw new Error("Wrong request: verify your data");
-      } else if (error.response.status === 403) {
-        throw new Error("Not authorized: verify your credentials");
+        error.message = "Bad request: 400";
+      } else if (
+        error.response.status === 403 ||
+        error.response.status === 401
+      ) {
+        error.message = "Not authorized: 401, 403";
       } else if (error.response.status === 500) {
-        throw new Error("Server Error: try later.");
+        error.message = "Server error: 500";
       }
     } else if (error.request) {
       console.error("No se recibió respuesta del servidor:", error.request);

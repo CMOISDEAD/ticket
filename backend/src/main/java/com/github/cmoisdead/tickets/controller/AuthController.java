@@ -42,6 +42,20 @@ public class AuthController {
     @Autowired
     EmailService emailService;
 
+
+    // logout
+    @PostMapping("/logout")
+    public ResponseEntity logout(HttpServletResponse response) {
+        ResponseCookie cookie = ResponseCookie.from("token", "")
+                .httpOnly(true)
+                .path("/")
+                .maxAge(0)
+                .build();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.SET_COOKIE, cookie.toString());
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).build();
+    }
+
     /**
      * Authenticates a user based on email and password and generates a JWT token.
      *
@@ -206,4 +220,6 @@ public class AuthController {
         Claims payload = jwt.getPayload();
         return userService.updatePassword(payload.get("id").toString(), dto.password());
     }
+
+    // Activate account
 }

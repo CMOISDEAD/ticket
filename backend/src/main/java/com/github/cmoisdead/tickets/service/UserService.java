@@ -185,4 +185,16 @@ public class UserService {
     String resetLink = resetToken.toString();
     return resetLink;
   }
+
+  public User findByToken(String token) throws Exception {
+    try {
+        String id =  jwtUtils.getIdFromToken(token);
+        Optional<User> optional = userRepository.findById(id);
+        if (optional.isEmpty()) throw new Exception("User not found");
+
+        return optional.get();
+    } catch (Exception e) {
+      throw new Exception("Invalid token");
+    }
+  }
 }

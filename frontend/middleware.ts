@@ -1,27 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
 
-const protectedRoutes = ["/dashboard", "/contact"];
-const publicRoutes = ["/auth/login", "/auth/register", "/"];
+const protectedRoutes = ["/dashboard"];
+const publicRoutes = ["/auth/login", "/auth/register"];
 
-export default async function middleware(req: NextRequest) {
+export default function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
-  const isProtectedRoute = protectedRoutes.includes(path);
   const isPublicRoute = publicRoutes.includes(path);
+  const isProtectedRoute = protectedRoutes.includes(path);
 
-  const token = cookies().get("token")?.value;
+  const token = req.cookies.get("token")?.value;
 
-  if (isProtectedRoute && !token) {
-    return NextResponse.redirect(new URL("/auth/login", req.nextUrl));
+  if (isProtectedRoute && token === undefined) {
+    return NextResponse.redirect(new URL("/auth/login", req.url));
   }
 
-  if (isPublicRoute && token && !req.nextUrl.pathname.startsWith("/")) {
-    return NextResponse.redirect(new URL("/dashboard", req.nextUrl));
+  // redirect to home if trying to access auth public route
+  if (isPublicRoute && token) {
+    return NextResponse.redirect(new URL("/", req.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|.*\\.png$).*)"],
+  matcher: [
+    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
+  ],
 };

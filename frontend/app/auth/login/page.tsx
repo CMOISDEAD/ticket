@@ -25,6 +25,7 @@ import { useToast } from "@/hooks/use-toast";
 import { PasswordInput } from "@/components/ui/password-input";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { axiosClient } from "@/lib/axiosClient";
+import { useRouter } from "next/navigation";
 
 const schema = z.object({
   email: z.string().email(),
@@ -34,6 +35,7 @@ const schema = z.object({
 export default function Login() {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
@@ -53,11 +55,18 @@ export default function Login() {
         title: "Success 🎉",
         description: "You have successfully logged in.",
       });
+
+      router.push("/");
     } catch (error: any) {
+      const codes = [400, 401, 403];
+      const isBadRequest = codes.includes(error.response.status);
+
       toast({
         variant: "destructive",
-        title: "Error 😥",
-        description: error.message,
+        title: isBadRequest ? "Email or password incorrect 😵" : "Error",
+        description: isBadRequest
+          ? "Please check your credentials."
+          : error.message,
       });
     } finally {
       setLoading(false);

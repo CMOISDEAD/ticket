@@ -12,5 +12,6 @@ public record EventCreateDTO(
                 @NotNull String type,
                 @NotNull String poster,
                 @NotNull java.util.List<String> images,
-                @NotNull LocalDateTime date) {
+                @NotNull float price,
+                @NotNull String date) {
 }

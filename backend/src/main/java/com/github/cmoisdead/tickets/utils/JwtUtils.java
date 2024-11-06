@@ -30,7 +30,12 @@ public class JwtUtils {
         return parser.parseSignedClaims(token);
     }
 
-    private boolean isTokenExpired(Jws<Claims> claimsJws) {
+    public String getIdFromToken(String token) {
+        Jws<Claims> claims = parseToken(token);
+        return claims.getPayload().get("id", String.class);
+    }
+
+    public boolean isTokenExpired(Jws<Claims> claimsJws) {
         return claimsJws.getBody().getExpiration().before(new Date());
     }
 

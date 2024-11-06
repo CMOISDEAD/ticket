@@ -16,17 +16,18 @@ import lombok.Data;
 @Document(collection = "events")
 public class Event {
 
-  @Id
-  @Builder.Default
-  private String id = null;
+    @Id
+    @Builder.Default
+    private String id = null;
 
-  private String name;
-  private String description;
-  private String address;
-  private String city;
-  private String type;
-  private String poster;
-  private Integer capacity;
-  private List<String> images;
-  private LocalDateTime date;
+    private String name;
+    private String description;
+    private String address;
+    private String city;
+    private String type;
+    private String poster;
+    private Integer capacity;
+    private List<String> images;
+    private Float price;
+    private String date;
 }

@@ -12,33 +12,34 @@ import com.github.cmoisdead.tickets.repository.EventRepository;
 
 @Service
 public class EventService {
-  @Autowired
-  private EventRepository eventRepository;
+    @Autowired
+    private EventRepository eventRepository;
 
-  public List<Event> findAll() {
-    return eventRepository.findAll();
-  }
+    public List<Event> findAll() {
+        return eventRepository.findAll();
+    }
 
-  public Optional<Event> findById(String id) {
-    return eventRepository.findById(id);
-  }
+    public Optional<Event> findById(String id) {
+        return eventRepository.findById(id);
+    }
 
-  public Event save(EventCreateDTO dto) {
-    Event event = Event.builder()
-        .name(dto.name())
-        .description(dto.description())
-        .address(dto.address())
-        .city(dto.city())
-        .type(dto.type())
-        .poster(dto.poster())
-        .images(dto.images())
-        .date(dto.date())
-        .build();
+    public Event save(EventCreateDTO dto) {
+        Event event = Event.builder()
+                .name(dto.name())
+                .description(dto.description())
+                .address(dto.address())
+                .city(dto.city())
+                .type(dto.type())
+                .poster(dto.poster())
+                .images(dto.images())
+                .date(dto.date())
+                .price(dto.price())
+                .build();
 
-    return eventRepository.save(event);
-  }
+        return eventRepository.save(event);
+    }
 
-  public void deleteById(String id) {
-    eventRepository.deleteById(id);
-  }
+    public void deleteById(String id) {
+        eventRepository.deleteById(id);
+    }
 }

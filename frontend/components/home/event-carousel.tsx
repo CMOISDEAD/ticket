@@ -25,7 +25,7 @@ export const EventCarousel = () => {
         <CarouselContent className="-ml-2 md:-ml-4">
           {[1, 2, 3, 4, 5].map((i) => (
             <CarouselItem className="pl-2 md:pl-4" key={i}>
-              <img src={img} alt="" className="object-cover" />
+              <img src={img} alt="" className="rounded-lg object-cover" />
             </CarouselItem>
           ))}
         </CarouselContent>

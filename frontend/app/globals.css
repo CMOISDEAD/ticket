@@ -89,3 +89,11 @@
   color: rgb(177, 177, 177);
   -webkit-font-smoothing: antialiased;
 }
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}

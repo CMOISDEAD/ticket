@@ -73,14 +73,17 @@ export default function Register() {
       });
       setTimeout(() => router.push("/auth/login"), 1500);
     } catch (error: any) {
-      console.error(error);
+      const codes = [400, 401, 403];
+      const isBadRequest = codes.includes(error.response.status);
+
       toast({
         variant: "destructive",
-        title: "Error 😥",
-        description: error.message.includes("Wrong request")
+        title: isBadRequest ? "Verify your data 🧐" : "Error",
+        description: isBadRequest
           ? "username or email already in use."
           : error.message,
       });
+      console.error(error);
     } finally {
       setLoading(false);
     }
