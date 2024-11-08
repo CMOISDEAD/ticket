@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Menu, Search, Ticket } from "lucide-react";
+import { Car, Menu, Search, ShoppingCart, Ticket } from "lucide-react";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import {
   DropdownMenu,
@@ -111,7 +111,14 @@ const AuthSection = () => {
   const { isAuth } = useTicketStore((state) => state);
 
   return isAuth ? (
-    <UserDropdown />
+    <div className="flex content-center gap-4">
+      <Button size="icon" asChild>
+        <Link href="/car">
+          <ShoppingCart className="h-5 w-5" />
+        </Link>
+      </Button>
+      <UserDropdown />
+    </div>
   ) : (
     <>
       <Button asChild variant="link" size="sm">

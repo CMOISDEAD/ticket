@@ -26,6 +26,7 @@ import { PasswordInput } from "@/components/ui/password-input";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { axiosClient } from "@/lib/axiosClient";
 import { useRouter } from "next/navigation";
+import { useTicketStore } from "@/store/useTicketStore";
 
 const schema = z.object({
   email: z.string().email(),
@@ -33,6 +34,7 @@ const schema = z.object({
 });
 
 export default function Login() {
+  const { setIsAuth } = useTicketStore((state) => state);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
@@ -56,6 +58,7 @@ export default function Login() {
         description: "You have successfully logged in.",
       });
 
+      setIsAuth(true);
       router.push("/");
     } catch (error: any) {
       const codes = [400, 401, 403];

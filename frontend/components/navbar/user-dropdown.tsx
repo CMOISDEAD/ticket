@@ -32,7 +32,7 @@ export default function UserDropdown() {
   const { username, email } = user;
 
   const handleLogout = async () => {
-    logout();
+    await logout();
     toast({
       title: "Logged out 🚪",
       description: "You have been successfully logged out. See you soon!",

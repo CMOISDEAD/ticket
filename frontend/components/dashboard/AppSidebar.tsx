@@ -60,7 +60,7 @@ export const AppSidebar = () => {
 
   return (
     <Sidebar>
-      <SidebarHeader>
+      <SidebarHeader className="p-4">
         <SidebarMenu>
           <SidebarMenuItem className="flex content-center gap-2">
             <Ticket className="h-6 w-6" />
@@ -68,7 +68,7 @@ export const AppSidebar = () => {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="px-2 py-4">
         <SidebarMenu>
           {links.map((link, i) => (
             <SidebarMenuItem key={i}>

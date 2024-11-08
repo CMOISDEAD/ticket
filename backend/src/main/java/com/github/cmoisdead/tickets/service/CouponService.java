@@ -16,146 +16,147 @@ import com.github.cmoisdead.tickets.repository.UserRepository;
 
 @Service
 public class CouponService {
-  @Autowired
-  private CouponRepository couponRepository;
-  @Autowired
-  private EmailService emailService;
-  @Autowired
-  private UserRepository userRepository;
+    @Autowired
+    private CouponRepository couponRepository;
+    @Autowired
+    private EmailService emailService;
+    @Autowired
+    private UserRepository userRepository;
 
-  /**
-   * find all coupons on the database
-   *
-   * @return coupon list
-   */
-  public List<Coupon> findAll() {
-    return couponRepository.findAll();
-  }
+    /**
+     * find all coupons on the database
+     *
+     * @return coupon list
+     */
+    public List<Coupon> findAll() {
+        return couponRepository.findAll();
+    }
 
-  /**
-   * find a coupon by id
-   * 
-   * @param id coupon id
-   * @return coupon if found
-   */
-  public Optional<Coupon> findById(String id) {
-    return couponRepository.findById(id);
-  }
+    /**
+     * find a coupon by id
+     *
+     * @param id coupon id
+     * @return coupon if found
+     */
+    public Optional<Coupon> findById(String id) {
+        return couponRepository.findById(id);
+    }
 
-  /**
-   * save a new coupon in the database
-   *
-   * @param coupon coupon to save
-   * @return coupon dbObject
-   * @throws Exception
-   */
-  public Coupon save(CouponCreateDTO dto) throws Exception {
-    Optional<User> optional = userRepository.findById(dto.userId());
+    /**
+     * save a new coupon in the database
+     *
+     * @param coupon coupon to save
+     * @return coupon dbObject
+     * @throws Exception
+     */
+    public Coupon save(CouponCreateDTO dto) throws Exception {
+        Optional<User> optional = userRepository.findById(dto.userId());
 
-    if (optional.isEmpty())
-      throw new Error("User not found");
+        if (optional.isEmpty())
+            throw new Error("User not found");
 
-    Coupon build = Coupon.builder()
-        .code(dto.code())
-        .name(dto.name())
-        .userId(dto.userId())
-        .isUsed(dto.isUsed())
-        .discount(dto.discount())
-        .expiryDate(dto.expiryDate())
-        .build();
+        Coupon build = Coupon.builder()
+                .code(dto.code())
+                .name(dto.name())
+                .description(dto.description())
+                .userId(dto.userId())
+                .isUsed(dto.isUsed())
+                .discount(dto.discount())
+                .expiryDate(dto.expiryDate())
+                .build();
 
-    Coupon coupon = couponRepository.save(build);
+        Coupon coupon = couponRepository.save(build);
 
-    User user = optional.get();
-    user.getCoupons().add(coupon.getId());
-    userRepository.save(user);
+        User user = optional.get();
+        user.getCoupons().add(coupon.getId());
+        userRepository.save(user);
 
-    EmailDTO message = new EmailDTO(
-        "Nuevo Cupon Recibido",
-        user.getEmail(),
-        "QueBoleta.com",
-        "Felicidades recibiste el siguiente cupon: " + coupon.getName());
-    emailService.sendEmail(message);
+        EmailDTO message = new EmailDTO(
+                "Nuevo Cupon Recibido",
+                user.getEmail(),
+                "QueBoleta.com",
+                "Felicidades recibiste el siguiente cupon: " + coupon.getName());
+        emailService.sendEmail(message);
 
-    return coupon;
-  }
+        return coupon;
+    }
 
-  /**
-   * delete a coupon by id
-   *
-   * @param id coupon id
-   */
-  public void deleteById(String id) {
-    couponRepository.deleteById(id);
-  }
+    /**
+     * delete a coupon by id
+     *
+     * @param id coupon id
+     */
+    public void deleteById(String id) {
+        couponRepository.deleteById(id);
+    }
 
-  /**
-   * expire a coupon by id
-   *
-   * @param id coupon id
-   * @throws throw new Error("Coupon not found"); error if coupon not found
-   */
-  public void expireById(String id) {
-    Optional<Coupon> optional = couponRepository.findById(id);
-    if (optional.isEmpty())
-      throw new Error("Coupon not found");
+    /**
+     * expire a coupon by id
+     *
+     * @param id coupon id
+     * @throws throw new Error("Coupon not found"); error if coupon not found
+     */
+    public void expireById(String id) {
+        Optional<Coupon> optional = couponRepository.findById(id);
+        if (optional.isEmpty())
+            throw new Error("Coupon not found");
 
-    Coupon coupon = optional.get();
+        Coupon coupon = optional.get();
 
-    coupon.setExpired(true);
-  }
+        coupon.setExpired(true);
+    }
 
-  /**
-   * expire coupon by code
-   *
-   * @param code coupon code
-   * @throws throw new Error("Coupon not found"); error if coupon not found
-   */
-  public void expireByCode(String code) {
-    Optional<Coupon> optional = couponRepository.findByCode(code);
-    if (optional.isEmpty())
-      throw new Error("Coupon not found");
+    /**
+     * expire coupon by code
+     *
+     * @param code coupon code
+     * @throws throw new Error("Coupon not found"); error if coupon not found
+     */
+    public void expireByCode(String code) {
+        Optional<Coupon> optional = couponRepository.findByCode(code);
+        if (optional.isEmpty())
+            throw new Error("Coupon not found");
 
-    Coupon coupon = optional.get();
+        Coupon coupon = optional.get();
 
-    coupon.setExpired(true);
-  }
+        coupon.setExpired(true);
+    }
 
-  /**
-   * reddem a global coupon
-   *
-   * @param code   global coupone code
-   * @param userId user id
-   * @return coupon redeemed
-   * @throws throw new Error("Coupon not found"); coupon not exist
-   * @throws throw new Error("This coupon is not a global coupon."); coupon is not
-   *               a global coupon
-   * @throws throw new Error("This coupon is expired."); coupoun already expired
-   * @throws throw new Error("This user already have used this coupon."); user
-   *               already have used this coupon
-   */
-  public Coupon redeemGlobalCoupon(String code, String userId) {
-    Optional<Coupon> optional = couponRepository.findByCode(code);
-    if (optional.isEmpty())
-      throw new Error("Coupon not found");
+    /**
+     * reddem a global coupon
+     *
+     * @param code   global coupone code
+     * @param userId user id
+     * @return coupon redeemed
+     * @throws throw new Error("Coupon not found"); coupon not exist
+     * @throws throw new Error("This coupon is not a global coupon."); coupon is not
+     *               a global coupon
+     * @throws throw new Error("This coupon is expired."); coupoun already expired
+     * @throws throw new Error("This user already have used this coupon."); user
+     *               already have used this coupon
+     */
+    public Coupon redeemGlobalCoupon(String code, String userId) {
+        Optional<Coupon> optional = couponRepository.findByCode(code);
+        if (optional.isEmpty())
+            throw new Error("Coupon not found");
 
-    Coupon coupon = optional.get();
+        Coupon coupon = optional.get();
 
-    if (!coupon.isGlobal())
-      throw new Error("This coupon is not a global coupon.");
+        if (!coupon.isGlobal())
+            throw new Error("This coupon is not a global coupon.");
 
-    if (!coupon.getExpiryDate().isBefore(LocalDate.now()))
-      throw new Error("This coupon is expired.");
+        if (!coupon.getExpiryDate().isBefore(LocalDate.now()))
+            throw new Error("This coupon is expired.");
 
-    if (coupon.getUsedByUsers().contains(userId))
-      throw new Error("This user already have used this coupon.");
+        if (coupon.getUsedByUsers().contains(userId))
+            throw new Error("This user already have used this coupon.");
 
-    coupon.getUsedByUsers().add(userId);
-    couponRepository.save(coupon);
-    return coupon;
-  }
+        coupon.getUsedByUsers().add(userId);
+        couponRepository.save(coupon);
+        return coupon;
+    }
 
-  // TODO: work on the others coupons services
-  public void redeemIndividualCoupon(String code, String userId) {
-  }
+    // TODO: work on the others coupons services
+    public void redeemIndividualCoupon(String code, String userId) {
+    }
 }

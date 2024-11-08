@@ -9,6 +9,7 @@ import lombok.Builder;
 public record CouponCreateDTO(
                 @NotNull String code,
                 @NotNull String name,
+                @NotNull String description,
                 @NotNull String userId,
                 @NotNull boolean isUsed,
                 @NotNull double discount,

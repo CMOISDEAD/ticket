@@ -16,6 +16,7 @@ import lombok.Data;
 @AllArgsConstructor
 @Document(collection = "coupons")
 public class Coupon {
+  // TODO: replace userId with usersIds
 
   @Id
   @Builder.Default
@@ -23,6 +24,7 @@ public class Coupon {
 
   private String code;
   private String name;
+  private String description;
   private String userId;
   private double discount;
   private boolean isUsed;
@@ -30,9 +32,6 @@ public class Coupon {
   private boolean isGlobal;
   private LocalDate usedDate;
   private LocalDate expiryDate;
-
-  @DBRef
-  private String userid;
 
   private List<String> usedByUsers;
 }
