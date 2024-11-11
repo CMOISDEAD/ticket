@@ -1,7 +1,10 @@
+import { useTranslations } from "next-intl";
 import { Input } from "../ui/input";
 import { SidebarTrigger } from "../ui/sidebar";
 
 export const SearchBar = () => {
+  const t = useTranslations("dashboard");
+
   return (
     <header className="flex h-16 items-center gap-4 border-b border-border px-6">
       <SidebarTrigger />
@@ -10,7 +13,7 @@ export const SearchBar = () => {
           <div className="relative">
             <Input
               className="w-full pl-8"
-              placeholder="Search events, tickets, users..."
+              placeholder={t("placeholder_search")}
               type="search"
             />
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">

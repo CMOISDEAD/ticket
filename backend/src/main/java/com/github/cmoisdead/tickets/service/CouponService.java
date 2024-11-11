@@ -72,6 +72,8 @@ public class CouponService {
         userRepository.save(user);
 
         EmailDTO message = new EmailDTO(
+                true,
+                "coupon",
                 "Nuevo Cupon Recibido",
                 user.getEmail(),
                 "QueBoleta.com",

@@ -16,10 +16,13 @@ import { formatDistanceToNow } from "date-fns";
 import { ButtonGroup } from "../ui/button-group";
 import { Button } from "../ui/button";
 import { Pen, RefreshCw, Trash2 } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { Link } from "@/navigation";
 
 export const EventList = () => {
   const [fetching, setFetching] = useState(false);
   const [events, setEvents] = useState([]);
+  const t = useTranslations("dashboard.events");
 
   useEffect(() => {
     getEvents();
@@ -64,10 +67,8 @@ export const EventList = () => {
     <Card className="w-2/3 overflow-auto">
       <CardHeader className="flex flex-row content-center justify-between">
         <div>
-          <CardTitle>Events</CardTitle>
-          <CardDescription>
-            Here you can see the list of events.
-          </CardDescription>
+          <CardTitle>{t("overview.title")}</CardTitle>
+          <CardDescription>{t("overview.description")}</CardDescription>
         </div>
         <Button size="icon" onClick={getEvents} disabled={fetching}>
           <RefreshCw className={fetching ? "animate-spin" : ""} />
@@ -79,7 +80,9 @@ export const EventList = () => {
             <EventsCard key={event.id} event={event} remove={handleRemove} />
           ))
         ) : (
-          <p className="text-center text-muted-foreground">No events found.</p>
+          <p className="text-center text-muted-foreground">
+            {t("overview.not_found")}
+          </p>
         )}
       </CardContent>
     </Card>
@@ -94,18 +97,23 @@ const EventsCard = ({
   remove: (id: string) => void;
 }) => {
   return (
-    <Card className="w-[14rem]">
+    <Card className="flex h-[25rem] max-h-[25rem] w-[14rem] flex-col justify-between">
       <CardHeader>
         <img
-          width={200}
-          height={400}
-          src="https://placehold.co/600x400"
+          src={event.poster}
           alt={event.name}
-          className="rounded-lg object-cover"
+          className="max-h-[110px] w-full rounded-lg object-cover"
         />
-        <CardTitle>{event.name}</CardTitle>
-        <CardDescription className="line-clamp-1">
-          {formatDistanceToNow(event.date, { addSuffix: true })} -{" "}
+        <CardTitle className="line-clamp-1">
+          <Link href={`/events/${event.id}`}>{event.name}</Link>
+        </CardTitle>
+        <CardDescription>
+          <ul>
+            <li className="line-clamp-1">{event.address}</li>
+            <li className="line-clamp-1">
+              {formatDistanceToNow(event.date, { addSuffix: true })}
+            </li>
+          </ul>
         </CardDescription>
       </CardHeader>
       <CardContent>

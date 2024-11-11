@@ -18,15 +18,15 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
+import { Link, useRouter } from "@/navigation";
 import { useState } from "react";
 import { Loader2, Ticket } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { PasswordInput } from "@/components/ui/password-input";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { axiosClient } from "@/lib/axiosClient";
-import { useRouter } from "next/navigation";
 import { useTicketStore } from "@/store/useTicketStore";
+import { useTranslations } from "next-intl";
 
 const schema = z.object({
   email: z.string().email(),
@@ -38,6 +38,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
+  const t = useTranslations("login");
 
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
@@ -81,7 +82,7 @@ export default function Login() {
       <div className="flex flex-1 flex-col content-center items-center justify-between p-5 md:p-20">
         <div className="w-full">
           <h1 className="text-foregound text-3xl font-bold capitalize">
-            Login
+            {t("title")}
           </h1>
           <Form {...form}>
             <form
@@ -93,15 +94,17 @@ export default function Login() {
                 name="email"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>{t("inputs.email.label")}</FormLabel>
                     <FormControl>
                       <Input
                         type="email"
-                        placeholder="jhondoe@ibm.com"
+                        placeholder={t("inputs.email.placeholder")}
                         {...field}
                       />
                     </FormControl>
-                    <FormDescription>Insert your user email.</FormDescription>
+                    <FormDescription>
+                      {t("inputs.email.description")}
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -111,26 +114,31 @@ export default function Login() {
                 name="password"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>{t("inputs.password.label")}</FormLabel>
                     <FormControl>
-                      <PasswordInput placeholder="********" {...field} />
+                      <PasswordInput
+                        placeholder={t("inputs.password.placeholder")}
+                        {...field}
+                      />
                     </FormControl>
-                    <FormDescription>Your password.</FormDescription>
+                    <FormDescription>
+                      {t("inputs.password.description")}
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <Button type="submit" className="w-full" disabled={loading}>
                 {loading && <Loader2 className="mr-2 h-5 w-5 animate-spin" />}
-                Login
+                {t("submit")}
               </Button>
             </form>
           </Form>
           <div>
             <p className="text-center text-sm italic md:text-start">
-              You dont have an account?{" "}
+              {t("question")}{" "}
               <Link href="/auth/register" className="not-italic text-blue-500">
-                register
+                {t("register")}
               </Link>
             </p>
           </div>
@@ -140,15 +148,15 @@ export default function Login() {
         </div>
         <div className="flex flex-col items-center text-center text-sm">
           <p className="text-muted-foreground">
-            By continue you agree to our{" "}
+            {t("by_continue")}{" "}
             <Link href="#" className="text-blue-500">
-              terms and conditions
+              {t("terms")}
             </Link>
           </p>
           <p className="text-muted-foreground">
-            Go back to{" "}
+            {t("go_back")}{" "}
             <Link href="/" className="text-blue-500">
-              home
+              {t("home")}
             </Link>
           </p>
         </div>
@@ -166,9 +174,7 @@ export default function Login() {
             <Ticket className="h-14 w-14" />
             <h1 className="text-4xl font-bold">QueBoleta</h1>
           </div>
-          <p className="text-sm italic">
-            The best place to live the best experiences, moments and magic
-          </p>
+          <p className="text-sm italic">{t("quote")}</p>
         </div>
         <p className="absolute bottom-10 right-10 text-white">
           Rap Festival 2024.

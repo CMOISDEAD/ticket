@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Car, Menu, Search, ShoppingCart, Ticket } from "lucide-react";
+import { Menu, Search, ShoppingCart, Ticket } from "lucide-react";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import {
   DropdownMenu,
@@ -13,23 +13,28 @@ import {
 import { ThemeToggle } from "../theme-toggle";
 import { useTicketStore } from "@/store/useTicketStore";
 import UserDropdown from "./user-dropdown";
+import { LocaleSwitcher } from "../locale/locale-switcher";
+import { useLocale, useTranslations } from "next-intl";
 
-const links = [
-  {
-    name: "Events",
-    href: "/events",
-  },
-  {
-    name: "Coupons",
-    href: "/coupons",
-  },
-  {
-    name: "Contact",
-    href: "/contact",
-  },
-];
+const links: { [key: string]: { name: string; href: string }[] } = {
+  en: [
+    {
+      name: "Contact",
+      href: "/contact",
+    },
+  ],
+  es: [
+    {
+      name: "Contacto",
+      href: "/contact",
+    },
+  ],
+};
 
 export default function Navbar() {
+  const t = useTranslations("navbar");
+  const locale = useLocale();
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background">
       <div className="container mx-auto flex h-16 max-w-6xl items-center justify-between px-4 md:px-6">
@@ -39,7 +44,7 @@ export default function Navbar() {
           <span className="sr-only">QueBoleta</span>
         </Link>
         <nav className="hidden items-center gap-6 text-sm font-medium md:flex">
-          {links.map((link, i) => (
+          {links[locale].map((link, i) => (
             <Link
               key={i}
               href={link.href}
@@ -54,7 +59,7 @@ export default function Navbar() {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="rounded-full">
                 <Search className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                <span className="sr-only">Search</span>
+                <span className="sr-only">{t("search")}</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-[300px] border-border bg-background p-4 text-foreground">
@@ -62,7 +67,7 @@ export default function Navbar() {
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500 dark:text-gray-400" />
                 <Input
                   type="search"
-                  placeholder="Search..."
+                  placeholder={`${t("search")}...`}
                   className="w-full pl-8"
                 />
               </div>
@@ -71,8 +76,9 @@ export default function Navbar() {
           <div className="hidden md:flex">
             <ThemeToggle />
           </div>
-          <div className="hidden md:flex">
+          <div className="hidden gap-4 md:flex">
             <AuthSection />
+            <LocaleSwitcher />
           </div>
           <Sheet>
             <SheetTrigger asChild>
@@ -87,7 +93,7 @@ export default function Navbar() {
             </SheetTrigger>
             <SheetContent side="left" className="md:hidden">
               <div className="grid gap-4 p-4">
-                {links.map((link, i) => (
+                {links[locale].map((link, i) => (
                   <Link
                     key={i}
                     href={link.href}
@@ -96,6 +102,7 @@ export default function Navbar() {
                     {link.name}
                   </Link>
                 ))}
+                <LocaleSwitcher />
                 <AuthSection />
                 <ThemeToggle />
               </div>
@@ -108,12 +115,13 @@ export default function Navbar() {
 }
 
 const AuthSection = () => {
+  const t = useTranslations("navbar");
   const { isAuth } = useTicketStore((state) => state);
 
   return isAuth ? (
     <div className="flex content-center gap-4">
       <Button size="icon" asChild>
-        <Link href="/car">
+        <Link href="/cart">
           <ShoppingCart className="h-5 w-5" />
         </Link>
       </Button>
@@ -122,10 +130,10 @@ const AuthSection = () => {
   ) : (
     <>
       <Button asChild variant="link" size="sm">
-        <Link href="/auth/login">Login</Link>
+        <Link href="/auth/login">{t("login")}</Link>
       </Button>
       <Button asChild variant="link" size="sm">
-        <Link href="/auth/register">Register</Link>
+        <Link href="/auth/register">{t("register")}</Link>
       </Button>
     </>
   );

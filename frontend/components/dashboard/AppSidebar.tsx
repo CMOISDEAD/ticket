@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  BarChart3,
   CalendarDays,
   LayoutDashboard,
   Settings,
@@ -19,43 +18,56 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import Link from "next/link";
+import { Link } from "@/navigation";
 import { usePathname } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
 
-const links = [
+type LinkType = {
+  href: string;
+  icon: any;
+  text: {
+    [key: string]: string;
+  };
+};
+
+const links: LinkType[] = [
   {
     href: "/dashboard",
     icon: LayoutDashboard,
-    text: "Dashboard",
+    text: {
+      en: "Dashboard",
+      es: "Dashboard",
+    },
   },
   {
     href: "/dashboard/events",
     icon: CalendarDays,
-    text: "Events",
-  },
-  {
-    href: "/dashboard/tickets",
-    icon: Ticket,
-    text: "Tickets",
+    text: {
+      en: "Events",
+      es: "Eventos",
+    },
   },
   {
     href: "/dashboard/coupons",
     icon: Tag,
-    text: "Coupons",
+    text: {
+      en: "Coupons",
+      es: "Cupones",
+    },
   },
   {
     href: "/dashboard/users",
     icon: Users,
-    text: "Users",
-  },
-  {
-    href: "/dashboard/analytics",
-    icon: BarChart3,
-    text: "Analytics",
+    text: {
+      en: "Users",
+      es: "Usuarios",
+    },
   },
 ];
 
 export const AppSidebar = () => {
+  const t = useTranslations("dashboard");
+  const locale = useLocale();
   const pathname = usePathname();
 
   return (
@@ -75,7 +87,7 @@ export const AppSidebar = () => {
               <SidebarMenuButton asChild isActive={pathname === link.href}>
                 <Link href={link.href}>
                   <link.icon className="h-4 w-4" />
-                  <span>{link.text}</span>
+                  <span>{link.text[locale]}</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -88,7 +100,7 @@ export const AppSidebar = () => {
             <SidebarMenuButton asChild>
               <Link href="#">
                 <Settings className="h-4 w-4" />
-                <span>Settings</span>
+                <span>{t("settings")}</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

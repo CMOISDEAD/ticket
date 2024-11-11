@@ -1,11 +1,9 @@
 package com.github.cmoisdead.tickets.dto.cart;
 
-import java.util.List;
-
 import jakarta.validation.constraints.NotNull;
 
-public record CartCreateDTO(
+public record CartAddItemDTO(
     @NotNull String userId,
-    @NotNull List<String> eventIds,
-    @NotNull double totalPrice) {
+    @NotNull String eventId
+    ){
 }

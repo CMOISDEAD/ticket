@@ -16,13 +16,13 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
+import { Link, useRouter } from "@/navigation";
 import { useState } from "react";
 import { Loader2, Ticket } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { PasswordInput } from "@/components/ui/password-input";
 import { axiosClient } from "@/lib/axiosClient";
-import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 const schema = z
   .object({
@@ -44,6 +44,7 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
+  const t = useTranslations("register");
 
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
@@ -94,7 +95,7 @@ export default function Register() {
       <div className="flex flex-1 flex-col content-center items-center justify-between p-5 md:p-20">
         <div className="w-full">
           <h1 className="text-foregound text-3xl font-bold capitalize">
-            Register
+            {t("title")}
           </h1>
           <Form {...form}>
             <form
@@ -107,11 +108,16 @@ export default function Register() {
                   name="firstname"
                   render={({ field }) => (
                     <FormItem className="w-full">
-                      <FormLabel>Firstname</FormLabel>
+                      <FormLabel>{t("inputs.firstname.label")}</FormLabel>
                       <FormControl>
-                        <Input placeholder="Jhon" {...field} />
+                        <Input
+                          placeholder={t("inputs.firstname.placeholder")}
+                          {...field}
+                        />
                       </FormControl>
-                      <FormDescription>Your firstname.</FormDescription>
+                      <FormDescription>
+                        {t("inputs.firstname.description")}
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -121,11 +127,16 @@ export default function Register() {
                   name="lastname"
                   render={({ field }) => (
                     <FormItem className="w-full">
-                      <FormLabel>Lastname</FormLabel>
+                      <FormLabel>{t("inputs.lastname.label")}</FormLabel>
                       <FormControl>
-                        <Input placeholder="Doe" {...field} />
+                        <Input
+                          placeholder={t("inputs.lastname.placeholder")}
+                          {...field}
+                        />
                       </FormControl>
-                      <FormDescription>Your lastname.</FormDescription>
+                      <FormDescription>
+                        {t("inputs.lastname.description")}
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -136,11 +147,16 @@ export default function Register() {
                 name="username"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel>Username</FormLabel>
+                    <FormLabel>{t("inputs.username.label")}</FormLabel>
                     <FormControl>
-                      <Input placeholder="JonDoe" {...field} />
+                      <Input
+                        placeholder={t("inputs.username.placeholder")}
+                        {...field}
+                      />
                     </FormControl>
-                    <FormDescription>Your public username.</FormDescription>
+                    <FormDescription>
+                      {t("inputs.username.description")}
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -150,15 +166,17 @@ export default function Register() {
                 name="email"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>{t("inputs.email.label")}</FormLabel>
                     <FormControl>
                       <Input
                         type="email"
-                        placeholder="john@email.com"
+                        placeholder={t("inputs.email.placeholder")}
                         {...field}
                       />
                     </FormControl>
-                    <FormDescription>Your email.</FormDescription>
+                    <FormDescription>
+                      {t("inputs.email.description")}
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -169,11 +187,16 @@ export default function Register() {
                   name="password"
                   render={({ field }) => (
                     <FormItem className="w-full">
-                      <FormLabel>Password</FormLabel>
+                      <FormLabel>{t("inputs.password.label")}</FormLabel>
                       <FormControl>
-                        <PasswordInput placeholder="********" {...field} />
+                        <PasswordInput
+                          placeholder={t("inputs.password.placeholder")}
+                          {...field}
+                        />
                       </FormControl>
-                      <FormDescription>Type your password.</FormDescription>
+                      <FormDescription>
+                        {t("inputs.password.description")}
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -183,11 +206,16 @@ export default function Register() {
                   name="repeatPassword"
                   render={({ field }) => (
                     <FormItem className="w-full">
-                      <FormLabel>Repeat</FormLabel>
+                      <FormLabel>{t("inputs.repeat.label")}</FormLabel>
                       <FormControl>
-                        <PasswordInput placeholder="********" {...field} />
+                        <PasswordInput
+                          placeholder={t("inputs.repeat.placeholder")}
+                          {...field}
+                        />
                       </FormControl>
-                      <FormDescription>Repeat your password.</FormDescription>
+                      <FormDescription>
+                        {t("inputs.repeat.description")}
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -198,39 +226,44 @@ export default function Register() {
                 name="adress"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel>Adress</FormLabel>
+                    <FormLabel>{t("inputs.address.label")}</FormLabel>
                     <FormControl>
-                      <Input placeholder="Armenia, Colombia" {...field} />
+                      <Input
+                        placeholder={t("inputs.address.placeholder")}
+                        {...field}
+                      />
                     </FormControl>
-                    <FormDescription>Your adress.</FormDescription>
+                    <FormDescription>
+                      {t("inputs.address.description")}
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <Button type="submit" className="w-full" disabled={loading}>
                 {loading && <Loader2 className="mr-2 h-5 w-5 animate-spin" />}
-                Register
+                {t("submit")}
               </Button>
             </form>
           </Form>
           <p className="text-center text-sm italic md:text-start">
-            Already have an account?{" "}
+            {t("question")}{" "}
             <Link href="/auth/login" className="not-italic text-blue-500">
-              Login
+              {t("login")}
             </Link>
           </p>
         </div>
         <div className="flex flex-col items-center text-center text-sm">
           <p className="text-muted-foreground">
-            By continue you agree to our{" "}
+            {t("by_continue")}{" "}
             <Link href="#" className="text-blue-500">
-              terms and conditions
+              {t("terms")}
             </Link>
           </p>
           <p className="text-muted-foreground">
-            Go back to{" "}
+            {t("go_back")}{" "}
             <Link href="/" className="text-blue-500">
-              home
+              {t("home")}
             </Link>
           </p>
         </div>
@@ -248,9 +281,7 @@ export default function Register() {
             <Ticket className="h-14 w-14" />
             <h1 className="text-4xl font-bold">QueBoleta</h1>
           </div>
-          <p className="text-sm italic">
-            The best place to live the best experiences, moments and magic
-          </p>
+          <p className="text-sm italic">{t("quote")}</p>
         </div>
         <p className="absolute bottom-10 right-10 text-white">
           Rap Festival 2024.

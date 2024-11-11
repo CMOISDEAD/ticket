@@ -1,15 +1,18 @@
 import { create } from "zustand";
 import { axiosClient } from "@/lib/axiosClient";
 import { devtools, persist } from "zustand/middleware";
+import { AppCartType } from "@/types/global.types";
 
 interface StoreState {
   isAuth: boolean;
   user: {
+    id: string;
     username: string;
     email: string;
     role: string;
+    cart: AppCartType;
   };
-  fetchUser: () => void;
+  fetchUser: () => Promise<void>;
   logout: () => void;
   setIsAuth: (isAuth: boolean) => void;
 }
@@ -19,23 +22,33 @@ export const useTicketStore = create<StoreState>()(
     devtools((set) => ({
       isAuth: false,
       user: {
+        id: "",
         username: "",
         email: "",
         role: "",
+        cart: {
+          eventsIds: [],
+          totalPrice: 0,
+          numberOfTickets: 0,
+        },
       },
       fetchUser: async () => {
-        const response = await axiosClient.get("/users/me");
-        console.log(response);
-        const { data } = response;
-        console.log(data);
-        set(() => ({
-          user: {
-            username: data.username,
-            email: data.email,
-            role: data.role,
-          },
-          isAuth: true,
-        }));
+        try {
+          const response = await axiosClient.get("/users/me");
+          const { data } = response;
+          set(() => ({
+            user: {
+              id: data.id,
+              username: data.username,
+              email: data.email,
+              role: data.role,
+              cart: data.cart,
+            },
+            isAuth: true,
+          }));
+        } catch (error) {
+          console.log(error);
+        }
       },
       logout: async () => {
         try {
@@ -43,9 +56,15 @@ export const useTicketStore = create<StoreState>()(
           set(() => ({
             isAuth: false,
             user: {
+              id: "",
               username: "",
               email: "",
               role: "",
+              cart: {
+                eventsIds: [],
+                totalPrice: 0,
+                numberOfTickets: 0,
+              },
             },
           }));
         } catch (error) {

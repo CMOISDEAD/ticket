@@ -1,64 +1,59 @@
 package com.github.cmoisdead.tickets.service;
 
-import com.github.cmoisdead.tickets.dto.cart.CartCreateDTO;
 import com.github.cmoisdead.tickets.model.Cart;
+import com.github.cmoisdead.tickets.model.Event;
 import com.github.cmoisdead.tickets.model.User;
-import com.github.cmoisdead.tickets.repository.CartRepository;
 import com.github.cmoisdead.tickets.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
 public class CartService {
 
-  @Autowired
-  CartRepository cartRepository;
-  @Autowired
-  UserRepository userRepository;
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    EventService eventService;
 
-  public List<Cart> findAll() {
-    return cartRepository.findAll();
-  }
+    public Cart findById(String id) throws Exception {
+        Optional<User> optional = userRepository.findById(id);
+        if (optional.isEmpty()) throw new Exception("User not found");
+        User user = optional.get();
+        return user.getCart();
+    }
 
-  public Optional<Cart> findById(String id) {
-    return cartRepository.findById(id);
-  }
+    public void addItem(String userId, String eventId) throws Exception {
+        Optional<User> optional = userRepository.findById(userId);
+        if (optional.isEmpty()) throw new Exception("User not found");
+        User user = optional.get();
+        Cart cart = user.getCart();
+        Optional<Event> event = eventService.findById(eventId);
+        if (event.isEmpty()) throw new Exception("Event not found");
+        cart.addItem(eventId, event.get());
+        userRepository.save(user);
+    }
 
-  public Cart save(CartCreateDTO dto) {
-    Cart item = Cart.builder()
-        .userId(dto.userId())
-        .eventIds(dto.eventIds())
-        .totalPrice(0)
-        .build();
-    Optional<User> optional = userRepository.findById(dto.userId());
-    if (optional.isEmpty())
-      throw new RuntimeException("User not found");
-    Cart cart = cartRepository.save(item);
-    User user = optional.get();
-    user.setCartId(cart.getId());
-    userRepository.save(user);
-    return cart;
-  }
+    public void removeItem(String id, String eventId) throws Exception {
+        Optional<User> optional = userRepository.findById(id);
+        if (optional.isEmpty()) throw new Exception("User not found");
+        User user = optional.get();
+        Cart cart = user.getCart();
+        Optional<Event> event = eventService.findById(eventId);
+        if (event.isEmpty()) throw new Exception("Event not found");
+        cart.removeItem(eventId, event.get());
+        userRepository.save(user);
+    }
 
-  public void deleteById(String id) {
-    cartRepository.deleteById(id);
-  }
 
-  public Cart updateCart(Cart cart) {
-    return cartRepository.save(cart);
-  }
-
-  public void clearCart(String id) throws Exception {
-    Optional<Cart> optional = cartRepository.findById(id);
-    if (optional.isEmpty())
-      throw new Exception("No cart found");
-    Cart cart = optional.get();
-    cart.setTotalPrice(0);
-    cart.setEventIds(null);
-    cartRepository.save(cart);
-  }
+    public void clearCart(String id) throws Exception {
+        Optional<User> optional = userRepository.findById(id);
+        if (optional.isEmpty()) throw new Exception("User not found");
+        User user = optional.get();
+        Cart cart = user.getCart();
+        cart.clearCart();
+        userRepository.save(user);
+    }
 }

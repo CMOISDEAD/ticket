@@ -1,0 +1,211 @@
+{
+  "locale-switcher": {
+    "label": "Cambiar idioma",
+    "locale": "{locale, select, en {🇺🇸 Ingles} es {🇪🇸 Espanol} other {unkwon}}"
+  },
+  "theme-switcher": {
+    "light": "Claro",
+    "dark": "Oscuro",
+    "system": "Sistema"
+  },
+  "navbar": {
+    "search": "Buscar",
+    "home": "Inicio",
+    "login": "Iniciar sesión",
+    "register": "Registrarse",
+    "profile": "Perfil",
+    "settings": "Configuracion",
+    "help": "Ayuda",
+    "logout": "Cerrar sesión"
+  },
+  "footer": {
+    "title_about": "Acerca de nosotros",
+    "description_about": "Somos una empresa de eventos que brinda la mejor experiencia para nuestros clientes.",
+    "quick": "Enlaces rápidos",
+    "follow": "Síguenos"
+  },
+  "home": {
+    "title": "Eventos en Tendencia",
+    "description": "Descubre estos eventos populares que sucederán pronto",
+    "not_found": "No se encontraron eventos",
+    "category": "Categorias"
+  },
+  "contact": {
+    "title": "Contáctanos",
+    "description": "Estamos aquí para ayudarte con cualquier pregunta sobre nuestros eventos o boletos.",
+    "name": "Nombre",
+    "placeholder_name": "Ingresa tu nombre",
+    "email": "Correo electrónico",
+    "placeholder_email": "Ingresa tu correo electrónico",
+    "select": "Categoría del evento",
+    "placeholder_select": "Selecciona una categoría",
+    "message": "Mensaje",
+    "placeholder_message": "Ingresa tu mensaje",
+    "send_message": "Enviar Mensaje"
+  },
+  "cart": {
+    "title": "Carrito de compras",
+    "description": "Revisa los eventos que has agregado al carrito",
+    "not_found": "No se encontraron eventos",
+    "number_of_events": "Número de Eventos",
+    "number_of_tickets": "Número de Boletos",
+    "total_disscount": "Descuento Total",
+    "total_price": "Precio Total",
+    "total": "Total",
+    "checkout": "Pagar",
+    "year": "Año",
+    "name": "Nombre",
+    "detail": "Detalle",
+    "price": "Precio",
+    "action": "Acción",
+    "coupon_code": "Código de cupón"
+  },
+  "dashboard": {
+    "settings": "Configuracion",
+    "placeholder_search": "Buscar eventos, boletos, usuarios...",
+    "events": {
+      "title": "Eventos",
+      "overview": {
+        "title": "Resumen de Eventos",
+        "description": "Aquí puedes ver un resumen de todos los eventos",
+        "not_found": "No se encontraron eventos"
+      },
+      "form": {
+        "title": "Crear Evento",
+        "description": "Completa el formulario para crear un nuevo evento",
+        "submit": "Crear Evento",
+        "inputs": {
+          "name": {
+            "label": "Nombre",
+            "placeholder": "Ingresa el nombre del evento",
+            "description": "El nombre del evento debe ser único"
+          },
+          "description": {
+            "label": "Descripción",
+            "placeholder": "Ingresa la descripción del evento",
+            "description": "La descripción del evento debe ser única"
+          },
+          "city": {
+            "label": "Ciudad",
+            "placeholder": "Ingresa la ciudad del evento",
+            "description": "La ciudad del evento debe ser única"
+          },
+          "address": {
+            "label": "Dirección",
+            "placeholder": "Ingresa la dirección del evento",
+            "description": "La dirección del evento debe ser única"
+          },
+          "type": {
+            "label": "Tipo",
+            "placeholder": "Selecciona el tipo de evento",
+            "description": "El tipo de evento debe ser único"
+          },
+          "poster": {
+            "label": "Cartel",
+            "placeholder": "Selecciona el cartel del evento",
+            "description": "El cartel del evento debe ser único"
+          },
+          "price": {
+            "label": "Precio",
+            "placeholder": "Ingresa el precio del evento",
+            "description": "El precio del evento debe ser único"
+          },
+          "date": {
+            "label": "Fecha",
+            "placeholder": "Selecciona la fecha del evento",
+            "description": "La fecha del evento debe ser única"
+          }
+        }
+      }
+    },
+    "users": {
+      "search": "Buscar usuarios por correo",
+      "not_found": "No se encontraron usuarios",
+      "actions": {
+        "open": "Abrir Menú",
+        "label": "Acciones",
+        "desactivate": "Desactivar",
+        "activate": "Activar",
+        "delete": "Eliminar",
+        "copy": "Copiar id"
+      }
+    }
+  },
+  "events": {
+    "seats": "Selecciona los asientos",
+    "cart": "Agregar al carrito",
+    "not_found": "Evento no encontrado",
+    "per_person": "por persona"
+  },
+  "login": {
+    "title": "Iniciar sesión",
+    "submit": "Iniciar sesión",
+    "question": "No tienes una cuenta?",
+    "register": "Registrarse",
+    "by_continue": "Al continuar, aceptas nuestros",
+    "terms": "Términos y Condiciones",
+    "go_back": "Regresar",
+    "home": "Inicio",
+    "quote": "El mejor lugar para vivir las mejores experiencias, momentos y magia",
+    "inputs": {
+      "email": {
+        "label": "Correo electrónico",
+        "placeholder": "Ingresa tu correo electrónico",
+        "description": "El correo electrónico debe ser único"
+      },
+      "password": {
+        "label": "Contraseña",
+        "placeholder": "Ingresa tu contraseña",
+        "description": "La contraseña debe ser única"
+      }
+    }
+  },
+  "register": {
+    "title": "Registrarse",
+    "submit": "Registrarse",
+    "question": "Ya tienes una cuenta?",
+    "login": "Iniciar sesión",
+    "by_continue": "Al continuar, aceptas nuestros",
+    "terms": "Términos",
+    "go_back": "Regresar",
+    "home": "Inicio",
+    "quote": "El mejor lugar para vivir las mejores experiencias, momentos y magia",
+    "inputs": {
+      "firstname": {
+        "label": "Nombre",
+        "placeholder": "Ingresa tu nombre",
+        "description": "El nombre debe ser único"
+      },
+      "lastname": {
+        "label": "Apellido",
+        "placeholder": "Ingresa tu apellido",
+        "description": "El apellido debe ser único"
+      },
+      "username": {
+        "label": "Nombre de usuario",
+        "placeholder": "Ingresa tu nombre de usuario",
+        "description": "El nombre de usuario debe ser único"
+      },
+      "email": {
+        "label": "Correo electrónico",
+        "placeholder": "Ingresa tu correo electrónico",
+        "description": "El correo electrónico debe ser único"
+      },
+      "password": {
+        "label": "Contraseña",
+        "placeholder": "Ingresa tu contraseña",
+        "description": "La contraseña debe ser única"
+      },
+      "repeat": {
+        "label": "Repetir contraseña",
+        "placeholder": "Repite tu contraseña",
+        "description": "La contraseña debe ser única"
+      },
+      "address": {
+        "label": "Dirección",
+        "placeholder": "Ingresa tu dirección",
+        "description": "La dirección debe ser única"
+      }
+    }
+  }
+}

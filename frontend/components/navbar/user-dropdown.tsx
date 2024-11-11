@@ -9,7 +9,7 @@ import {
   LayoutDashboard,
 } from "lucide-react";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -22,12 +22,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useTicketStore } from "@/store/useTicketStore";
 import { toast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { Link, useRouter } from "@/navigation";
+import { useTranslations } from "next-intl";
 
 export default function UserDropdown() {
   const { user, isAuth, logout } = useTicketStore((state) => state);
   const router = useRouter();
+  const t = useTranslations("navbar");
 
   const { username, email } = user;
 
@@ -45,7 +46,6 @@ export default function UserDropdown() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-9 w-9">
-            <AvatarImage src="/placeholder.svg" alt={username} />
             <AvatarFallback>{username.charAt(0)}</AvatarFallback>
           </Avatar>
         </Button>
@@ -63,11 +63,11 @@ export default function UserDropdown() {
         <DropdownMenuGroup>
           <DropdownMenuItem>
             <User className="mr-2 h-4 w-4" />
-            <span>Profile</span>
+            <span>{t("profile")}</span>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <Settings className="mr-2 h-4 w-4" />
-            <span>Settings</span>
+            <span>{t("settings")}</span>
           </DropdownMenuItem>
           {isAuth && user.role === "ADMIN" && (
             <DropdownMenuItem asChild>
@@ -79,13 +79,13 @@ export default function UserDropdown() {
           )}
           <DropdownMenuItem>
             <HelpCircle className="mr-2 h-4 w-4" />
-            <span>Help</span>
+            <span>{t("help")}</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleLogout}>
           <LogOut className="mr-2 h-4 w-4" />
-          <span>Log out</span>
+          <span>{t("logout")}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

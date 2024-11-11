@@ -9,6 +9,7 @@ export type AppEventType = {
   images: string[];
   date: string;
   price: number;
+  cart: AppCartType;
 };
 
 export type AppUserType = {
@@ -24,4 +25,10 @@ export type AppUserType = {
   dateOfBirth: string;
   phoneNumbers: string[];
   cartId: string;
+};
+
+export type AppCartType = {
+  eventsIds: string[];
+  totalPrice: number;
+  numberOfTickets: number;
 };

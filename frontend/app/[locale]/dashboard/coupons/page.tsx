@@ -23,52 +23,78 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "@/hooks/use-toast";
 import { axiosClient } from "@/lib/axiosClient";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { EventList } from "@/components/dashboard/EventList";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { AppUserType } from "@/types/global.types";
 
+// TODO: work on global coupons, reedemable by a code
+// TODO: separate this file into smaller components
+// FIX: userId should not be empty
 const schema = z.object({
   name: z.string().min(3),
   description: z.string().min(10),
-  city: z.string().min(3),
-  address: z.string().min(10),
-  type: z.string().min(3),
-  poster: z.string().url(),
-  images: z.array(z.string().url()),
-  date: z.string(),
-  price: z
+  userId: z.string(),
+  discount: z
     .string()
     .min(1)
+    .max(100)
     .transform((v) => {
       if (!v) return 0;
       return parseFloat(v);
     }),
+  isUsed: z.boolean(),
+  isExpired: z.boolean(),
+  isGlobal: z.boolean(),
+  usedDate: z.string(),
+  expiryDate: z.string(),
 });
 
-export default function Events() {
+export default function Coupons() {
+  const [users, setUsers] = useState<AppUserType[]>([]);
   const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
       name: "",
       description: "",
-      city: "",
-      address: "",
-      type: "",
-      poster: "",
-      images: [],
-      date: "",
+      userId: "",
+      discount: 0,
+      isUsed: false,
+      isExpired: false,
+      isGlobal: false,
+      usedDate: "",
+      expiryDate: "",
     },
   });
 
+  useEffect(() => {
+    axiosClient
+      .get("/users")
+      .then((response) => {
+        setUsers(response.data);
+      })
+      .catch((error) => console.error(error));
+  }, []);
+
   const onSubmit = async (values: z.infer<typeof schema>) => {
+    console.log(values);
+    return;
     try {
       setLoading(true);
-      const response = await axiosClient.post("/events", values);
+      const response = await axiosClient.post("/coupons", values);
       console.log(response);
       toast({
         title: "Success 🎉",
-        description: "Event created successfully.",
+        description: "Coupon created successfully.",
       });
     } catch (error: any) {
       console.error(error);
@@ -84,13 +110,13 @@ export default function Events() {
 
   return (
     <div>
-      <h1 className="mb-4 text-5xl font-bold">Events</h1>
+      <h1 className="mb-4 text-5xl font-bold">Coupons</h1>
       <div className="flex flex-col gap-4 md:flex-row">
         <Card className="h-fit md:w-1/3">
           <CardHeader>
-            <CardTitle>Create an Event</CardTitle>
+            <CardTitle>Create an Coupon</CardTitle>
             <CardDescription>
-              Fill out the form below to create an event.
+              Fill out the form below to create a Coupon.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -110,7 +136,7 @@ export default function Events() {
                           <Input placeholder="Event Name" {...field} />
                         </FormControl>
                         <FormDescription>
-                          Enter the name of the event.
+                          Enter the name of the coupon.
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -126,7 +152,7 @@ export default function Events() {
                           <Input placeholder="Description" {...field} />
                         </FormControl>
                         <FormDescription>
-                          Enter the description of the event.
+                          Enter the description of the coupon.
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -136,31 +162,31 @@ export default function Events() {
                 <div className="flex flex-col gap-4 md:flex-row">
                   <FormField
                     control={form.control}
-                    name="city"
+                    name="userId"
                     render={({ field }) => (
                       <FormItem className="w-full">
-                        <FormLabel>City</FormLabel>
-                        <FormControl>
-                          <Input placeholder="City" {...field} />
-                        </FormControl>
+                        <FormLabel>Select user:</FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select user to add coupon" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {users.length
+                              ? users.map((user) => (
+                                <SelectItem key={user.id} value={user.id}>
+                                  {user.email}
+                                </SelectItem>
+                              ))
+                              : null}
+                          </SelectContent>
+                        </Select>
                         <FormDescription>
-                          Enter the city where the event will take place.
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="address"
-                    render={({ field }) => (
-                      <FormItem className="w-full">
-                        <FormLabel>Address</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Address" {...field} />
-                        </FormControl>
-                        <FormDescription>
-                          Enter the address where the event will take place.
+                          Enter the user to give the coupon to.
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -170,74 +196,59 @@ export default function Events() {
                 <div className="flex flex-col gap-4 md:flex-row">
                   <FormField
                     control={form.control}
-                    name="type"
+                    name="expiryDate"
                     render={({ field }) => (
                       <FormItem className="w-full">
-                        <FormLabel>Type</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Type of Event" {...field} />
-                        </FormControl>
-                        <FormDescription>
-                          Type of event, e.g. music, sports, etc.
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="poster"
-                    render={({ field }) => (
-                      <FormItem className="w-full">
-                        <FormLabel>Poster</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Poster url" {...field} />
-                        </FormControl>
-                        <FormDescription>
-                          Enter the url of the event poster.
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="flex gap-4">
-                  <FormField
-                    control={form.control}
-                    name="price"
-                    render={({ field }) => (
-                      <FormItem className="w-full">
-                        <FormLabel>Price</FormLabel>
-                        <FormControl>
-                          <Input type="number" placeholder="$ 50" {...field} />
-                        </FormControl>
-                        <FormDescription>
-                          Enter the price of the event.
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    name="date"
-                    control={form.control}
-                    render={({ field }) => (
-                      <FormItem className="w-full">
-                        <FormLabel>Date</FormLabel>
+                        <FormLabel>Expiration Date</FormLabel>
                         <FormControl>
                           <Input type="date" {...field} />
                         </FormControl>
                         <FormDescription>
-                          Enter the date of the event.
+                          Enter the expiration date of the coupon.
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="discount"
+                    render={({ field }) => (
+                      <FormItem className="w-full">
+                        <FormLabel>Discount</FormLabel>
+                        <FormControl>
+                          <Input type="number" {...field} />
+                        </FormControl>
+                        <FormDescription>
+                          Enter the expiration date of the coupon.
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
                 </div>
+                <FormField
+                  control={form.control}
+                  name="isGlobal"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <FormLabel>Is Global</FormLabel>
+                      <FormDescription>
+                        Select if the coupon is global.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <Button type="submit" className="w-full" disabled={loading}>
                   {loading && <Loader2 className="mr-2 h-5 w-5 animate-spin" />}
-                  Create Event
+                  Create Coupon
                 </Button>
               </form>
             </Form>

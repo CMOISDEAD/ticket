@@ -176,6 +176,8 @@ public class AuthController {
         }
         String link = userService.sendPasswordResetEmail(request.email());
         EmailDTO message = new EmailDTO(
+                true,
+                "password",
                 "Password Reset",
                 request.email(),
                 "QueBoleta.com",

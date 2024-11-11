@@ -1,28 +1,31 @@
-import "./globals.css";
+import "../globals.css";
+import { NextIntlClientProvider } from "next-intl";
 import type { Metadata } from "next";
 import { Provider } from "@/components/provider";
 import { Toaster } from "@/components/ui/toaster";
+import { getMessages } from "next-intl/server";
 import localFont from "next/font/local";
+import { locales } from "@/config";
 
 const spaceMono = localFont({
   src: [
     {
-      path: "../public/fonts/space-mono/SpaceMono-Regular.ttf",
+      path: "../../public/fonts/space-mono/SpaceMono-Regular.ttf",
       weight: "400",
       style: "normal",
     },
     {
-      path: "../public/fonts/space-mono/SpaceMono-Italic.ttf",
+      path: "../../public/fonts/space-mono/SpaceMono-Italic.ttf",
       weight: "400",
       style: "italic",
     },
     {
-      path: "../public/fonts/space-mono/SpaceMono-Bold.ttf",
+      path: "../../public/fonts/space-mono/SpaceMono-Bold.ttf",
       weight: "700",
       style: "normal",
     },
     {
-      path: "../public/fonts/space-mono/SpaceMono-BoldItalic.ttf",
+      path: "../../public/fonts/space-mono/SpaceMono-BoldItalic.ttf",
       weight: "700",
       style: "italic",
     },
@@ -72,18 +75,24 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
+  params: { locale },
 }: {
   children: React.ReactNode;
+  params: { locale: string };
 }) {
+  const messages = await getMessages();
+
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body className={`${spaceMono.className}`}>
-        <Provider attribute="class" defaultTheme="system" enableSystem>
-          {children}
-          <Toaster />
-        </Provider>
+        <NextIntlClientProvider messages={messages}>
+          <Provider attribute="class" defaultTheme="system" enableSystem>
+            {children}
+            <Toaster />
+          </Provider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

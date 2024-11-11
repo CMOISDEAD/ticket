@@ -1,0 +1,210 @@
+{
+  "locale-switcher": {
+    "label": "Change language",
+    "locale": "{locale, select, en {🇺🇸 English} es {🇪🇸 Spanish} other {unkwon}}"
+  },
+  "theme-switcher": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "navbar": {
+    "search": "Search",
+    "home": "Home",
+    "login": "Login",
+    "register": "Register",
+    "profile": "Profile",
+    "settings": "Settings",
+    "help": "Help",
+    "logout": "Logout"
+  },
+  "footer": {
+    "title_about": "About us",
+    "description_about": "We are a company of events that provide the best experience for our customers.",
+    "quick": "Quicklinks",
+    "follow": "Follow us"
+  },
+  "home": {
+    "title": "Hot Events",
+    "description": "Check out these popular events happening soon",
+    "not_found": "No events found",
+    "category": "Categories"
+  },
+  "contact": {
+    "title": "Contact us",
+    "description": "We're here to help with any questions about our events or tickets.",
+    "name": "Name",
+    "placeholder_name": "Enter your name",
+    "email": "Email",
+    "placeholder_email": "Enter your email",
+    "select": "Event Category",
+    "placeholder_select": "Select a category",
+    "message": "Message",
+    "placeholder_message": "Enter your message",
+    "send_message": "Send Message"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "description": "Review the events you've added to the cart",
+    "not_found": "No events found",
+    "number_of_events": "Number of Events",
+    "number_of_tickets": "Number of Tickets",
+    "total_disscount": "Total Disscount",
+    "total_price": "Total Price",
+    "checkout": "Checkout",
+    "year": "Year",
+    "name": "Name",
+    "detail": "Detail",
+    "price": "Price",
+    "action": "Action",
+    "coupon_code": "Coupon Code"
+  },
+  "dashboard": {
+    "settings": "Settings",
+    "placeholder_search": "Search events, tickets, users...",
+    "events": {
+      "title": "Events",
+      "overview": {
+        "title": "Events Overview",
+        "description": "Check out the events you've created",
+        "not_found": "No events found"
+      },
+      "form": {
+        "title": "Create Event",
+        "description": "Fill in the form to create a new event",
+        "submit": "Create Event",
+        "inputs": {
+          "name": {
+            "label": "Name",
+            "placeholder": "Enter the event name",
+            "description": "The event name must be unique"
+          },
+          "description": {
+            "label": "Description",
+            "placeholder": "Enter the event description",
+            "description": "The event description must be unique"
+          },
+          "city": {
+            "label": "City",
+            "placeholder": "Enter the event city",
+            "description": "The event city must be unique"
+          },
+          "address": {
+            "label": "Address",
+            "placeholder": "Enter the event address",
+            "description": "The event address must be unique"
+          },
+          "type": {
+            "label": "Type",
+            "placeholder": "Select the event type",
+            "description": "The event type must be unique"
+          },
+          "poster": {
+            "label": "Poster",
+            "placeholder": "Upload the event poster",
+            "description": "The event poster must be unique"
+          },
+          "price": {
+            "label": "Price",
+            "placeholder": "Enter the event price",
+            "description": "The event price must be unique"
+          },
+          "date": {
+            "label": "Date",
+            "placeholder": "Select the event date",
+            "description": "The event date must be unique"
+          }
+        }
+      }
+    },
+    "users": {
+      "search": "Search users",
+      "not_found": "No users found",
+      "actions": {
+        "open": "Open Menu",
+        "label": "Actions",
+        "desactivate": "Desactivate",
+        "activate": "Activate",
+        "delete": "Delete",
+        "copy": "Copy id"
+      }
+    }
+  },
+  "events": {
+    "seats": "Select the seats",
+    "cart": "Add to cart",
+    "not_found": "Event not found",
+    "per_person": "per person"
+  },
+  "login": {
+    "title": "Login",
+    "submit": "Login",
+    "question": "Don't have an account?",
+    "register": "Register",
+    "by_continue": "By continuing, you agree to our",
+    "terms": "Terms of Service",
+    "go_back": "Go back",
+    "home": "Home",
+    "quote": "The best place to live the best experiences, moments and magic",
+    "inputs": {
+      "email": {
+        "label": "Email",
+        "placeholder": "Enter your email",
+        "description": "The email must be unique"
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": "Enter your password",
+        "description": "The password must be unique"
+      }
+    }
+  },
+  "register": {
+    "title": "Register",
+    "submit": "Register",
+    "question": "Already have an account?",
+    "login": "Login",
+    "by_continue": "By continuing, you agree to our",
+    "terms": "Terms of Service",
+    "go_back": "Go back",
+    "home": "Home",
+    "quote": "The best place to live the best experiences, moments and magic",
+    "inputs": {
+      "firstname": {
+        "label": "First Name",
+        "placeholder": "Enter your first name",
+        "description": "The first name must be unique"
+      },
+      "lastname": {
+        "label": "Last Name",
+        "placeholder": "Enter your last name",
+        "description": "The last name must be unique"
+      },
+      "username": {
+        "label": "Username",
+        "placeholder": "Enter your username",
+        "description": "The username must be unique"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "Enter your email",
+        "description": "The email must be unique"
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": "Enter your password",
+        "description": "The password must be unique"
+      },
+      "repeat": {
+        "label": "Repeat Password",
+        "placeholder": "Repeat your password",
+        "description": "The password must be unique"
+      },
+      "address": {
+        "label": "Address",
+        "placeholder": "Enter your address",
+        "description": "The address must be unique"
+      }
+    }
+  }
+}

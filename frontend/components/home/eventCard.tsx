@@ -11,25 +11,61 @@ import { formatDistanceToNow } from "date-fns";
 import { ShoppingCart } from "lucide-react";
 import { Button } from "../ui/button";
 import { ButtonGroup } from "../ui/button-group";
+import { axiosClient } from "@/lib/axiosClient";
+import { useTicketStore } from "@/store/useTicketStore";
+import { toast } from "@/hooks/use-toast";
+import { useEffect, useState } from "react";
 
 type Props = {
   event: AppEventType;
 };
 
 export const EventCard = ({ event }: Props) => {
+  const [isAdded, setIsAdded] = useState(false);
+  const { user } = useTicketStore((state) => state);
+
+  const handleAdd = async () => {
+    try {
+      await axiosClient.put("/cart/add", {
+        userId: user.id,
+        eventId: event.id,
+      });
+      setIsAdded(true);
+      toast({
+        title: "Added to cart",
+        description: "Event added to cart",
+      });
+    } catch (error: any) {
+      console.error(error);
+      toast({
+        variant: "destructive",
+        title: "Error adding to cart",
+        description: "Failed to add to cart",
+      });
+    }
+  };
+
+  useEffect(() => {
+    const check = user.cart.eventsIds?.includes(event.id);
+    setIsAdded(check);
+  }, [user]);
+
   return (
-    <Card className="flex h-[28-rem] max-h-[28rem] flex-col justify-between">
+    <Card className="flex h-[32rem] max-h-[32rem] flex-col justify-between">
       <CardHeader>
         <img
-          width={600}
-          height={400}
-          src="https://placehold.co/600x400"
+          src={event.poster}
           alt={event.name}
-          className="rounded-lg object-cover"
+          className="max-h-[200px] w-full rounded-lg object-cover"
         />
-        <CardTitle>{event.name}</CardTitle>
-        <CardDescription className="line-clamp-1">
-          {formatDistanceToNow(event.date, { addSuffix: true })} -{" "}
+        <CardTitle className="line-clamp-1">{event.name}</CardTitle>
+        <CardDescription>
+          <ul>
+            <li className="line-clamp-1">{event.address}</li>
+            <li className="line-clamp-1">
+              {formatDistanceToNow(event.date, { addSuffix: true })}
+            </li>
+          </ul>
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -43,7 +79,12 @@ export const EventCard = ({ event }: Props) => {
               currency: "USD",
             })}
           </Button>
-          <Button size="icon" variant="outline">
+          <Button
+            size="icon"
+            variant="outline"
+            onClick={handleAdd}
+            disabled={isAdded}
+          >
             <ShoppingCart />
           </Button>
         </ButtonGroup>

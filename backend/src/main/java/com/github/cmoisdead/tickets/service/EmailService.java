@@ -10,55 +10,72 @@ import com.google.zxing.WriterException;
 import com.itextpdf.io.exceptions.IOException;
 
 import jakarta.mail.internet.MimeMessage;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+
+import java.util.Objects;
 
 @Service
 public class EmailService {
-  @Autowired
-  private JavaMailSender mailSender;
+    @Autowired
+    private JavaMailSender mailSender;
+    @Autowired
+    private TemplateEngine templateEngine;
 
-  @Autowired
-  private QRCodeService qrCodeService;
+    @Autowired
+    private QRCodeService qrCodeService;
 
-  private String template = "";
 
-  public void sendEmail(EmailDTO data) throws Exception {
-    MimeMessage message = mailSender.createMimeMessage();
-    MimeMessageHelper helper = new MimeMessageHelper(message);
+    public void sendEmail(EmailDTO data) throws Exception {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+        String processedTemplate;
 
-    helper.setTo(data.to());
-    helper.setSubject(data.subject());
-    helper.setText(data.body(), true);
-    helper.setFrom(data.from());
+        if (data.isHtml()) {
+            helper.setTo(data.to());
+            helper.setSubject(data.subject());
+            helper.setFrom(data.from());
 
-    mailSender.send(message);
-  }
+            if (Objects.equals(data.type(), "login")) processedTemplate = templateEngine.process("login", new Context());
+            else if (Objects.equals(data.type(), "register")) processedTemplate = templateEngine.process("register", new Context());
+            else if (Objects.equals(data.type(), "recover")) processedTemplate = templateEngine.process("recover", new Context());
+            else if (Objects.equals(data.type(), "coupon")) processedTemplate = templateEngine.process("coupon", new Context());
+            else throw new Exception("Tipo de correo no válido");
 
-  public void sendEmailWithQRCode(EmailDTO data, String qrContent) throws Exception {
-    // Generar el código QR en Base64
-    String qrCodeBase64;
-    try {
-      qrCodeBase64 = qrCodeService.generateQRCode(qrContent);
-    } catch (WriterException | IOException e) {
-      throw new Exception("Error al generar el código QR", e);
+            helper.setText(processedTemplate, true);
+
+            mailSender.send(message);
+        } else {
+            throw new Exception("El contenido del correo debe ser HTML");
+        }
     }
 
-    MimeMessage message = mailSender.createMimeMessage();
-    MimeMessageHelper helper = new MimeMessageHelper(message, true);
+    public void sendEmailWithQRCode(EmailDTO data, String qrContent) throws Exception {
+        // Generar el código QR en Base64
+        String qrCodeBase64;
+        try {
+            qrCodeBase64 = qrCodeService.generateQRCode(qrContent);
+        } catch (WriterException | IOException e) {
+            throw new Exception("Error al generar el código QR", e);
+        }
 
-    helper.setTo(data.to());
-    helper.setSubject(data.subject());
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-    String htmlBody = "<html>"
-        + "<body>"
-        + "<h3>" + data.body() + "</h3>"
-        + "<p>Por favor escanea el siguiente código QR:</p>"
-        + "<img src='data:image/png;base64," + qrCodeBase64 + "' alt='Código QR'/>"
-        + "</body>"
-        + "</html>";
+        helper.setTo(data.to());
+        helper.setSubject(data.subject());
 
-    helper.setText(htmlBody, true);
-    helper.setFrom(data.from());
+        String htmlBody = "<html>"
+                + "<body>"
+                + "<h3>" + data.body() + "</h3>"
+                + "<p>Por favor escanea el siguiente código QR:</p>"
+                + "<img src='data:image/png;base64," + qrCodeBase64 + "' alt='Código QR'/>"
+                + "</body>"
+                + "</html>";
 
-    mailSender.send(message);
-  }
+        helper.setText(htmlBody, true);
+        helper.setFrom(data.from());
+
+        mailSender.send(message);
+    }
 }
