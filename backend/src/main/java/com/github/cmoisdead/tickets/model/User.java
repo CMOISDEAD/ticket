@@ -34,6 +34,9 @@ public class User {
     private Cart cart = new Cart();
 
     @Builder.Default
+    private List<Cart> history = Collections.emptyList();
+
+    @Builder.Default
     private List<String> phoneNumbers = Collections.emptyList();
 
     @Builder.Default

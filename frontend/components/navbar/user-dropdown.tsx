@@ -61,9 +61,11 @@ export default function UserDropdown() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <User className="mr-2 h-4 w-4" />
-            <span>{t("profile")}</span>
+          <DropdownMenuItem asChild>
+            <Link href="/profile">
+              <User className="mr-2 h-4 w-4" />
+              <span>{t("profile")}</span>
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <Settings className="mr-2 h-4 w-4" />
@@ -77,9 +79,11 @@ export default function UserDropdown() {
               </Link>
             </DropdownMenuItem>
           )}
-          <DropdownMenuItem>
-            <HelpCircle className="mr-2 h-4 w-4" />
-            <span>{t("help")}</span>
+          <DropdownMenuItem asChild>
+            <Link href="/help">
+              <HelpCircle className="mr-2 h-4 w-4" />
+              <span>{t("help")}</span>
+            </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />

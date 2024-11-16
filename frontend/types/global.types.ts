@@ -21,6 +21,7 @@ export type AppUserType = {
   address: string;
   email: string;
   password: string;
+  history: AppCartType[];
   isActive: boolean;
   dateOfBirth: string;
   phoneNumbers: string[];
@@ -31,4 +32,15 @@ export type AppCartType = {
   eventsIds: string[];
   totalPrice: number;
   numberOfTickets: number;
+  couponsIds: string[];
+};
+
+export type AppCouponType = {
+  id: string;
+  code: string;
+  name: string;
+  description: string;
+  discount: number;
+  expiryDate: string;
+  userId?: string;
 };

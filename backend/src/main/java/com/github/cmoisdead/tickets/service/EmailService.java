@@ -35,11 +35,21 @@ public class EmailService {
             helper.setTo(data.to());
             helper.setSubject(data.subject());
             helper.setFrom(data.from());
+            Context context = new Context();
+            context.setVariable("token", data.body());
 
-            if (Objects.equals(data.type(), "login")) processedTemplate = templateEngine.process("login", new Context());
-            else if (Objects.equals(data.type(), "register")) processedTemplate = templateEngine.process("register", new Context());
-            else if (Objects.equals(data.type(), "recover")) processedTemplate = templateEngine.process("recover", new Context());
-            else if (Objects.equals(data.type(), "coupon")) processedTemplate = templateEngine.process("coupon", new Context());
+            if (Objects.equals(data.type(), "login"))
+                processedTemplate = templateEngine.process("login", context);
+            else if (Objects.equals(data.type(), "register"))
+                processedTemplate = templateEngine.process("confirm", context);
+            else if (Objects.equals(data.type(), "recover"))
+                processedTemplate = templateEngine.process("recover", context);
+            else if (Objects.equals(data.type(), "coupon"))
+                processedTemplate = templateEngine.process("coupon", context);
+            else if (Objects.equals(data.type(), "activate"))
+                processedTemplate = templateEngine.process("activate", context);
+            else if (Objects.equals(data.type(), "desactivate"))
+                processedTemplate = templateEngine.process("desactivate", context);
             else throw new Exception("Tipo de correo no válido");
 
             helper.setText(processedTemplate, true);

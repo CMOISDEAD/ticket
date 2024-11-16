@@ -25,8 +25,6 @@ import { toast } from "@/hooks/use-toast";
 import { axiosClient } from "@/lib/axiosClient";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
-import { EventList } from "@/components/dashboard/EventList";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -35,14 +33,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { AppUserType } from "@/types/global.types";
+import { useTranslations } from "next-intl";
+import { CouponList } from "@/components/dashboard/CouponList";
 
-// TODO: work on global coupons, reedemable by a code
-// TODO: separate this file into smaller components
-// FIX: userId should not be empty
+// TODO: separate this file into smaller components.
 const schema = z.object({
+  code: z.string().max(6).min(6),
   name: z.string().min(3),
   description: z.string().min(10),
-  userId: z.string(),
+  userId: z.string().optional(),
   discount: z
     .string()
     .min(1)
@@ -51,27 +50,21 @@ const schema = z.object({
       if (!v) return 0;
       return parseFloat(v);
     }),
-  isUsed: z.boolean(),
-  isExpired: z.boolean(),
-  isGlobal: z.boolean(),
-  usedDate: z.string(),
   expiryDate: z.string(),
 });
 
 export default function Coupons() {
+  const t = useTranslations("dashboard.coupons");
   const [users, setUsers] = useState<AppUserType[]>([]);
   const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
+      code: "",
       name: "",
       description: "",
       userId: "",
       discount: 0,
-      isUsed: false,
-      isExpired: false,
-      isGlobal: false,
-      usedDate: "",
       expiryDate: "",
     },
   });
@@ -87,7 +80,6 @@ export default function Coupons() {
 
   const onSubmit = async (values: z.infer<typeof schema>) => {
     console.log(values);
-    return;
     try {
       setLoading(true);
       const response = await axiosClient.post("/coupons", values);
@@ -110,14 +102,12 @@ export default function Coupons() {
 
   return (
     <div>
-      <h1 className="mb-4 text-5xl font-bold">Coupons</h1>
+      <h1 className="mb-4 text-5xl font-bold">{t("title")}</h1>
       <div className="flex flex-col gap-4 md:flex-row">
         <Card className="h-fit md:w-1/3">
           <CardHeader>
-            <CardTitle>Create an Coupon</CardTitle>
-            <CardDescription>
-              Fill out the form below to create a Coupon.
-            </CardDescription>
+            <CardTitle>{t("form.title")}</CardTitle>
+            <CardDescription>{t("form.description")}</CardDescription>
           </CardHeader>
           <CardContent>
             <Form {...form}>
@@ -125,18 +115,41 @@ export default function Coupons() {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="my-4 w-full space-y-4"
               >
+                <FormField
+                  control={form.control}
+                  name="code"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel>{t("form.inputs.code.label")}</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder={t("form.inputs.code.placeholder")}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        {t("form.inputs.code.description")}
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
                 <div className="flex flex-col gap-4 md:flex-row">
                   <FormField
                     control={form.control}
                     name="name"
                     render={({ field }) => (
                       <FormItem className="w-full">
-                        <FormLabel>Name</FormLabel>
+                        <FormLabel>{t("form.inputs.name.label")}</FormLabel>
                         <FormControl>
-                          <Input placeholder="Event Name" {...field} />
+                          <Input
+                            placeholder={t("form.inputs.name.placeholder")}
+                            {...field}
+                          />
                         </FormControl>
                         <FormDescription>
-                          Enter the name of the coupon.
+                          {t("form.inputs.name.description")}
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -147,12 +160,19 @@ export default function Coupons() {
                     name="description"
                     render={({ field }) => (
                       <FormItem className="w-full">
-                        <FormLabel>Description</FormLabel>
+                        <FormLabel>
+                          {t("form.inputs.description.label")}
+                        </FormLabel>
                         <FormControl>
-                          <Input placeholder="Description" {...field} />
+                          <Input
+                            placeholder={t(
+                              "form.inputs.description.placeholder",
+                            )}
+                            {...field}
+                          />
                         </FormControl>
                         <FormDescription>
-                          Enter the description of the coupon.
+                          {t("form.inputs.description.description")}
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -165,14 +185,18 @@ export default function Coupons() {
                     name="userId"
                     render={({ field }) => (
                       <FormItem className="w-full">
-                        <FormLabel>Select user:</FormLabel>
+                        <FormLabel>{t("form.inputs.userId.label")}</FormLabel>
                         <Select
                           onValueChange={field.onChange}
                           defaultValue={field.value}
                         >
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder="Select user to add coupon" />
+                              <SelectValue
+                                placeholder={t(
+                                  "form.inputs.userId.placeholder",
+                                )}
+                              />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -186,7 +210,7 @@ export default function Coupons() {
                           </SelectContent>
                         </Select>
                         <FormDescription>
-                          Enter the user to give the coupon to.
+                          {t("form.inputs.userId.description")}
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -199,12 +223,14 @@ export default function Coupons() {
                     name="expiryDate"
                     render={({ field }) => (
                       <FormItem className="w-full">
-                        <FormLabel>Expiration Date</FormLabel>
+                        <FormLabel>
+                          {t("form.inputs.expiryDate.label")}
+                        </FormLabel>
                         <FormControl>
                           <Input type="date" {...field} />
                         </FormControl>
                         <FormDescription>
-                          Enter the expiration date of the coupon.
+                          {t("form.inputs.expiryDate.description")}
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -215,46 +241,27 @@ export default function Coupons() {
                     name="discount"
                     render={({ field }) => (
                       <FormItem className="w-full">
-                        <FormLabel>Discount</FormLabel>
+                        <FormLabel>{t("form.inputs.discount.label")}</FormLabel>
                         <FormControl>
                           <Input type="number" {...field} />
                         </FormControl>
                         <FormDescription>
-                          Enter the expiration date of the coupon.
+                          {t("form.inputs.discount.description")}
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
                 </div>
-                <FormField
-                  control={form.control}
-                  name="isGlobal"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                      <FormLabel>Is Global</FormLabel>
-                      <FormDescription>
-                        Select if the coupon is global.
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
                 <Button type="submit" className="w-full" disabled={loading}>
                   {loading && <Loader2 className="mr-2 h-5 w-5 animate-spin" />}
-                  Create Coupon
+                  {t("form.submit")}
                 </Button>
               </form>
             </Form>
           </CardContent>
         </Card>
-        <EventList />
+        <CouponList />
       </div>
     </div>
   );

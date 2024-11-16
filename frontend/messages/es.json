@@ -129,6 +129,49 @@
         "delete": "Eliminar",
         "copy": "Copiar id"
       }
+    },
+    "coupons": {
+      "title": "Cupones",
+      "not_found": "No se encontraron cupones",
+      "single": "Cupón",
+      "plural": "Cupones",
+      "form": {
+        "title": "Crear Cupón",
+        "description": "Completa el formulario para crear un nuevo cupón",
+        "submit": "Crear Cupón",
+        "inputs": {
+          "code": {
+            "label": "Código",
+            "placeholder": "Ingresa el código del cupón",
+            "description": "El código del cupón debe ser único"
+          },
+          "name": {
+            "label": "Nombre",
+            "placeholder": "Ingresa el nombre del cupón",
+            "description": "El nombre del cupón debe ser único"
+          },
+          "description": {
+            "label": "Descripción",
+            "placeholder": "Ingresa la descripción del cupón",
+            "description": "La descripción del cupón debe ser única"
+          },
+          "userId": {
+            "label": "Usuario",
+            "placeholder": "Selecciona el usuario del cupón",
+            "description": "El usuario del cupón debe ser único"
+          },
+          "discount": {
+            "label": "Descuento",
+            "placeholder": "Ingresa el descuento del cupón",
+            "description": "El descuento del cupón debe ser único"
+          },
+          "expiryDate": {
+            "label": "Fecha de vencimiento",
+            "placeholder": "Selecciona la fecha de vencimiento del cupón",
+            "description": "La fecha de vencimiento del cupón debe ser única"
+          }
+        }
+      }
     }
   },
   "events": {
@@ -207,5 +250,11 @@
         "description": "La dirección debe ser única"
       }
     }
+  },
+  "profile": {
+    "title": "Perfil",
+    "desactivate": "Desactivar Cuenta",
+    "delete": "Eliminar Cuenta",
+    "history": "Historial de Compras"
   }
 }

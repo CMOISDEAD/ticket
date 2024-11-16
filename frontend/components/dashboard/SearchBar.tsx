@@ -1,9 +1,24 @@
 import { useTranslations } from "next-intl";
 import { Input } from "../ui/input";
 import { SidebarTrigger } from "../ui/sidebar";
+import { useEffect, useState } from "react";
+import { AppEventType } from "@/types/global.types";
+import { axiosClient } from "@/lib/axiosClient";
 
 export const SearchBar = () => {
   const t = useTranslations("dashboard");
+  const [events, setEvents] = useState<AppEventType[]>([]);
+
+  useEffect(() => {
+    axiosClient
+      .get("/events")
+      .then((res) => {
+        setEvents(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
 
   return (
     <header className="flex h-16 items-center gap-4 border-b border-border px-6">

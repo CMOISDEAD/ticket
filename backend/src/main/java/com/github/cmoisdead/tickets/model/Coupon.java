@@ -25,7 +25,8 @@ public class Coupon {
   private String code;
   private String name;
   private String description;
-  private String userId;
+  @Builder.Default
+  private String userId = null;
   private double discount;
   private boolean isUsed;
   private boolean isExpired;

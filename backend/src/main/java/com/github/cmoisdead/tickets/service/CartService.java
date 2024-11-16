@@ -56,4 +56,14 @@ public class CartService {
         cart.clearCart();
         userRepository.save(user);
     }
+
+    public void checkout(String id) throws Exception {
+        Optional<User> optional = userRepository.findById(id);
+        if (optional.isEmpty()) throw new Exception("User not found");
+        // user have history to save the cart and clear it after checkout
+        User user = optional.get();
+        Cart cart = user.getCart();
+        user.getHistory().add(cart);
+        userRepository.save(user);
+    }
 }

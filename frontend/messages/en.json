@@ -128,6 +128,49 @@
         "delete": "Delete",
         "copy": "Copy id"
       }
+    },
+    "coupons": {
+      "title": "Coupons",
+      "not_found": "No coupons found",
+      "single": "Coupon",
+      "plural": "Coupons",
+      "form": {
+        "title": "Create Coupon",
+        "description": "Fill in the form to create a new coupon",
+        "submit": "Create Coupon",
+        "inputs": {
+          "code": {
+            "label": "Code",
+            "placeholder": "Enter the coupon code",
+            "description": "The coupon code must be unique"
+          },
+          "name": {
+            "label": "Name",
+            "placeholder": "Enter the coupon name",
+            "description": "The coupon name must be unique"
+          },
+          "description": {
+            "label": "Description",
+            "placeholder": "Enter the coupon description",
+            "description": "The coupon description must be unique"
+          },
+          "userId": {
+            "label": "User",
+            "placeholder": "Select the coupon user",
+            "description": "The coupon user must be unique"
+          },
+          "discount": {
+            "label": "Discount",
+            "placeholder": "Enter the coupon discount",
+            "description": "The coupon discount must be unique"
+          },
+          "expiryDate": {
+            "label": "Expiry Date",
+            "placeholder": "Select the coupon expiry date",
+            "description": "The coupon expiry date must be unique"
+          }
+        }
+      }
     }
   },
   "events": {
@@ -206,5 +249,11 @@
         "description": "The address must be unique"
       }
     }
+  },
+  "profile": {
+    "title": "Profile",
+    "desactivate": "Desactivate Account",
+    "delete": "Delete Account",
+    "history": "Purchase History"
   }
 }

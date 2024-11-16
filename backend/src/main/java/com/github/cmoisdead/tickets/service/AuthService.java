@@ -25,6 +25,8 @@ public class AuthService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
+    private UserService userService;
+    @Autowired
     private CouponService couponService;
     @Autowired
     private EmailService emailService;
@@ -49,13 +51,13 @@ public class AuthService {
      *                   Example usage:
      *
      *                   <pre>
-     *                                 {@code
-     *                   AuthRegisterDTO registerData = new AuthRegisterDTO(
-     *                       "user@example.com", "username123", "password123", "John", "Doe",
-     *                       "123 Street Name", "1990-01-01"
-     *                   );
-     *                   User newUser = authService.Register(registerData);
-     *                   </pre>
+     *                                                                     {@code
+     *                                                       AuthRegisterDTO registerData = new AuthRegisterDTO(
+     *                                                           "user@example.com", "username123", "password123", "John", "Doe",
+     *                                                           "123 Street Name", "1990-01-01"
+     *                                                       );
+     *                                                       User newUser = authService.Register(registerData);
+     *                                                       </pre>
      *                   }
      */
     public User register(AuthRegisterDTO dto) throws Exception {
@@ -85,12 +87,16 @@ public class AuthService {
                 .code("NEW_USER")
                 .name("New User Coupon")
                 .userId(user.getId())
-                .isUsed(false)
                 .discount(10.0)
                 .expiryDate(null)
                 .build();
 
         couponService.save(coupon);
+
+        Map<String, Object> claims = Map.of("id", user.getId());
+
+        String token = jwtUtils.generateToken(user.getEmail(), claims);
+
 
         EmailDTO message = new EmailDTO(
                 true,
@@ -98,7 +104,7 @@ public class AuthService {
                 "Felicidades por crear una cuenta",
                 user.getEmail(),
                 "QueBoleta.com",
-                "Felicidades por crear una nueva cuenta en QueBoleta");
+                token);
         emailService.sendEmail(message);
 
         return user;
@@ -121,11 +127,11 @@ public class AuthService {
      *                   Example usage:
      *
      *                   <pre>
-     *                   {@code
-     *                    AuthLoginDTO loginData = new AuthLoginDTO("user@example.com", "password123");
-     *                    TokenDTO token = authService.login(loginData);
-     *                   }
-     *                   </pre>
+     *                                                       {@code
+     *                                                        AuthLoginDTO loginData = new AuthLoginDTO("user@example.com", "password123");
+     *                                                        TokenDTO token = authService.login(loginData);
+     *                                                       }
+     *                                                       </pre>
      */
     public String login(AuthLoginDTO dto) throws Exception {
         Optional<User> optional = userRepository.findByEmail(dto.email());
@@ -134,6 +140,10 @@ public class AuthService {
             throw new Exception("Invalid email or password");
 
         User user = optional.get();
+
+        if (!user.isActive()) {
+            userService.activateUser(user.getId());
+        }
 
         if (!encoder.matches(dto.password(), user.getPassword()))
             throw new Exception("Invalid email or password");

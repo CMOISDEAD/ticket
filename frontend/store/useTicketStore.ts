@@ -11,6 +11,7 @@ interface StoreState {
     email: string;
     role: string;
     cart: AppCartType;
+    history: AppCartType[];
   };
   fetchUser: () => Promise<void>;
   logout: () => void;
@@ -27,10 +28,12 @@ export const useTicketStore = create<StoreState>()(
         email: "",
         role: "",
         cart: {
+          couponsIds: [],
           eventsIds: [],
           totalPrice: 0,
           numberOfTickets: 0,
         },
+        history: [],
       },
       fetchUser: async () => {
         try {
@@ -43,6 +46,7 @@ export const useTicketStore = create<StoreState>()(
               email: data.email,
               role: data.role,
               cart: data.cart,
+              history: data.history,
             },
             isAuth: true,
           }));
@@ -61,10 +65,12 @@ export const useTicketStore = create<StoreState>()(
               email: "",
               role: "",
               cart: {
+                couponsIds: [],
                 eventsIds: [],
                 totalPrice: 0,
                 numberOfTickets: 0,
               },
+              history: [],
             },
           }));
         } catch (error) {

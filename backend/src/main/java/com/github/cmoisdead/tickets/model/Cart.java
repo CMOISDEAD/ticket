@@ -1,23 +1,37 @@
 package com.github.cmoisdead.tickets.model;
 
-
-import com.github.cmoisdead.tickets.service.CartService;
-import com.github.cmoisdead.tickets.service.EventService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+@Getter
+@Setter
 public class Cart {
     private List<String> eventsIds;
+    private List<String> couponsIds;
     private double totalPrice;
     private double discount;
 
     public Cart() {
+        this.couponsIds = new ArrayList<>();
         this.eventsIds = new ArrayList<>();
         this.totalPrice = 0;
         this.discount = 0;
+    }
+
+    public void addCoupon(String couponId, Coupon coupon) throws Exception {
+        if (coupon.isExpired()) throw new Exception("Coupon expired");
+        if (couponsIds.contains(couponId)) throw new Exception("Coupon already added");
+
+        couponsIds.add(couponId);
+        discount += coupon.getDiscount();
+    }
+
+    public void removeCoupon(String couponId, Coupon coupon) {
+        couponsIds.remove(couponId);
+        discount -= coupon.getDiscount();
     }
 
     public void addItem(String eventId, Event event) {
@@ -34,21 +48,5 @@ public class Cart {
         eventsIds.clear();
         totalPrice = 0;
         discount = 0;
-    }
-
-    public List<String> getEventsIds() {
-        return eventsIds;
-    }
-
-    public void setEventsIds(List<String> eventsIds) {
-        this.eventsIds = eventsIds;
-    }
-
-    public double getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
     }
 }

@@ -72,7 +72,7 @@ export default function Register() {
         description:
           "You have beeen succesfully register, you will be redirect in a few seconds...",
       });
-      setTimeout(() => router.push("/auth/login"), 1500);
+      router.push("/auth/login");
     } catch (error: any) {
       const codes = [400, 401, 403];
       const isBadRequest = codes.includes(error.response.status);

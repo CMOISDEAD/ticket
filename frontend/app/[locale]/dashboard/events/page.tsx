@@ -16,6 +16,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { CldUploadWidget } from "next-cloudinary";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,7 +35,7 @@ const schema = z.object({
   city: z.string().min(3),
   address: z.string().min(10),
   type: z.string().min(3),
-  poster: z.string().url(),
+  poster: z.string().min(3),
   images: z.array(z.string().url()),
   date: z.string(),
   price: z
@@ -210,10 +211,25 @@ export default function Events() {
                       <FormItem className="w-full">
                         <FormLabel>{t("form.inputs.poster.label")}</FormLabel>
                         <FormControl>
-                          <Input
-                            placeholder={t("form.inputs.poster.placeholder")}
-                            {...field}
-                          />
+                          <CldUploadWidget
+                            uploadPreset="ml_default"
+                            onSuccess={(result, { widget }) => {
+                              // @ts-ignore
+                              form.setValue("poster", result?.info?.secure_url);
+                            }}
+                          >
+                            {({ open }) => {
+                              function handleOnClick() {
+                                form.setValue("poster", "");
+                                open();
+                              }
+                              return (
+                                <Button onClick={handleOnClick}>
+                                  Upload an Image
+                                </Button>
+                              );
+                            }}
+                          </CldUploadWidget>
                         </FormControl>
                         <FormDescription>
                           {t("form.inputs.poster.description")}

@@ -30,6 +30,7 @@ export default function Component() {
     if (!user.id) return console.log(user);
     try {
       const response = await axiosClient.get(`/cart/${user.id}`);
+      console.log(response.data);
       setCart(response.data);
     } catch (error) {
       console.error(error);
@@ -48,7 +49,7 @@ export default function Component() {
   return (
     <div className="container mx-auto p-4">
       <div className="flex flex-col gap-6 lg:flex-row">
-        <Overview cart={cart} />
+        <Overview cart={cart} setCart={setCart} />
         <div className="w-full lg:w-2/3">
           <h2 className="mb-4 text-2xl font-bold">{t("title")}</h2>
           <Table>

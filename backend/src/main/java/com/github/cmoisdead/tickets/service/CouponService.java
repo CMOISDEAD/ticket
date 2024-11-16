@@ -2,6 +2,7 @@ package com.github.cmoisdead.tickets.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,35 +51,32 @@ public class CouponService {
      * @throws Exception
      */
     public Coupon save(CouponCreateDTO dto) throws Exception {
-        Optional<User> optional = userRepository.findById(dto.userId());
-
-        if (optional.isEmpty())
-            throw new Error("User not found");
 
         Coupon build = Coupon.builder()
                 .code(dto.code())
                 .name(dto.name())
                 .description(dto.description())
-                .userId(dto.userId())
-                .isUsed(dto.isUsed())
                 .discount(dto.discount())
                 .expiryDate(dto.expiryDate())
                 .build();
 
         Coupon coupon = couponRepository.save(build);
 
-        User user = optional.get();
-        user.getCoupons().add(coupon.getId());
-        userRepository.save(user);
+        if (!Objects.equals(dto.userId(), "")) {
+            Optional<User> optional = userRepository.findById(dto.userId());
+            if (optional.isEmpty())
+                throw new Error("User not found");
 
-        EmailDTO message = new EmailDTO(
-                true,
-                "coupon",
-                "Nuevo Cupon Recibido",
-                user.getEmail(),
-                "QueBoleta.com",
-                "Felicidades recibiste el siguiente cupon: " + coupon.getName());
-        emailService.sendEmail(message);
+            User user = optional.get();
+            EmailDTO message = new EmailDTO(
+                    true,
+                    "coupon",
+                    "Nuevo Cupon Recibido",
+                    user.getEmail(),
+                    "QueBoleta.com",
+                    "Felicidades recibiste el siguiente cupon: " + coupon.getName());
+            emailService.sendEmail(message);
+        }
 
         return coupon;
     }
@@ -90,6 +88,13 @@ public class CouponService {
      */
     public void deleteById(String id) {
         couponRepository.deleteById(id);
+    }
+
+    public Coupon verifyCoupon(String code) throws Exception {
+        Optional<Coupon> coupon = couponRepository.findByCode(code);
+        if (coupon.isEmpty())
+            throw new Exception("Coupon not found");
+        return coupon.get();
     }
 
     /**

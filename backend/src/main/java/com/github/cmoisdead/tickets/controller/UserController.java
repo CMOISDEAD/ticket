@@ -41,8 +41,7 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable String id) {
         Optional<User> optional = userService.findById(id);
-        if (optional.isEmpty())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        if (optional.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         return ResponseEntity.status(HttpStatus.OK).body(optional.get());
     }
 
@@ -55,16 +54,14 @@ public class UserController {
     @GetMapping("/email/{email}")
     public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
         Optional<User> optional = userService.findByEmail(email);
-        if (optional.isEmpty())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        if (optional.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         return ResponseEntity.status(HttpStatus.OK).body(optional.get());
     }
 
     @GetMapping("/username/{username}")
     public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
         Optional<User> optional = userService.findByUsername(username);
-        if (optional.isEmpty())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        if (optional.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         return ResponseEntity.status(HttpStatus.OK).body(optional.get());
     }
 
@@ -95,18 +92,6 @@ public class UserController {
     }
 
     /**
-     * Deletes a user by ID.
-     *
-     * @param id The ID of the user to delete.
-     * @return ResponseEntity indicating success or failure.
-     */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable String id) {
-        userService.deleteById(id);
-        return ResponseEntity.status(HttpStatus.OK).body("User deleted successfully");
-    }
-
-    /**
      * Updates the user's password.
      *
      * @param id       The ID of the user whose password will be updated.
@@ -126,13 +111,32 @@ public class UserController {
             User user = userService.findByToken(token);
             return ResponseEntity.status(HttpStatus.OK).body(user);
         } catch (Exception e) {
-            ResponseCookie cookie = ResponseCookie.from("token", "")
-                    .httpOnly(true)
-                    .path("/")
-                    .build();
+            ResponseCookie cookie = ResponseCookie.from("token", "").httpOnly(true).path("/").build();
             HttpHeaders headers = new HttpHeaders();
             headers.add(HttpHeaders.SET_COOKIE, cookie.toString());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).headers(headers).build();
+        }
+    }
+
+    // desactivate and delete account
+    @DeleteMapping("/{id}/delete")
+    public ResponseEntity<String> deleteUser(@PathVariable String id) {
+        try {
+            userService.deleteById(id);
+            return ResponseEntity.status(HttpStatus.OK).body("User deleted successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+    }
+
+    @PutMapping("/{id}/desactivate")
+    public ResponseEntity<User> desactivateUser(@PathVariable String id) {
+        try {
+            User user = userService.desactivateUser(id);
+            return ResponseEntity.status(HttpStatus.OK).body(user);
+        } catch (Exception e) {
+            if (e.getMessage().equals("User not found")) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }
