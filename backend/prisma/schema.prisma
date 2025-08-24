@@ -1,0 +1,127 @@
+generator client {
+  provider = "prisma-client-js"
+  // output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  username  String
+  email     String   @unique
+  password  String
+  phone     String
+  address   String
+  role      UserRole @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Order     Order[]
+}
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
+model Event {
+  id          Int           @id @default(autoincrement())
+  name        String
+  description String
+  tickets     Ticket[]
+  category    EventCategory
+  date        DateTime
+  venue       Venue         @relation(fields: [venueId], references: [id])
+  venueId     Int
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+enum EventCategory {
+  CONCERT
+  THEATER
+  SPORT
+  FESTIVAL
+  OTHER
+}
+
+model Venue {
+  id        Int      @id @default(autoincrement())
+  name      String
+  address   String
+  city      String
+  Capacity  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Event     Event[]
+}
+
+model Ticket {
+  id        Int          @id @default(autoincrement())
+  price     Float
+  seat      String
+  Event     Event        @relation(fields: [eventId], references: [id])
+  eventId   Int
+  type      TicketType
+  status    TicketStatus
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  Order     Order        @relation(fields: [orderId], references: [id])
+  orderId   Int
+}
+
+enum TicketType {
+  REGULAR
+  VIP
+}
+
+enum TicketStatus {
+  AVAILABLE
+  RESERVED
+  SOLD
+}
+
+model Order {
+  id        Int         @id @default(autoincrement())
+  user      User        @relation(fields: [userId], references: [id])
+  userId    Int
+  tickets   Ticket[]
+  total     Float
+  status    OrderStatus @default(PENDING)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  Payment   Payment[]
+}
+
+enum OrderStatus {
+  PENDING
+  COMPLETED
+  CANCELLED
+}
+
+model Payment {
+  id        Int           @id @default(autoincrement())
+  order     Order         @relation(fields: [orderId], references: [id])
+  orderId   Int
+  ammount   Float
+  method    PaymentMethod
+  status    PaymentStatus @default(PENDING)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+enum PaymentMethod {
+  CARD
+  PAYPAL
+  TRANSFER
+  OTHER
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
