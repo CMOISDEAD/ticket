@@ -9,7 +9,7 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   name      String
   username  String
   email     String   @unique
@@ -28,14 +28,14 @@ enum UserRole {
 }
 
 model Event {
-  id          Int           @id @default(autoincrement())
+  id          String        @id @default(cuid())
   name        String
   description String
   tickets     Ticket[]
   category    EventCategory
   date        DateTime
   venue       Venue         @relation(fields: [venueId], references: [id])
-  venueId     Int
+  venueId     String
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 }
@@ -49,28 +49,28 @@ enum EventCategory {
 }
 
 model Venue {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   name      String
   address   String
   city      String
-  Capacity  Int
+  capacity  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   Event     Event[]
 }
 
 model Ticket {
-  id        Int          @id @default(autoincrement())
+  id        String       @id @default(cuid())
   price     Float
   seat      String
   Event     Event        @relation(fields: [eventId], references: [id])
-  eventId   Int
+  eventId   String
   type      TicketType
   status    TicketStatus
   createdAt DateTime     @default(now())
   updatedAt DateTime     @updatedAt
   Order     Order        @relation(fields: [orderId], references: [id])
-  orderId   Int
+  orderId   String
 }
 
 enum TicketType {
@@ -85,9 +85,9 @@ enum TicketStatus {
 }
 
 model Order {
-  id        Int         @id @default(autoincrement())
+  id        String      @id @default(cuid())
   user      User        @relation(fields: [userId], references: [id])
-  userId    Int
+  userId    String
   tickets   Ticket[]
   total     Float
   status    OrderStatus @default(PENDING)
@@ -103,9 +103,9 @@ enum OrderStatus {
 }
 
 model Payment {
-  id        Int           @id @default(autoincrement())
+  id        String        @id @default(cuid())
   order     Order         @relation(fields: [orderId], references: [id])
-  orderId   Int
+  orderId   String
   ammount   Float
   method    PaymentMethod
   status    PaymentStatus @default(PENDING)
