@@ -22,31 +22,35 @@ export class OrdersController {
   @ApiCreatedResponse({
     type: OrderEntity,
   })
-  create(@Body() createOrderDto: CreateOrderDto) {
-    return this.ordersService.create(createOrderDto);
+  async create(@Body() createOrderDto: CreateOrderDto) {
+    return new OrderEntity(await this.ordersService.create(createOrderDto));
   }
 
   @Get()
   @ApiOkResponse({ type: OrderEntity })
-  findAll() {
-    return this.ordersService.findAll();
+  async findAll() {
+    const orders = await this.ordersService.findAll();
+    return orders.map((order) => new OrderEntity(order));
   }
 
   @Get(':id')
   @ApiOkResponse({ type: OrderEntity })
-  findOne(@Param('id') id: string) {
-    return this.ordersService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    return new OrderEntity(await this.ordersService.findOne(id));
   }
 
   @Patch(':id')
   @ApiOkResponse({ type: OrderEntity })
-  update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
-    return this.ordersService.update(id, updateOrderDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateOrderDto: UpdateOrderDto,
+  ) {
+    return new OrderEntity(await this.ordersService.update(id, updateOrderDto));
   }
 
   @Delete(':id')
   @ApiOkResponse({ type: OrderEntity })
-  remove(@Param('id') id: string) {
-    return this.ordersService.remove(id);
+  async remove(@Param('id') id: string) {
+    return new OrderEntity(await this.ordersService.remove(id));
   }
 }

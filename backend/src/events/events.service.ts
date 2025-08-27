@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { PrismaService } from 'nestjs-prisma';
@@ -18,9 +18,14 @@ export class EventsService {
   }
 
   async findOne(id: string) {
-    return this.prisma.event.findUnique({
+    const event = await this.prisma.event.findUnique({
       where: { id },
     });
+    if (!event) {
+      throw new NotFoundException(`Ticket with ID ${id} not found`);
+    }
+
+    return event;
   }
 
   async update(id: string, updateEventDto: UpdateEventDto) {
