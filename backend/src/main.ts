@@ -19,6 +19,7 @@ async function bootstrap() {
     .setTitle('QueBoleta API')
     .setDescription('The QueBoleta API Documentation')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
