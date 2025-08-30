@@ -41,4 +41,28 @@ export class CreateEventDto {
   @IsNotEmpty()
   @ApiProperty()
   venueId: string;
+
+  @IsNumber()
+  @ApiProperty()
+  vipCapacity: number;
+
+  @IsNumber()
+  @ApiProperty()
+  vipAvailable: number;
+
+  @IsNumber()
+  @ApiProperty()
+  regularCapacity: number;
+
+  @IsNumber()
+  @ApiProperty()
+  regularAvailable: number;
+
+  @IsNumber()
+  @ApiProperty()
+  vipPrice: number;
+
+  @IsNumber()
+  @ApiProperty()
+  regularPrice: number;
 }

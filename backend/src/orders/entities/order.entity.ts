@@ -21,6 +21,9 @@ export class OrderEntity implements Order {
   updatedAt: Date;
 
   @ApiProperty()
+  eventId: string;
+
+  @ApiProperty()
   userId: string;
 
   @ApiProperty({ required: false, type: UserEntity })

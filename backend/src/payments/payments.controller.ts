@@ -27,6 +27,18 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
 
+  @Get('/success')
+  success() {}
+
+  @Get('/failure')
+  failure() {}
+
+  @Get('/pending')
+  pending() {}
+
+  @Get('/webhook')
+  webhook() {}
+
   @Post()
   @ApiCreatedResponse({ type: PaymentEntity })
   create(@Body() createPaymentDto: CreatePaymentDto) {

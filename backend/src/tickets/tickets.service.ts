@@ -7,9 +7,47 @@ import { PrismaService } from 'nestjs-prisma';
 export class TicketsService {
   constructor(private prisma: PrismaService) {}
 
+  // FIX: elimino esta funcion ?
   async create(createTicketDto: CreateTicketDto) {
-    return await this.prisma.ticket.create({
-      data: createTicketDto,
+    return this.prisma.$transaction(async (tx) => {
+      const event = await tx.event.findUnique({
+        where: {
+          id: createTicketDto.eventId,
+        },
+      });
+
+      if (!event) {
+        throw new NotFoundException(
+          `Event with ID ${createTicketDto.eventId} not found`,
+        );
+      }
+
+      if (createTicketDto.type === 'REGULAR') {
+        if (event.regularAvailable >= 0)
+          throw new NotFoundException('No regular tickets available');
+      } else {
+        if (event.vipAvailable >= 0)
+          throw new NotFoundException('No vip tickets available');
+      }
+
+      const ticket = await tx.ticket.create({
+        data: {
+          ...createTicketDto,
+          status: 'SOLD',
+        },
+      });
+
+      await tx.event.update({
+        where: { id: event.id },
+        data:
+          createTicketDto.type === 'REGULAR'
+            ? { regularAvailable: { decrement: 1 } }
+            : {
+                vipAvailable: { decrement: 1 },
+              },
+      });
+
+      return ticket;
     });
   }
 

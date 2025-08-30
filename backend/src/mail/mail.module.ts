@@ -11,8 +11,8 @@ import { MailService } from './mail.service';
           port: +process.env.MAIL_PORT!,
           secure: false,
           auth: {
-            user: 'destiney.thompson@ethereal.email',
-            pass: 'hpc87snNgf8QYafvCs',
+            user: process.env.MAIL_FROM,
+            pass: process.env.MAIL_PASS,
           },
         },
         defaults: {

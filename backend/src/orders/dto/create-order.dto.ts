@@ -1,12 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsArray,
-  IsEnum,
-  IsNotEmpty,
-  IsNumber,
-  IsString,
-  Min,
-} from 'class-validator';
+import { IsArray, IsNotEmpty, IsNumber, IsString, Min } from 'class-validator';
 
 export class CreateOrderDto {
   @IsString()
@@ -14,18 +7,22 @@ export class CreateOrderDto {
   @ApiProperty()
   userId: string;
 
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  eventId: string;
+
   @IsNumber()
   @Min(0)
   @ApiProperty()
   total: number;
 
-  @IsEnum(['PENDING', 'COMPLETED', 'CANCELLED'], {
-    message: "Status must be 'PENDING', 'COMPLETED' or 'CANCELLED'.",
-  })
-  @ApiProperty({ enum: ['PENDING', 'COMPLETED', 'CANCELLED'] })
-  status: 'PENDING' | 'COMPLETED' | 'CANCELLED';
-
   @IsArray()
-  @ApiProperty({ type: [String] })
-  ticketIds: string[];
+  @ApiProperty({ type: 'array' })
+  tickets: TicketType[];
 }
+
+type TicketType = {
+  type: 'VIP' | 'REGULAR';
+  quantity: number;
+};

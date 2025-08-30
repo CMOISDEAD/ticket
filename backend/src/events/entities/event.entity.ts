@@ -26,6 +26,24 @@ export class EventEntity implements Event {
   venueId: string;
 
   @ApiProperty()
+  vipCapacity: number;
+
+  @ApiProperty()
+  vipAvailable: number;
+
+  @ApiProperty()
+  regularCapacity: number;
+
+  @ApiProperty()
+  regularAvailable: number;
+
+  @ApiProperty()
+  vipPrice: number;
+
+  @ApiProperty()
+  regularPrice: number;
+
+  @ApiProperty()
   createdAt: Date;
 
   @ApiProperty()
