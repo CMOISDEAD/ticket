@@ -21,7 +21,6 @@ export class EventEntity implements Event {
 
   @ApiProperty()
   date: Date;
-
   @ApiProperty()
   venueId: string;
 
@@ -36,6 +35,18 @@ export class EventEntity implements Event {
 
   @ApiProperty()
   regularAvailable: number;
+
+  @ApiProperty()
+  regularReserved: number;
+
+  @ApiProperty()
+  regularSold: number;
+
+  @ApiProperty()
+  vipReserved: number;
+
+  @ApiProperty()
+  vipSold: number;
 
   @ApiProperty()
   vipPrice: number;

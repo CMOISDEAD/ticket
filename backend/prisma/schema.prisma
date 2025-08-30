@@ -38,8 +38,12 @@ model Event {
   venueId          String
   vipCapacity      Int
   vipAvailable     Int
+  vipSold          Int           @default(0)
+  vipReserved      Int           @default(0)
   regularCapacity  Int
   regularAvailable Int
+  regularSold      Int           @default(0)
+  regularReserved  Int           @default(0)
   vipPrice         Float
   regularPrice     Float
   order            Order[]
@@ -111,14 +115,15 @@ enum OrderStatus {
 }
 
 model Payment {
-  id        String        @id @default(cuid())
-  order     Order         @relation(fields: [orderId], references: [id])
-  orderId   String
-  ammount   Float
-  method    PaymentMethod
-  status    PaymentStatus @default(PENDING)
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
+  id          String        @id @default(cuid())
+  order       Order         @relation(fields: [orderId], references: [id])
+  mpPaymentId String        @default("")
+  orderId     String
+  ammount     Float
+  method      PaymentMethod
+  status      PaymentStatus @default(PENDING)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
 }
 
 enum PaymentMethod {
@@ -128,8 +133,9 @@ enum PaymentMethod {
   OTHER
 }
 
+// TODO: maybe add a expired?
 enum PaymentStatus {
   PENDING
-  COMPLETED
-  FAILED
+  APPROVED
+  REJECTED
 }

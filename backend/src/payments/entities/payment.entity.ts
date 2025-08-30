@@ -6,6 +6,9 @@ export class PaymentEntity implements Payment {
   id: string;
 
   @ApiProperty()
+  mpPaymentId: string;
+
+  @ApiProperty()
   orderId: string;
 
   @ApiProperty()
@@ -17,9 +20,9 @@ export class PaymentEntity implements Payment {
   method: 'CARD' | 'PAYPAL' | 'TRANSFER' | 'OTHER';
 
   @ApiProperty({
-    enum: ['PENDING', 'COMPLETED', 'FAILED'],
+    enum: ['PENDING', 'APPROVED', 'REJECTED'],
   })
-  status: 'PENDING' | 'COMPLETED' | 'FAILED';
+  status: 'PENDING' | 'APPROVED' | 'REJECTED';
 
   @ApiProperty()
   createdAt: Date;

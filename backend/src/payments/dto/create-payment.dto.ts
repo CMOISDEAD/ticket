@@ -17,10 +17,4 @@ export class CreatePaymentDto {
   })
   @ApiProperty({ enum: ['CARD', 'PAYPAL', 'TRANSFER', 'OTHER'] })
   method: 'CARD' | 'PAYPAL' | 'TRANSFER' | 'OTHER';
-
-  @IsEnum(['PENDING', 'COMPLETED', 'FAILED'], {
-    message: "Status must be 'PENDING', 'COMPLETED' or 'FAILED'.",
-  })
-  @ApiProperty({ enum: ['PENDING', 'COMPLETED', 'FAILED'] })
-  status: 'PENDING' | 'COMPLETED' | 'FAILED';
 }

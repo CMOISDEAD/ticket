@@ -17,6 +17,7 @@ export class CreateOrderDto {
   @ApiProperty()
   total: number;
 
+  // TODO: add this to the swagger
   @IsArray()
   @ApiProperty({ type: 'array' })
   tickets: TicketType[];

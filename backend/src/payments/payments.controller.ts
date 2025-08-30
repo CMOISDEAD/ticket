@@ -18,26 +18,34 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { PaymentEntity } from './entities/payment.entity';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+//import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @ApiTags('Payments')
 @ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
+//@UseGuards(JwtAuthGuard)
 @Controller('payments')
 export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
 
   @Get('/success')
-  success() {}
+  success() {
+    return 'Success';
+  }
 
   @Get('/failure')
-  failure() {}
+  failure() {
+    return 'Failure';
+  }
 
   @Get('/pending')
-  pending() {}
+  pending() {
+    return 'Pending';
+  }
 
-  @Get('/webhook')
-  webhook() {}
+  @Post('/webhook')
+  webhook(@Body() mpPayloadDto: any) {
+    return this.paymentsService.webhook(mpPayloadDto);
+  }
 
   @Post()
   @ApiCreatedResponse({ type: PaymentEntity })

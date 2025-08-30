@@ -44,6 +44,9 @@ importers:
       cloudinary:
         specifier: ^2.7.0
         version: 2.7.0
+      mercadopago:
+        specifier: ^2.8.0
+        version: 2.8.0
       nestjs-prisma:
         specifier: ^0.25.0
         version: 0.25.0(@nestjs/common@11.1.6(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@prisma/client@6.14.0(prisma@6.14.0(typescript@5.9.2))(typescript@5.9.2))(chokidar@4.0.3)(prisma@6.14.0(typescript@5.9.2))
@@ -3427,6 +3430,9 @@ packages:
 
   mensch@0.3.4:
     resolution: {integrity: sha512-IAeFvcOnV9V0Yk+bFhYR07O3yNina9ANIN5MoXBKYJ/RLYPurd2d0yw14MDhpr9/momp0WofT1bPUh3hkzdi/g==}
+
+  mercadopago@2.8.0:
+    resolution: {integrity: sha512-TInH/yGB1JqWaJv41Ske75ryqsN1ffTPMThSTEpt+sDsFDAG8ecahTLw41Az1VuL0gwa+qOHp9SfTyU27Smwew==}
 
   merge-descriptors@2.0.0:
     resolution: {integrity: sha512-Snk314V5ayFLhp3fkUREub6WtjBfPdCPY1Ln8/8munuLuiYhsABgBVWsozAG+MWMbVEvcdcpbi9R7ww22l9Q3g==}
@@ -9028,6 +9034,13 @@ snapshots:
   mensch@0.3.4:
     optional: true
 
+  mercadopago@2.8.0:
+    dependencies:
+      node-fetch: 2.7.0
+      uuid: 9.0.1
+    transitivePeerDependencies:
+      - encoding
+
   merge-descriptors@2.0.0: {}
 
   merge-stream@2.0.0: {}
@@ -9472,7 +9485,6 @@ snapshots:
   node-fetch@2.7.0:
     dependencies:
       whatwg-url: 5.0.0
-    optional: true
 
   node-gyp-build@4.8.4: {}
 
@@ -10310,8 +10322,7 @@ snapshots:
       '@tokenizer/token': 0.3.0
       ieee754: 1.2.1
 
-  tr46@0.0.3:
-    optional: true
+  tr46@0.0.3: {}
 
   tree-kill@1.2.2: {}
 
@@ -10509,8 +10520,7 @@ snapshots:
       - encoding
     optional: true
 
-  webidl-conversions@3.0.1:
-    optional: true
+  webidl-conversions@3.0.1: {}
 
   webpack-node-externals@3.0.0: {}
 
@@ -10552,7 +10562,6 @@ snapshots:
     dependencies:
       tr46: 0.0.3
       webidl-conversions: 3.0.1
-    optional: true
 
   which@1.3.1:
     dependencies:
