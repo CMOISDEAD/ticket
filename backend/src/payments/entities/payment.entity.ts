@@ -6,23 +6,57 @@ export class PaymentEntity implements Payment {
   id: string;
 
   @ApiProperty()
-  mpPaymentId: string;
-
-  @ApiProperty()
   orderId: string;
 
   @ApiProperty()
-  ammount: number;
+  amount: number;
 
   @ApiProperty({
-    enum: ['CARD', 'PAYPAL', 'TRANSFER', 'OTHER'],
+    enum: ['DEBIT_CARD', 'CREDIT_CARD', 'PAYPAL', 'TRANSFER', 'PSE', 'OTHER'],
   })
-  method: 'CARD' | 'PAYPAL' | 'TRANSFER' | 'OTHER';
+  method:
+    | 'DEBIT_CARD'
+    | 'CREDIT_CARD'
+    | 'PAYPAL'
+    | 'TRANSFER'
+    | 'PSE'
+    | 'OTHER';
 
   @ApiProperty({
-    enum: ['PENDING', 'APPROVED', 'REJECTED'],
+    enum: [
+      'PENDING',
+      'APPROVED',
+      'REJECTED',
+      'EXPIRED',
+      'CANCELLED',
+      'REFUNDED',
+    ],
   })
-  status: 'PENDING' | 'APPROVED' | 'REJECTED';
+  status:
+    | 'PENDING'
+    | 'APPROVED'
+    | 'REJECTED'
+    | 'EXPIRED'
+    | 'CANCELLED'
+    | 'REFUNDED';
+
+  @ApiProperty()
+  mpPreferenceId: number;
+
+  @ApiProperty()
+  mpPaymentId: number;
+
+  @ApiProperty()
+  mpStatusDetail: string;
+
+  @ApiProperty()
+  mpCurrency: string;
+
+  @ApiProperty()
+  mpTransactionAmount: number;
+
+  @ApiProperty()
+  mpNetReceivedAmount: number;
 
   @ApiProperty()
   createdAt: Date;

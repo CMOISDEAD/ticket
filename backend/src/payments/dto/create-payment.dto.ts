@@ -12,9 +12,18 @@ export class CreatePaymentDto {
   @ApiProperty()
   ammount: number;
 
-  @IsEnum(['CARD', 'PAYPAL', 'TRANSFER', 'OTHER'], {
-    message: "Method must be 'CARD', 'PAYPAL', 'TRANSFER' or 'OTHER'.",
+  @IsEnum(['DEBIT_CARD', 'CREDIT_CARD', 'PAYPAL', 'TRANSFER', 'PSE', 'OTHER'], {
+    message:
+      "Method must be 'CREDIT_CARD', 'DEDBIT_CARD', 'TRANSFER' or 'OTHER'.",
   })
-  @ApiProperty({ enum: ['CARD', 'PAYPAL', 'TRANSFER', 'OTHER'] })
-  method: 'CARD' | 'PAYPAL' | 'TRANSFER' | 'OTHER';
+  @ApiProperty({
+    enum: ['DEBIT_CARD', 'CREDIT_CARD', 'PAYPAL', 'TRANSFER', 'PSE', 'OTHER'],
+  })
+  method:
+    | 'DEBIT_CARD'
+    | 'CREDIT_CARD'
+    | 'PAYPAL'
+    | 'TRANSFER'
+    | 'PSE'
+    | 'OTHER';
 }

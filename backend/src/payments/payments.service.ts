@@ -6,6 +6,7 @@ import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { PrismaService } from 'nestjs-prisma';
 import MercadoPagoConfig, { Payment, Preference } from 'mercadopago';
 import { OrdersService } from 'src/orders/orders.service';
+import { MailService } from 'src/mail/mail.service';
 
 @Injectable()
 export class PaymentsService {
@@ -13,6 +14,7 @@ export class PaymentsService {
   constructor(
     private prisma: PrismaService,
     private ordersService: OrdersService,
+    private mailService: MailService,
   ) {
     this.client = new MercadoPagoConfig({
       accessToken: process.env.MP_ACCESS_TOKEN!,
@@ -28,6 +30,7 @@ export class PaymentsService {
     });
 
     if (response.status === 'approved') {
+      console.log('payment approved');
       const payment = await this.prisma.payment.update({
         where: {
           id: response.external_reference!,
@@ -37,8 +40,9 @@ export class PaymentsService {
         },
       });
       await this.ordersService.approved(payment.orderId);
+      await this.mailService.paymentAprovedEmail(payment.orderId);
     } else if (response.status === 'rejected') {
-      console.log('rejected payment');
+      console.log('payment rejected');
       const payment = await this.prisma.payment.update({
         where: {
           id: response.external_reference!,
@@ -47,7 +51,21 @@ export class PaymentsService {
           status: 'REJECTED',
         },
       });
+
+      // add mercadopago properties
+      await this.prisma.payment.update({
+        where: { id: response.external_reference! },
+        data: {
+          mpPaymentId: response.id,
+          mpStatusDetail: response.status_detail,
+          mpCurrency: response.currency_id,
+          mpTransactionAmount: response.transaction_amount,
+          mpNetReceivedAmount: response.net_amount,
+        },
+      });
+
       await this.ordersService.rejected(payment.orderId);
+      await this.mailService.paymentRejectedEmail(payment.orderId);
     }
   }
 
@@ -66,7 +84,7 @@ export class PaymentsService {
 
     const payment = await this.prisma.payment.create({
       data: {
-        ammount: order.total,
+        amount: order.total,
         status: 'PENDING',
         method,
         order: {

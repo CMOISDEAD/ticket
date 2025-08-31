@@ -92,6 +92,7 @@ enum TicketStatus {
   AVAILABLE
   RESERVED
   SOLD
+  EXPIRED
 }
 
 model Order {
@@ -112,30 +113,40 @@ enum OrderStatus {
   PENDING
   COMPLETED
   CANCELLED
+  EXPIRED
 }
 
 model Payment {
-  id          String        @id @default(cuid())
-  order       Order         @relation(fields: [orderId], references: [id])
-  mpPaymentId String        @default("")
-  orderId     String
-  ammount     Float
-  method      PaymentMethod
-  status      PaymentStatus @default(PENDING)
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  id                  String        @id @default(cuid())
+  order               Order         @relation(fields: [orderId], references: [id])
+  mpPreferenceId      Int           @default(0)
+  mpPaymentId         Int           @default(0)
+  mpStatusDetail      String?       @default("")
+  orderId             String
+  mpCurrency          String        @default("COP")
+  amount              Float
+  mpTransactionAmount Float?        @default(0)
+  mpNetReceivedAmount Float?        @default(0)
+  method              PaymentMethod
+  status              PaymentStatus @default(PENDING)
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
 }
 
 enum PaymentMethod {
-  CARD
+  CREDIT_CARD
+  DEBIT_CARD
   PAYPAL
   TRANSFER
+  PSE
   OTHER
 }
 
-// TODO: maybe add a expired?
 enum PaymentStatus {
   PENDING
   APPROVED
   REJECTED
+  CANCELLED
+  REFUNDED
+  EXPIRED
 }

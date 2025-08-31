@@ -10,9 +10,9 @@ export class OrderEntity implements Order {
   total: number;
 
   @ApiProperty({
-    enum: ['PENDING', 'COMPLETED', 'CANCELLED'],
+    enum: ['PENDING', 'COMPLETED', 'CANCELLED', 'EXPIRED'],
   })
-  status: 'PENDING' | 'COMPLETED' | 'CANCELLED';
+  status: 'PENDING' | 'COMPLETED' | 'CANCELLED' | 'EXPIRED';
 
   @ApiProperty()
   createdAt: Date;

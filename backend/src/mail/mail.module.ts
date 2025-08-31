@@ -1,6 +1,9 @@
 import { Module } from '@nestjs/common';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { MailService } from './mail.service';
+import { PrismaModule } from 'nestjs-prisma';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import * as path from 'path';
 
 @Module({
   imports: [
@@ -18,8 +21,19 @@ import { MailService } from './mail.service';
         defaults: {
           from: `"No Reply" <${process.env.MAIL_FROM}>`,
         },
+        template: {
+          dir: path.join(process.cwd(), 'dist', 'mail', 'templates', 'pages'),
+          adapter: new HandlebarsAdapter(),
+          options: {
+            strict: true,
+            // partials: {
+            //   dir: path.join(__dirname, 'templates/partials'),
+            // },
+          },
+        },
       }),
     }),
+    PrismaModule,
   ],
   providers: [MailService],
   exports: [MailService],

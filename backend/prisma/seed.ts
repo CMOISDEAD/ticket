@@ -11,7 +11,7 @@ async function main() {
 
   const user1 = await prisma.user.upsert({
     where: {
-      email: 'camilo@gmail.com',
+      email: 'camilodavina@gmail.com',
     },
     update: {
       password: password1,
@@ -19,7 +19,7 @@ async function main() {
     create: {
       name: 'camilo esteban davila',
       username: 'camilodavila',
-      email: 'camilo@gmail.com',
+      email: 'camilodavina@gmail.com',
       password: password1,
       phone: '1234567890',
       address: '123 Main st, 123 house',
@@ -102,13 +102,13 @@ async function main() {
             event: { connect: { id: event.id } },
             price: 150_000,
             type: 'REGULAR',
-            status: 'SOLD',
+            status: 'RESERVED',
           },
           {
             event: { connect: { id: event.id } },
             price: 150_000,
             type: 'REGULAR',
-            status: 'SOLD',
+            status: 'RESERVED',
           },
         ],
       },
