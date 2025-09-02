@@ -6,6 +6,7 @@ import { useTicketStore } from "@/store/useTicketStore";
 import { toast } from "@/hooks/use-toast";
 import { useRouter } from "@/navigation";
 import { Footer } from "@/components/footer/footer";
+import { AutoLogout } from "@/components/auto-logout";
 
 interface Props {
   children: React.ReactNode;
@@ -42,6 +43,7 @@ export default function RootLayout({ children }: Props) {
       <Navbar />
       <main className="container mx-auto my-5 min-h-[59vh]">{children}</main>
       <Footer />
+      <AutoLogout />
     </div>
   );
 }

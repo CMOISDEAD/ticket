@@ -5,8 +5,6 @@ import { Provider } from "@/components/provider";
 import { Toaster } from "@/components/ui/toaster";
 import { getMessages } from "next-intl/server";
 import localFont from "next/font/local";
-import { locales } from "@/config";
-import Script from "next/script";
 
 const spaceMono = localFont({
   src: [

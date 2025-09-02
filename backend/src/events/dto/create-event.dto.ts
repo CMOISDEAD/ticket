@@ -1,15 +1,30 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  IsArray,
   IsDateString,
   IsEnum,
   IsNotEmpty,
   IsNumber,
   IsString,
   MaxLength,
-  Min,
 } from 'class-validator';
 
 export class CreateEventDto {
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  logo: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  poster: string;
+
+  @IsArray()
+  @IsNotEmpty()
+  @ApiProperty({ isArray: true })
+  images: string[];
+
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
@@ -17,7 +32,7 @@ export class CreateEventDto {
 
   @IsString()
   @IsNotEmpty()
-  @MaxLength(300)
+  @MaxLength(600)
   @ApiProperty()
   description: string;
 
@@ -27,11 +42,6 @@ export class CreateEventDto {
   })
   @ApiProperty({ enum: ['CONCERT', 'THEATER', 'SPORT', 'FESTIVAL', 'OTHER'] })
   category: 'CONCERT' | 'THEATER' | 'SPORT' | 'FESTIVAL' | 'OTHER';
-
-  @IsNumber()
-  @Min(0)
-  @ApiProperty()
-  price: number;
 
   @IsDateString()
   @ApiProperty()

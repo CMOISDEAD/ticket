@@ -19,7 +19,7 @@ import { Pen, RefreshCw, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/navigation";
 
-export const EventList = () => {
+export const EventList = ({ onEdit }: { onEdit: (id: string) => void }) => {
   const [fetching, setFetching] = useState(false);
   const [events, setEvents] = useState([]);
   const t = useTranslations("dashboard.events");
@@ -65,25 +65,37 @@ export const EventList = () => {
 
   return (
     <Card className="w-2/3 overflow-auto">
-      <CardHeader className="flex flex-row content-center justify-between">
-        <div>
-          <CardTitle>{t("overview.title")}</CardTitle>
-          <CardDescription>{t("overview.description")}</CardDescription>
-        </div>
-        <Button size="icon" onClick={getEvents} disabled={fetching}>
-          <RefreshCw className={fetching ? "animate-spin" : ""} />
-        </Button>
-      </CardHeader>
-      <CardContent className="flex flex-wrap gap-4 overflow-auto">
-        {events.length ? (
-          events.map((event: AppEventType) => (
-            <EventsCard key={event.id} event={event} remove={handleRemove} />
-          ))
-        ) : (
-          <p className="text-center text-muted-foreground">
-            {t("overview.not_found")}
-          </p>
-        )}
+      <CardHeader>...</CardHeader>
+      <CardContent className="flex flex-wrap gap-4">
+        {events.map((event: AppEventType) => (
+          <Card key={event.id} className="flex w-[14rem] flex-col">
+            <CardHeader>
+              <img
+                src={event.poster}
+                alt={event.name}
+                className="h-[100px] w-full object-cover"
+              />
+              <CardTitle>{event.name}</CardTitle>
+              <CardDescription>
+                {new Date(event.date).toLocaleDateString()} <br />
+                VIP: ${event.vipPrice} / {event.vipCapacity}
+                <br />
+                REG: ${event.regularPrice} / {event.regularCapacity}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="line-clamp-2">{event.description}</p>
+            </CardContent>
+            <CardFooter className="flex gap-2">
+              <Button onClick={() => onEdit(event.id)}>
+                <Pen />
+              </Button>
+              <Button variant="destructive" onClick={() => remove(event.id)}>
+                <Trash2 />
+              </Button>
+            </CardFooter>
+          </Card>
+        ))}
       </CardContent>
     </Card>
   );

@@ -10,7 +10,8 @@ datasource db {
 
 model User {
   id        String   @id @default(cuid())
-  name      String
+  fullnames String
+  lastnames String
   username  String
   email     String   @unique
   password  String
@@ -46,6 +47,9 @@ model Event {
   regularReserved  Int           @default(0)
   vipPrice         Float
   regularPrice     Float
+  poster           String
+  images           String[]
+  logo             String        @default("")
   order            Order[]
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
@@ -104,7 +108,7 @@ model Order {
   tickets   Ticket[]
   total     Float
   status    OrderStatus @default(PENDING)
-  payment   Payment[]
+  payments  Payment[]
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
 }

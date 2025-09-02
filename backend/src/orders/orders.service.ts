@@ -90,7 +90,7 @@ export class OrdersService {
     return await this.prisma.order.findMany({
       include: {
         tickets: true,
-        payment: true,
+        payments: true,
       },
     });
   }
@@ -100,7 +100,12 @@ export class OrdersService {
       where: { id },
       include: {
         tickets: true,
-        payment: true,
+        payments: true,
+        event: {
+          include: {
+            venue: true,
+          },
+        },
       },
     });
 

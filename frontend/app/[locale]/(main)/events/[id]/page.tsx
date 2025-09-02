@@ -21,6 +21,7 @@ import { formatDistanceToNow } from "date-fns";
 import { useTicketStore } from "@/store/useTicketStore";
 import { toast } from "@/hooks/use-toast";
 import { useTranslations } from "next-intl";
+import { BuyModal } from "@/components/events/buy-modal";
 
 export default function Page() {
   const t = useTranslations("events");
@@ -34,7 +35,8 @@ export default function Page() {
   const router = useRouter();
 
   useEffect(() => {
-    const check = user.cart.eventsIds?.includes(id as string);
+    // const check = user.cart.eventsIds?.includes(id as string);
+    const check = false;
     setIsAdded(check);
 
     axiosClient
@@ -79,15 +81,15 @@ export default function Page() {
         {isLoading && <Loader2 className="h-7 w-7 animate-spin" />}
         {!isLoading && event ? (
           <div className="relative md:flex">
-            <div className="h-full md:w-1/3">
+            <div className="flex h-full flex-col gap-8 md:w-1/3">
               <AspectRatio ratio={1 / 1}>
                 <img
                   src={event.poster}
                   alt="Event poster"
-                  className="object-cover"
+                  className="w-full object-cover"
                 />
               </AspectRatio>
-              <div className="flex items-center justify-center">
+              <div className="flex w-fit items-center justify-center bg-stone-50 p-2">
                 <QRCode
                   viewBox={`0 0 256 256`}
                   value={`http://localhost:3000${path}`}
@@ -95,7 +97,7 @@ export default function Page() {
                 />
               </div>
             </div>
-            <div className="md:w-2/3 md:p-6">
+            <div className="flex-1 md:p-6">
               <CardHeader>
                 <div className="flex flex-col items-start justify-between md:flex-row">
                   <div>
@@ -103,16 +105,29 @@ export default function Page() {
                       {event.name}
                     </CardTitle>
                     <Badge variant="secondary" className="mb-4">
-                      {event.type}
+                      {event.category}
                     </Badge>
                   </div>
                   <div className="text-right">
-                    <p className="text-2xl font-bold">
-                      {event.price.toLocaleString("en-US", {
-                        style: "currency",
-                        currency: "USD",
-                      })}
-                    </p>
+                    <ul>
+                      <li>
+                        <p className="text-2xl font-bold">
+                          {event.regularPrice.toLocaleString("en-US", {
+                            style: "currency",
+                            currency: "USD",
+                          })}
+                        </p>
+                      </li>
+                      <li>
+                        <p className="text-2xl font-bold">
+                          {event.vipPrice.toLocaleString("en-US", {
+                            style: "currency",
+                            currency: "USD",
+                          })}
+                        </p>
+                      </li>
+                    </ul>
+
                     <p className="text-sm text-muted-foreground">
                       {t("per_person")}
                     </p>
@@ -129,7 +144,7 @@ export default function Page() {
                 </div>
                 <div className="mb-4 flex items-center">
                   <MapPinIcon className="mr-2 h-4 w-4" />
-                  <span>{event.address}</span>
+                  <span>{event.name}</span>
                 </div>
                 <div className="mb-6">
                   <h3 className="mb-2 font-semibold">{t("seats")}</h3>
@@ -143,14 +158,17 @@ export default function Page() {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button
-                  className="w-full"
-                  onClick={handleAdd}
-                  disabled={isAdded}
-                >
-                  <ShoppingCart className="mr-2 h-4 w-4" />
-                  {t("cart")}
-                </Button>
+                <div className="flex w-full flex-col gap-2">
+                  <Button
+                    className="w-full"
+                    onClick={handleAdd}
+                    disabled={isAdded}
+                  >
+                    <ShoppingCart className="mr-2 h-4 w-4" />
+                    {t("cart")}
+                  </Button>
+                  <BuyModal event={event} userId={user.id} />
+                </div>
               </CardFooter>
             </div>
           </div>

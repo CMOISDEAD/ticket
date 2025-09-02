@@ -17,7 +17,8 @@ async function main() {
       password: password1,
     },
     create: {
-      name: 'camilo esteban davila',
+      fullnames: 'camilo',
+      lastnames: 'davila',
       username: 'camilodavila',
       email: 'camilodavina@gmail.com',
       password: password1,
@@ -35,7 +36,8 @@ async function main() {
       password: password2,
     },
     create: {
-      name: 'esteban davila',
+      fullnames: 'esteban',
+      lastnames: 'davila',
       username: 'estebandavila',
       email: 'esteban@gmail.com',
       password: password2,
@@ -64,6 +66,9 @@ async function main() {
     },
     update: {},
     create: {
+      logo: '',
+      poster: '',
+      images: [],
       name: 'BILLY IDOL | IT´S A NICE DAY TO… TOUR AGAIN',
       description:
         'Billy Idol, leyenda del rock y una de las voces más emblemáticas del punk/new wave de los años 80, llega al Movistar Arena de Bogotá el martes 25 de noviembre con su gira It’s a Nice Day To… Tour Again!. Con más de cuatro décadas de carrera que arrancaron en la escena punk londinense y lo llevaron al estrellato con clásicos como “Rebel Yell” y “White Wedding”, Idol ha demostrado su capacidad de conectar con audiencias múltiples generaciones. Su reactivación con shows sold out en Europa y Estados Unidos ha reavivado la atención global hacia su música, reafirmando su impacto y relevancia.',

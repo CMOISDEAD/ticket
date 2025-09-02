@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -19,6 +20,7 @@ import {
 } from '@nestjs/swagger';
 import { UserEntity } from './entities/user.entity';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { Request } from 'express';
 
 @ApiTags('Users')
 @ApiBearerAuth()
@@ -26,6 +28,23 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+
+  @Get('/orders')
+  @ApiOkResponse({ isArray: true })
+  getUserOrders(@Req() req: Request) {
+    // TODO: this code sucks...
+    const user = req.user;
+    if (user) return this.usersService.getUserOrders(user['id'] as string);
+  }
+
+  @Get('/me')
+  @ApiOkResponse({ type: UserEntity })
+  me(@Req() req: Request) {
+    const user = req.user;
+    // @ts-expect-error user.id exist
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    return this.usersService.me(user.id);
+  }
 
   @Post()
   @ApiCreatedResponse({ type: UserEntity })

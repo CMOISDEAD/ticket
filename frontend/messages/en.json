@@ -15,6 +15,7 @@
     "register": "Register",
     "profile": "Profile",
     "settings": "Settings",
+    "orders": "Orders",
     "help": "Help",
     "logout": "Logout"
   },
@@ -247,6 +248,11 @@
         "label": "Address",
         "placeholder": "Enter your address",
         "description": "The address must be unique"
+      },
+      "phone": {
+        "label": "Phone",
+        "placeholder": "Enter your phone number.",
+        "description": "The phone number must be unique."
       }
     }
   },

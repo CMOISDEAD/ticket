@@ -6,6 +6,15 @@ export class EventEntity implements Event {
   id: string;
 
   @ApiProperty()
+  logo: string;
+
+  @ApiProperty()
+  poster: string;
+
+  @ApiProperty()
+  images: string[];
+
+  @ApiProperty()
   name: string;
 
   @ApiProperty()

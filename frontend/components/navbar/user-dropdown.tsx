@@ -7,6 +7,7 @@ import {
   HelpCircle,
   LogOut,
   LayoutDashboard,
+  Receipt,
 } from "lucide-react";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -65,6 +66,12 @@ export default function UserDropdown() {
             <Link href="/profile">
               <User className="mr-2 h-4 w-4" />
               <span>{t("profile")}</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/orders">
+              <Receipt className="mr-2 h-4 w-4" />
+              <span>{t("orders")}</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>

@@ -21,7 +21,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "@/navigation";
 import { useTranslations } from "next-intl";
 
-export default function Component() {
+export default function CartPage() {
   const [cart, setCart] = useState<AppCartType>();
   const { user, fetchUser } = useTicketStore((state) => state);
   const t = useTranslations("cart");

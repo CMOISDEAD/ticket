@@ -26,13 +26,14 @@ import { useTranslations } from "next-intl";
 
 const schema = z
   .object({
-    firstname: z.string(),
-    lastname: z.string(),
+    fullnames: z.string(),
+    lastnames: z.string(),
     username: z.string().min(4),
     email: z.string().email(),
     password: z.string().min(6),
     repeatPassword: z.string().min(6).optional(),
-    adress: z.string(),
+    address: z.string(),
+    phone: z.string(),
     dob: z.date(),
   })
   .refine((data) => data.password === data.repeatPassword, {
@@ -49,13 +50,13 @@ export default function Register() {
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
-      firstname: "",
-      lastname: "",
+      fullnames: "",
+      lastnames: "",
       username: "",
       email: "",
       password: "",
       repeatPassword: "",
-      adress: "",
+      address: "",
       dob: new Date(),
     },
   });
@@ -105,7 +106,7 @@ export default function Register() {
               <div className="flex gap-4">
                 <FormField
                   control={form.control}
-                  name="firstname"
+                  name="fullnames"
                   render={({ field }) => (
                     <FormItem className="w-full">
                       <FormLabel>{t("inputs.firstname.label")}</FormLabel>
@@ -124,7 +125,7 @@ export default function Register() {
                 />
                 <FormField
                   control={form.control}
-                  name="lastname"
+                  name="lastnames"
                   render={({ field }) => (
                     <FormItem className="w-full">
                       <FormLabel>{t("inputs.lastname.label")}</FormLabel>
@@ -221,25 +222,46 @@ export default function Register() {
                   )}
                 />
               </div>
-              <FormField
-                control={form.control}
-                name="adress"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>{t("inputs.address.label")}</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder={t("inputs.address.placeholder")}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      {t("inputs.address.description")}
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="flex gap-4">
+                <FormField
+                  control={form.control}
+                  name="address"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel>{t("inputs.address.label")}</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder={t("inputs.address.placeholder")}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        {t("inputs.address.description")}
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel>{t("inputs.phone.label")}</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder={t("inputs.phone.placeholder")}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        {t("inputs.phone.description")}
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
               <Button type="submit" className="w-full" disabled={loading}>
                 {loading && <Loader2 className="mr-2 h-5 w-5 animate-spin" />}
                 {t("submit")}

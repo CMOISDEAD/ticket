@@ -15,6 +15,7 @@ export const EventList = () => {
   const getEvents = async () => {
     try {
       const response = await axiosClient.get("/events");
+      console.log(response.data);
       setEvents(response.data);
     } catch (error: any) {
       console.error(error);

@@ -4,6 +4,7 @@
 
 @layer base {
   :root {
+    --radius: 0;
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
@@ -95,5 +96,73 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+
+  .gradient-surface {
+    background: var(--gradient-surface);
+  }
+
+  .gradient-glow {
+    background: var(--gradient-glow);
+  }
+
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .shadow-elevation {
+    box-shadow: var(--shadow-elevation);
+  }
+
+  .shadow-3d {
+    box-shadow: var(--shadow-3d);
+  }
+
+  .border-glow {
+    border: var(--border-glow);
+  }
+
+  .ticket-3d {
+    transform-style: preserve-3d;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .ticket-3d:hover {
+    transform: rotateX(5deg) rotateY(5deg) translateZ(10px);
+  }
+
+  /* Experimental Typography */
+  .text-vertical {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+
+  .font-experimental {
+    font-family: "Courier New", monospace;
+    letter-spacing: -0.02em;
+  }
+
+  .font-bold-condensed {
+    font-weight: 900;
+    letter-spacing: -0.05em;
+    line-height: 0.8;
   }
 }

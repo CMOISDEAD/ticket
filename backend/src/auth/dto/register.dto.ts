@@ -6,7 +6,13 @@ export class RegisterDto {
   @IsNotEmpty()
   @MinLength(5)
   @ApiProperty()
-  name: string;
+  fullnames: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @MinLength(5)
+  @ApiProperty()
+  lastnames: string;
 
   @IsString()
   @IsNotEmpty()

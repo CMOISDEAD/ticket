@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { axiosClient } from "@/lib/axiosClient";
 import { devtools, persist } from "zustand/middleware";
-import { AppCartType } from "@/types/global.types";
+// import { AppCartType } from "@/types/global.types";
 
 interface StoreState {
   isAuth: boolean;
@@ -10,8 +10,8 @@ interface StoreState {
     username: string;
     email: string;
     role: string;
-    cart: AppCartType;
-    history: AppCartType[];
+    // cart: AppCartType;
+    // history: AppCartType[];
   };
   fetchUser: () => Promise<void>;
   logout: () => void;
@@ -27,13 +27,6 @@ export const useTicketStore = create<StoreState>()(
         username: "",
         email: "",
         role: "",
-        cart: {
-          couponsIds: [],
-          eventsIds: [],
-          totalPrice: 0,
-          numberOfTickets: 0,
-        },
-        history: [],
       },
       fetchUser: async () => {
         try {
@@ -45,8 +38,6 @@ export const useTicketStore = create<StoreState>()(
               username: data.username,
               email: data.email,
               role: data.role,
-              cart: data.cart,
-              history: data.history,
             },
             isAuth: true,
           }));
@@ -64,13 +55,6 @@ export const useTicketStore = create<StoreState>()(
               username: "",
               email: "",
               role: "",
-              cart: {
-                couponsIds: [],
-                eventsIds: [],
-                totalPrice: 0,
-                numberOfTickets: 0,
-              },
-              history: [],
             },
           }));
         } catch (error) {

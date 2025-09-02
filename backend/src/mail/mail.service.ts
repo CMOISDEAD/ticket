@@ -52,7 +52,7 @@ export class MailService {
     const order = await this.prisma.order.findUnique({
       where: { id: orderId },
       include: {
-        payment: true,
+        payments: true,
         user: true,
         tickets: true,
       },

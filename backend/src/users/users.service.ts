@@ -62,4 +62,43 @@ export class UsersService {
       where: { id },
     });
   }
+
+  async me(userId: string) {
+    return await this.prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        order: {
+          include: {
+            tickets: true,
+            event: {
+              include: {
+                venue: true,
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
+  async getUserOrders(userId: string) {
+    return await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        order: {
+          orderBy: {
+            createdAt: 'desc',
+          },
+          include: {
+            event: {
+              include: {
+                venue: true,
+              },
+            },
+            tickets: true,
+          },
+        },
+      },
+    });
+  }
 }

@@ -46,7 +46,8 @@ export const EventCard = ({ event }: Props) => {
   };
 
   useEffect(() => {
-    const check = user.cart.eventsIds?.includes(event.id);
+    // const check = user.cart.eventsIds?.includes(event.id);
+    const check = false;
     setIsAdded(check);
   }, [user]);
 
@@ -61,7 +62,7 @@ export const EventCard = ({ event }: Props) => {
         <CardTitle className="line-clamp-1">{event.name}</CardTitle>
         <CardDescription>
           <ul>
-            <li className="line-clamp-1">{event.address}</li>
+            <li className="line-clamp-1">{event.venue?.address}</li>
             <li className="line-clamp-1">
               {formatDistanceToNow(event.date, { addSuffix: true })}
             </li>
@@ -70,15 +71,27 @@ export const EventCard = ({ event }: Props) => {
       </CardHeader>
       <CardContent>
         <p className="line-clamp-3">{event.description}</p>
-      </CardContent>
-      <CardFooter>
-        <ButtonGroup className="w-full">
-          <Button className="w-full">
-            {event.price.toLocaleString("en-US", {
+        <ul className="mt-4 space-y-1">
+          <li>
+            vip:{" "}
+            {event.vipPrice.toLocaleString("en-US", {
               style: "currency",
               currency: "USD",
             })}
-          </Button>
+          </li>
+          <li>
+            regular:{" "}
+            {event.regularPrice.toLocaleString("en-US", {
+              style: "currency",
+              currency: "COP",
+              maximumFractionDigits: 0,
+            })}
+          </li>
+        </ul>
+      </CardContent>
+      <CardFooter>
+        <ButtonGroup className="w-full">
+          <Button className="w-full">Comprar</Button>
           <Button
             size="icon"
             variant="outline"
