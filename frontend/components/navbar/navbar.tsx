@@ -3,7 +3,7 @@
 import { Link } from "@/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Menu, Search, ShoppingCart, Ticket } from "lucide-react";
+import { Menu, Receipt, Search, ShoppingCart, Ticket } from "lucide-react";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import {
   DropdownMenu,
@@ -130,8 +130,8 @@ const AuthSection = () => {
   return isAuth ? (
     <div className="flex content-center gap-4">
       <Button variant="ghost" size="icon" asChild>
-        <Link href="/cart">
-          <ShoppingCart className="h-5 w-5" />
+        <Link href="/orders">
+          <Receipt className="size-5" />
         </Link>
       </Button>
       <UserDropdown />

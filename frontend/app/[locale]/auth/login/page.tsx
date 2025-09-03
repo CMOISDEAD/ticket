@@ -141,6 +141,12 @@ export default function Login() {
                 {t("register")}
               </Link>
             </p>
+            <p className="text-center text-sm italic md:text-start">
+              Forgot your password?{" "}
+              <Link href="/auth/register" className="not-italic text-blue-500">
+                Reset password
+              </Link>
+            </p>
           </div>
           <div className="my-4 w-full">
             <SocialLogin />

@@ -24,11 +24,17 @@ import * as path from 'path';
         template: {
           dir: path.join(process.cwd(), 'dist', 'mail', 'templates', 'pages'),
           adapter: new HandlebarsAdapter(),
-          options: {
-            strict: true,
-            // partials: {
-            //   dir: path.join(__dirname, 'templates/partials'),
-            // },
+        },
+        options: {
+          strict: true,
+          partials: {
+            dir: path.join(
+              process.cwd(),
+              'dist',
+              'mail',
+              'templates',
+              'partials',
+            ),
           },
         },
       }),

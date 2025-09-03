@@ -23,7 +23,7 @@ export const AutoLogout = () => {
 
     timerRef.current = setTimeout(() => {
       handleLogout();
-    }, 60000);
+    }, 600000);
   };
 
   useEffect(() => {

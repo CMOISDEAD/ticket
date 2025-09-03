@@ -16,7 +16,7 @@ export class AuthService {
   constructor(
     private prisma: PrismaService,
     private jwtService: JwtService,
-    private MailService: MailService,
+    private mailService: MailService,
   ) {}
 
   async login(email: string, password: string) {
@@ -28,6 +28,8 @@ export class AuthService {
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) throw new UnauthorizedException('Invalid password.');
+
+    await this.mailService.sendLoginEmail(user);
 
     return {
       message: 'Login successful',
@@ -54,9 +56,11 @@ export class AuthService {
       roundsOfHashing,
     );
 
-    await this.prisma.user.create({
+    const user = await this.prisma.user.create({
       data: registerDto,
     });
+
+    await this.mailService.sendLoginEmail(user);
 
     return {
       message: 'User registered successfully.',
@@ -73,7 +77,7 @@ export class AuthService {
       userId: user.id,
     });
 
-    await this.MailService.sendRequestPasswordResetEmail(user.email, token);
+    await this.mailService.sendRequestPasswordResetEmail(user, token);
 
     return {
       message: 'Password reset email sent.',
@@ -93,7 +97,7 @@ export class AuthService {
         },
       });
 
-      await this.MailService.sendPasswordResetEmail(user.email);
+      await this.mailService.sendPasswordResetEmail(user);
 
       return {
         message: 'Password reset successfully.',

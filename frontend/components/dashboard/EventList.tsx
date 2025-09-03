@@ -12,12 +12,9 @@ import {
   CardFooter,
 } from "../ui/card";
 import { AppEventType } from "@/types/global.types";
-import { formatDistanceToNow } from "date-fns";
-import { ButtonGroup } from "../ui/button-group";
 import { Button } from "../ui/button";
 import { Pen, RefreshCw, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/navigation";
 
 export const EventList = ({ onEdit }: { onEdit: (id: string) => void }) => {
   const [fetching, setFetching] = useState(false);
@@ -65,7 +62,11 @@ export const EventList = ({ onEdit }: { onEdit: (id: string) => void }) => {
 
   return (
     <Card className="w-2/3 overflow-auto">
-      <CardHeader>...</CardHeader>
+      <CardHeader>
+        <Button size="icon" onClick={() => getEvents()}>
+          <RefreshCw className="size-4" />
+        </Button>
+      </CardHeader>
       <CardContent className="flex flex-wrap gap-4">
         {events.map((event: AppEventType) => (
           <Card key={event.id} className="flex w-[14rem] flex-col">
@@ -90,62 +91,16 @@ export const EventList = ({ onEdit }: { onEdit: (id: string) => void }) => {
               <Button onClick={() => onEdit(event.id)}>
                 <Pen />
               </Button>
-              <Button variant="destructive" onClick={() => remove(event.id)}>
+              <Button
+                variant="destructive"
+                onClick={() => handleRemove(event.id)}
+              >
                 <Trash2 />
               </Button>
             </CardFooter>
           </Card>
         ))}
       </CardContent>
-    </Card>
-  );
-};
-
-const EventsCard = ({
-  event,
-  remove,
-}: {
-  event: AppEventType;
-  remove: (id: string) => void;
-}) => {
-  return (
-    <Card className="flex h-[25rem] max-h-[25rem] w-[14rem] flex-col justify-between">
-      <CardHeader>
-        <img
-          src={event.poster}
-          alt={event.name}
-          className="max-h-[110px] w-full rounded-lg object-cover"
-        />
-        <CardTitle className="line-clamp-1">
-          <Link href={`/events/${event.id}`}>{event.name}</Link>
-        </CardTitle>
-        <CardDescription>
-          <ul>
-            <li className="line-clamp-1">{event.address}</li>
-            <li className="line-clamp-1">
-              {formatDistanceToNow(event.date, { addSuffix: true })}
-            </li>
-          </ul>
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <p className="line-clamp-3">{event.description}</p>
-      </CardContent>
-      <CardFooter>
-        <ButtonGroup className="w-full">
-          <Button size="icon" variant="outline" className="w-full">
-            <Pen />
-          </Button>
-          <Button
-            variant="destructive"
-            size="icon"
-            className="w-full"
-            onClick={() => remove(event.id)}
-          >
-            <Trash2 />
-          </Button>
-        </ButtonGroup>
-      </CardFooter>
     </Card>
   );
 };

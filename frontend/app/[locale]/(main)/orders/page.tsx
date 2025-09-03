@@ -1,4 +1,5 @@
 "use client";
+import { Overview } from "@/components/cart/overview";
 import { OrderCard } from "@/components/orders/order-card";
 import { axiosClient } from "@/lib/axiosClient";
 import { AppOrderType } from "@/types/global.types";
@@ -26,10 +27,13 @@ export default function OrderPage() {
         </p>
       </div>
 
-      <div className="grid gap-6">
-        {orders.map((order) => (
-          <OrderCard key={order.id} order={order} />
-        ))}
+      <div className="flex gap-4">
+        <Overview cart={null} setCart={() => null} />
+        <div className="grid gap-6">
+          {orders.map((order) => (
+            <OrderCard key={order.id} order={order} />
+          ))}
+        </div>
       </div>
     </div>
   );

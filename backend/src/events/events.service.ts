@@ -20,9 +20,13 @@ export class EventsService {
   async findOne(id: string) {
     const event = await this.prisma.event.findUnique({
       where: { id },
+      include: {
+        venue: true,
+      },
     });
+
     if (!event) {
-      throw new NotFoundException(`Ticket with ID ${id} not found`);
+      throw new NotFoundException(`Event with ID ${id} not found`);
     }
 
     return event;
@@ -38,6 +42,20 @@ export class EventsService {
   async remove(id: string) {
     return await this.prisma.event.delete({
       where: { id },
+    });
+  }
+
+  async upcoming() {
+    return await this.prisma.event.findMany({
+      where: {
+        date: {
+          gte: new Date(),
+        },
+      },
+      orderBy: {
+        date: 'asc',
+      },
+      take: 4,
     });
   }
 }

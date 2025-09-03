@@ -120,52 +120,11 @@ export const Overview = ({
   };
 
   return (
-    <Card className="w-full lg:w-1/3">
+    <Card className="h-fit w-full lg:w-1/3">
       <CardHeader>
         <CardTitle>{t("title")}</CardTitle>
         <CardDescription>{t("description")}</CardDescription>
       </CardHeader>
-      <CardContent>
-        {cart ? (
-          <ul className="space-y-2">
-            <li className="flex items-center gap-2">
-              <Calendar className="h-4 w-4" />
-              <span>
-                {t("number_of_events")}: {cart.eventsIds?.length}
-              </span>
-            </li>
-            <li className="flex items-center gap-2">
-              <Tickets className="h-4 w-4" />
-              <span>
-                {t("number_of_tickets")}: {cart.numberOfTickets}
-              </span>
-            </li>
-            <li className="flex items-center gap-2">
-              <DollarSign className="h-4 w-4" />
-              <span>
-                {t("price")}: {cart.totalPrice}
-              </span>
-            </li>
-            <li className="flex items-center gap-2">
-              <DollarSign className="h-4 w-4" />
-              <span>
-                {t("total_disscount")}:{" "}
-                {coupons.reduce((acc, coupon) => acc + coupon.discount, 0)}%
-              </span>
-            </li>
-            <li className="flex items-center gap-2">
-              <DollarSign className="h-4 w-4" />
-              <span>
-                {t("total_price")}: {total}
-              </span>
-            </li>
-          </ul>
-        ) : (
-          <div className="flex items-center justify-center">
-            <Loader2 className="h-6 w-6 animate-spin" />
-          </div>
-        )}
-      </CardContent>
       <CardFooter className="flex flex-col items-start gap-4">
         <h3 className="text-lg font-bold">Coupons</h3>
         <ul className="flex flex-col gap-2">

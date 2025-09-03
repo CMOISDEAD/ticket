@@ -1,0 +1,65 @@
+<html lang='es'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='color-scheme' content='light only' />
+    <style>
+      /* Light, futurista, neo-punk */
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        background: #f9fafb;
+        color: #0f172a;
+      }
+      .container {
+        max-width: 600px;
+        margin: 24px auto;
+        padding: 24px;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 16px;
+        box-shadow: 0 0 24px rgba(0, 255, 200, 0.25);
+      }
+      h1 {
+        font-size: 20px;
+        margin: 0 0 12px;
+        color: #0ea5e9;
+        letter-spacing: 0.5px;
+      }
+      p {
+        font-size: 14px;
+        line-height: 1.6;
+        margin: 0 0 12px;
+      }
+      .btn {
+        display: inline-block;
+        margin-top: 16px;
+        padding: 10px 14px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 700;
+        background: #22d3ee;
+        color: #0b1020;
+        box-shadow: 0 0 10px rgba(34, 211, 238, 0.8);
+      }
+      .btn:hover {
+        filter: brightness(1.05);
+      }
+      .muted {
+        color: #64748b;
+      }
+      .footer {
+        margin-top: 20px;
+        font-size: 12px;
+        color: #94a3b8;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class='container'>
+      {{{@partial-block}}}
+      <div class='footer'>QueBoleta® 2025 — Todos los derechos reservados</div>
+    </div>
+  </body>
+</html>

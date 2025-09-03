@@ -90,7 +90,7 @@ export default function Events() {
         await axiosClient.post("/events", values);
         toast({ title: "Created 🎉", description: "Event created." });
       }
-      form.reset();
+      // form.reset();
       setEditingId(null);
     } catch (error: any) {
       toast({
@@ -240,10 +240,10 @@ export default function Events() {
                   />
                   <FormField
                     control={form.control}
-                    name="regularAvailable"
+                    name="vipAvailable"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Regular Available</FormLabel>
+                        <FormLabel>VipAvailable</FormLabel>
                         <FormControl>
                           <Input type="number" {...field} />
                         </FormControl>
@@ -253,10 +253,10 @@ export default function Events() {
                   />
                   <FormField
                     control={form.control}
-                    name="vipAvailable"
+                    name="regularAvailable"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>VipAvailable</FormLabel>
+                        <FormLabel>Regular Available</FormLabel>
                         <FormControl>
                           <Input type="number" {...field} />
                         </FormControl>

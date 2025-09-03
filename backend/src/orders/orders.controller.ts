@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   UseGuards,
+  Req,
+  NotFoundException,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -19,6 +21,7 @@ import {
 } from '@nestjs/swagger';
 import { OrderEntity } from './entities/order.entity';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { Request } from 'express';
 
 @ApiTags('Orders')
 @ApiBearerAuth()

@@ -112,6 +112,9 @@ export default function Page() {
                     <ul>
                       <li>
                         <p className="text-2xl font-bold">
+                          <span className="text-sm italic text-muted-foreground">
+                            \regular_price\
+                          </span>
                           {event.regularPrice.toLocaleString("en-US", {
                             style: "currency",
                             currency: "USD",
@@ -120,6 +123,9 @@ export default function Page() {
                       </li>
                       <li>
                         <p className="text-2xl font-bold">
+                          <span className="text-sm italic text-muted-foreground">
+                            \vip_price\
+                          </span>
                           {event.vipPrice.toLocaleString("en-US", {
                             style: "currency",
                             currency: "USD",
@@ -139,12 +145,13 @@ export default function Page() {
                 <div className="mb-2 flex items-center">
                   <CalendarIcon className="mr-2 h-4 w-4" />
                   <span>
+                    {new Date(event.date).toLocaleString()}{" "}
                     {formatDistanceToNow(event.date, { addSuffix: true })}
                   </span>
                 </div>
                 <div className="mb-4 flex items-center">
                   <MapPinIcon className="mr-2 h-4 w-4" />
-                  <span>{event.name}</span>
+                  <span>{event.venue!.name}</span>
                 </div>
                 <div className="mb-6">
                   <h3 className="mb-2 font-semibold">{t("seats")}</h3>

@@ -8,6 +8,14 @@ import { AppEventType } from "@/types/global.types";
 import { useTranslations } from "next-intl";
 import { Link } from "@/navigation";
 
+const CATEGORY_LABELS: Record<string, string> = {
+  CONCERT: "Conciertos",
+  THEATER: "Teatro",
+  SPORT: "Deportes",
+  FESTIVAL: "Festivales",
+  OTHER: "Otros",
+};
+
 export const EventList = () => {
   const [events, setEvents] = useState<AppEventType[]>([]);
   const t = useTranslations("home");
@@ -15,7 +23,6 @@ export const EventList = () => {
   const getEvents = async () => {
     try {
       const response = await axiosClient.get("/events");
-      console.log(response.data);
       setEvents(response.data);
     } catch (error: any) {
       console.error(error);
@@ -31,20 +38,38 @@ export const EventList = () => {
     getEvents();
   }, []);
 
+  // Agrupar por categoría
+  const groupedEvents = events.reduce(
+    (acc, event) => {
+      if (!acc[event.category]) acc[event.category] = [];
+      acc[event.category].push(event);
+      return acc;
+    },
+    {} as Record<string, AppEventType[]>,
+  );
+
   return (
-    <div className="my-4">
+    <div className="my-6 space-y-10">
       <header>
-        <h3 className="text-2xl font-bold">{t("title")}</h3>
+        <h3 className="text-3xl font-bold tracking-tight">{t("title")}</h3>
         <p className="text-sm text-muted-foreground">{t("description")}</p>
       </header>
-      {events.length ? (
-        <div className="grid-cols1 my-4 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {events.map((event) => (
-            <Link href={`/events/${event.id}`}>
-              <EventCard key={event.id} event={event} />
-            </Link>
-          ))}
-        </div>
+
+      {Object.entries(groupedEvents).length ? (
+        Object.entries(groupedEvents).map(([category, items]) => (
+          <section key={category} className="space-y-4">
+            <h4 className="border-l-4 border-primary pl-2 text-xl font-semibold">
+              {CATEGORY_LABELS[category] ?? category}
+            </h4>
+            <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+              {items.map((event) => (
+                <Link key={event.id} href={`/events/${event.id}`}>
+                  <EventCard event={event} />
+                </Link>
+              ))}
+            </div>
+          </section>
+        ))
       ) : (
         <p className="text-center text-muted-foreground">{t("not_found")}</p>
       )}

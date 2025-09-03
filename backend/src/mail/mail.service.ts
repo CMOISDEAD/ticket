@@ -1,5 +1,6 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { User } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
 
 @Injectable()
@@ -21,30 +22,59 @@ export class MailService {
     this.logger.log(`Email sent to ${to} with subject: ${subject}`);
   }
 
-  async sendRequestPasswordResetEmail(to: string, token: string) {
+  async sendWelcomeEmail(user: User) {
+    await this.mailerService.sendMail({
+      to: user.email,
+      subject: '👾 Bienvenido a QueBoleta',
+      template: 'welcome',
+      context: {
+        fullnames: `${user.fullnames} ${user.lastnames}`,
+      },
+    });
+  }
+
+  async sendLoginEmail(user: User) {
+    await this.mailerService.sendMail({
+      to: user.email,
+      subject: '⚡ Inicio de sesión detectado',
+      template: 'login',
+      context: {
+        fullnames: `${user.fullnames} ${user.lastnames}`,
+      },
+    });
+  }
+
+  async sendRequestPasswordResetEmail(user: User, token: string) {
     await this.mailerService.sendMail({
       from: process.env.MAIL_FROM,
-      to,
+      to: user.email,
       subject: 'Password Reset Request',
-      text: `http://localhost:3000/auth/reset-password/${token}`,
+      template: 'reset-password',
+      context: {
+        fullnames: `${user.fullnames} ${user.lastnames}`,
+        resetLink: `${process.env.FRONTEND_URL}/auth/reset-password/${token}`,
+      },
     });
 
     this.logger.log(
-      `Reset password email sent to ${to} with subject: Password Request Reset`,
+      `Reset password email sent to ${user.email} with subject: Password Request Reset`,
     );
   }
 
-  async sendPasswordResetEmail(to: string) {
+  async sendPasswordResetEmail(user: User) {
     const subject = 'Password has been reset successfully.';
     await this.mailerService.sendMail({
       from: process.env.MAIL_FROM,
-      to,
+      to: user.email,
       subject,
-      text: 'Your password has been reset successfully.',
+      template: 'password-changed',
+      context: {
+        fullnames: `${user.fullnames} ${user.lastnames}`,
+      },
     });
 
     this.logger.log(
-      `Reset password email sent to ${to} with subject: ${subject}`,
+      `Reset password email sent to ${user.email} with subject: ${subject}`,
     );
   }
 
@@ -65,12 +95,9 @@ export class MailService {
       from: process.env.MAIL_FROM,
       to: order.user.email,
       subject: `Order ${order.id} paid successfully`,
-      template: 'payment-approved',
+      template: 'order-paid',
       context: {
-        id: order.id,
-        username: order.user.username,
-        status: order.status,
-        tickets: order.tickets.length,
+        orderId: order.id,
       },
     });
 
@@ -93,7 +120,10 @@ export class MailService {
       from: process.env.MAIL_FROM,
       to: order.user.email,
       subject: `Order ${order.id} was rejected.`,
-      text: `Order with id ${order.id} was  rejected. tickets: ${order.tickets.length}`,
+      template: 'order-rejected',
+      context: {
+        orderId: order.id,
+      },
     });
 
     this.logger.log(`payment rejected email send`);
