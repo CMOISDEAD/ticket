@@ -37,6 +37,15 @@ export class AuthController {
     return await this.authService.register(registerDto);
   }
 
+  @Post('/activate/:id')
+  @ApiOkResponse()
+  async activeUser(@Param('id') userId: string) {
+    await this.authService.activeUser(userId);
+    return {
+      message: 'User activated.',
+    };
+  }
+
   @Post('/logout')
   @ApiOkResponse()
   logout(@Res({ passthrough: true }) res: Response) {

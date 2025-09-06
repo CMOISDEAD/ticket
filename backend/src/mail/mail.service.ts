@@ -28,7 +28,9 @@ export class MailService {
       subject: '👾 Bienvenido a QueBoleta',
       template: 'welcome',
       context: {
+        activationLink: `${process.env.FRONTEND_URL}/activate/${user.id}`,
         fullnames: `${user.fullnames} ${user.lastnames}`,
+        couponCode: 'QBO25',
       },
     });
   }

@@ -1,7 +1,14 @@
 {{#> layout}}
   <h1>👾 Bienvenido a QueBoleta</h1>
   <p>Hola {{fullnames}}, gracias por registrarte en nuestra plataforma.</p>
-  <p>Para celebrar, aquí tienes un cupón de descuento exclusivo:</p>
-  <h2 style="text-align:center; color:#ff5af1; margin: 1rem 0;">QBO2025</h2>
-  <p>Úsalo en tu primera compra. ¡Nos vemos en los mejores eventos!</p>
+  <p>Antes de empezar a disfrutar de los mejores eventos, activa tu cuenta:</p>
+
+  <a href="{{activationLink}}" class="btn">Activar mi cuenta</a>
+
+  <p style="margin-top:24px;">Como regalo de bienvenida, aquí tienes un cupón de descuento:</p>
+  <p style="text-align:center;font-weight:800;font-size:18px;color:#ec4899;letter-spacing:2px;">
+    {{couponCode}}
+  </p>
+  <p class="muted">Úsalo en tu primera compra.</p>
 {{/layout}}
+

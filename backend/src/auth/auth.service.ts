@@ -25,6 +25,8 @@ export class AuthService {
     if (!user)
       throw new NotFoundException(`No user found with ${email} email.`);
 
+    if (!user.active) throw new UnauthorizedException('User is inactive.');
+
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) throw new UnauthorizedException('Invalid password.');
@@ -65,6 +67,17 @@ export class AuthService {
     return {
       message: 'User registered successfully.',
     };
+  }
+
+  async activeUser(userId: string) {
+    return await this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        active: true,
+      },
+    });
   }
 
   async requestPasswordReset(email: string) {

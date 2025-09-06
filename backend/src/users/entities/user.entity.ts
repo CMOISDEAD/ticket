@@ -28,6 +28,9 @@ export class UserEntity implements User {
   @ApiProperty()
   address: string;
 
+  @ApiProperty()
+  active: boolean;
+
   @ApiProperty({
     required: false,
   })
