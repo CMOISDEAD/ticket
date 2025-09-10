@@ -45,7 +45,7 @@ interface Props {
 
 export const OrderCard = ({ order }: Props) => {
   return (
-    <Card className="overflow-hidden border-2 transition-all duration-300 hover:border-primary/20 hover:shadow-lg">
+    <Card className="w-full overflow-hidden border-2 transition-all duration-300 hover:border-border hover:shadow-lg">
       <CardHeader className="pb-4">
         <div className="flex items-start justify-between">
           <div className="flex-1">
@@ -69,7 +69,6 @@ export const OrderCard = ({ order }: Props) => {
             </Badge>
             <div className="text-right">
               <div className="font-mono text-2xl font-bold">
-                $
                 {order.total.toLocaleString("en-US", {
                   style: "currency",
                   currency: "COP",
@@ -91,7 +90,7 @@ export const OrderCard = ({ order }: Props) => {
             <img
               src={order.event!.poster || "https://placehold.co/500"}
               alt={order.event!.name}
-              className="h-52 w-full rounded-lg border object-cover"
+              className="h-52 w-full border object-cover"
             />
           </div>
 
@@ -108,7 +107,6 @@ export const OrderCard = ({ order }: Props) => {
                       {1}x {ticket.type} Ticket
                     </span>
                     <span className="font-mono font-semibold">
-                      $
                       {(ticket.type === "VIP"
                         ? order.event!.vipPrice
                         : order.event!.regularPrice

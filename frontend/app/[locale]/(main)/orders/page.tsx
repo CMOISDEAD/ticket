@@ -1,7 +1,8 @@
 "use client";
 import { Overview } from "@/components/cart/overview";
 import { OrderCard } from "@/components/orders/order-card";
-import { axiosClient } from "@/lib/axiosClient";
+import { toast } from "@/hooks/use-toast";
+import { api } from "@/lib/axiosClient";
 import { AppOrderType } from "@/types/global.types";
 import { useEffect, useState } from "react";
 
@@ -9,13 +10,17 @@ export default function OrderPage() {
   const [orders, setOrders] = useState<AppOrderType[]>([]);
 
   useEffect(() => {
-    axiosClient
-      .get("/users/orders")
-      .then((res) => {
-        const { data } = res;
+    api("/users/orders")
+      .then((data) => {
         setOrders(data.order);
       })
-      .catch((error: any) => console.error(error));
+      .catch((error: any) => {
+        console.error(error);
+        toast({
+          title: "error fetching your orders",
+          description: `${error}`,
+        });
+      });
   }, []);
 
   return (
@@ -28,11 +33,13 @@ export default function OrderPage() {
       </div>
 
       <div className="flex gap-4">
-        <Overview cart={null} setCart={() => null} />
-        <div className="grid gap-6">
-          {orders.map((order) => (
-            <OrderCard key={order.id} order={order} />
-          ))}
+        <Overview />
+        <div className="flex flex-1 flex-col items-center justify-center gap-6">
+          {orders.length ? (
+            orders.map((order) => <OrderCard key={order.id} order={order} />)
+          ) : (
+            <p className="text-muted-foreground">You already have no orders</p>
+          )}
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { axiosClient } from "@/lib/axiosClient";
+import { api } from "@/lib/axiosClient";
 import { devtools, persist } from "zustand/middleware";
 // import { AppCartType } from "@/types/global.types";
 
@@ -30,16 +30,16 @@ export const useTicketStore = create<StoreState>()(
       },
       fetchUser: async () => {
         try {
-          const response = await axiosClient.get("/users/me");
-          const { data } = response;
+          const data = await api("/users/me");
+          const { id, username, email, role } = data;
           set(() => ({
-            user: {
-              id: data.id,
-              username: data.username,
-              email: data.email,
-              role: data.role,
-            },
             isAuth: true,
+            user: {
+              id,
+              username,
+              email,
+              role,
+            },
           }));
         } catch (error) {
           console.log(error);
@@ -47,7 +47,7 @@ export const useTicketStore = create<StoreState>()(
       },
       logout: async () => {
         try {
-          await axiosClient.post("/auth/logout");
+          await api("/auth/logout", { method: "POST" });
           set(() => ({
             isAuth: false,
             user: {

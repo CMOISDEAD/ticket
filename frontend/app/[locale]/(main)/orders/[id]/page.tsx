@@ -6,7 +6,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { axiosClient } from "@/lib/axiosClient";
+import { api } from "@/lib/axiosClient";
 import { AppOrderType } from "@/types/global.types";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import {
@@ -24,6 +24,7 @@ import {
   XCircle,
 } from "lucide-react";
 import { Ticket } from "@/components/orders/tickets";
+import { toast } from "@/hooks/use-toast";
 
 const getStatusConfig = (status: string) => {
   switch (status) {
@@ -88,29 +89,33 @@ export default function Page() {
   const { id } = useParams();
 
   useEffect(() => {
-    axiosClient
-      .get(`/orders/${id}`)
-      .then((res) => {
-        console.log(res.data);
+    api(`/orders/${id}`)
+      .then((data) => {
         setIsLoading(true);
-        setOrder(res.data);
+        setOrder(data);
       })
       .catch((error: any) => {
         console.error(error);
+        toast({
+          title: "Error fetching order details",
+          description: `${error}`,
+        });
       })
       .finally(() => setIsLoading(false));
   }, []);
 
   const handlePayment = () => {
     if (!order) return;
-    axiosClient
-      .post("/payments", {
+    api("/payments", {
+      method: "POST",
+      data: {
         orderId: id,
         ammount: order.total,
         method: "CREDIT_CARD",
-      })
-      .then((res) => {
-        const { init_point } = res.data;
+      },
+    })
+      .then((data) => {
+        const { init_point } = data;
 
         if (init_point) {
           window.location.href = init_point;
@@ -121,6 +126,10 @@ export default function Page() {
       })
       .catch((error: any) => {
         console.error(error);
+        toast({
+          title: "Error getting payment link",
+          description: `${error}`,
+        });
         setIsLoading(false);
       });
   };
@@ -219,7 +228,7 @@ export default function Page() {
                   <img
                     src={order.event.poster || "/placeholder.svg"}
                     alt={order.event.name}
-                    className="h-48 w-full rounded-lg border object-cover"
+                    className="h-48 w-full border object-cover"
                   />
                 </div>
                 <div className="space-y-4">
@@ -263,10 +272,10 @@ export default function Page() {
                 {order.tickets.map((ticket) => (
                   <div
                     key={ticket.id}
-                    className="flex items-center justify-between rounded-lg border p-4"
+                    className="flex items-center justify-between border p-4"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
+                      <div className="flex h-12 w-12 items-center justify-center bg-primary/10">
                         <Users className="h-6 w-6 text-primary" />
                       </div>
                       <div>
@@ -372,7 +381,7 @@ export default function Page() {
             <CardContent className="space-y-4">
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
-                  <div className="h-2 w-2 rounded-full bg-primary" />
+                  <div className="h-2 w-2 bg-primary" />
                   <div className="font-mono text-sm">
                     <div>Orden creada</div>
                     <div className="text-muted-foreground">
@@ -383,7 +392,7 @@ export default function Page() {
 
                 {order.status === "COMPLETED" && (
                   <div className="flex items-center gap-3">
-                    <div className="h-2 w-2 rounded-full bg-green-500" />
+                    <div className="h-2 w-2 bg-green-500" />
                     <div className="font-mono text-sm">
                       <div>Pago completado</div>
                       <div className="text-muted-foreground">
@@ -396,7 +405,7 @@ export default function Page() {
                 {(order.status === "CANCELLED" ||
                   order.status === "EXPIRED") && (
                   <div className="flex items-center gap-3">
-                    <div className="h-2 w-2 rounded-full bg-red-500" />
+                    <div className="h-2 w-2 bg-red-500" />
                     <div className="font-mono text-sm">
                       <div>Orden {order.status.toLowerCase()}</div>
                       <div className="text-muted-foreground">

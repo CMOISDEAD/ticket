@@ -89,6 +89,8 @@ export class OrdersService {
   async findAll() {
     return await this.prisma.order.findMany({
       include: {
+        user: true,
+        event: true,
         tickets: true,
         payments: true,
       },
@@ -99,6 +101,7 @@ export class OrdersService {
     const order = await this.prisma.order.findUnique({
       where: { id },
       include: {
+        user: true,
         tickets: true,
         payments: true,
         event: {

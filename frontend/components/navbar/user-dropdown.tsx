@@ -45,7 +45,7 @@ export default function UserDropdown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+        <Button variant="ghost" className="relative h-8 w-8 ">
           <Avatar className="h-9 w-9">
             <AvatarFallback>{username.charAt(0)}</AvatarFallback>
           </Avatar>

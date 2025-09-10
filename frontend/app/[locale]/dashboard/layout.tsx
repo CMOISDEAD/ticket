@@ -18,7 +18,7 @@ export default function RootLayout({ children }: Props) {
           <Navbar />
           <div className="flex flex-1 flex-col">
             <SearchBar />
-            <main className="p-4 md:p-6">{children}</main>
+            <main className="h-full p-4 md:p-6">{children}</main>
           </div>
         </SidebarInset>
       </SidebarProvider>

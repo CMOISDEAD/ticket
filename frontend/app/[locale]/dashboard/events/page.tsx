@@ -10,7 +10,6 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -23,7 +22,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "@/hooks/use-toast";
-import { axiosClient } from "@/lib/axiosClient";
+import { api } from "@/lib/axiosClient";
 import { useState, useEffect } from "react";
 import { Loader2 } from "lucide-react";
 import { EventList } from "@/components/dashboard/EventList";
@@ -73,8 +72,9 @@ export default function Events() {
 
   useEffect(() => {
     if (!editingId) return;
-    axiosClient.get(`/events/${editingId}`).then((res) => {
-      form.reset(res.data);
+    api(`/events/${editingId}`).then((data) => {
+      data.date = data.date.split("T")[0];
+      form.reset(data);
     });
   }, [editingId]);
 
@@ -84,10 +84,16 @@ export default function Events() {
       values.date = new Date(values.date).toISOString();
       console.log(values);
       if (editingId) {
-        await axiosClient.patch(`/events/${editingId}`, values);
+        await api(`/events/${editingId}`, {
+          method: "PATCH",
+          data: values,
+        });
         toast({ title: "Updated 🎉", description: "Event updated." });
       } else {
-        await axiosClient.post("/events", values);
+        await api("/events", {
+          method: "POST",
+          data: values,
+        });
         toast({ title: "Created 🎉", description: "Event created." });
       }
       // form.reset();

@@ -24,7 +24,7 @@ import {
   Crown,
 } from "lucide-react";
 import { AppUserType } from "@/types/global.types";
-import { axiosClient } from "@/lib/axiosClient";
+import { api } from "@/lib/axiosClient";
 import { useTicketStore } from "@/store/useTicketStore";
 import { toast } from "@/hooks/use-toast";
 import { Link, useRouter } from "@/navigation";
@@ -64,12 +64,17 @@ export default function ProfilePage() {
   };
 
   useEffect(() => {
-    axiosClient
-      .get("/users/me")
-      .then((res) => {
-        setUser(res.data);
+    api("/users/me")
+      .then((data) => {
+        setUser(data);
       })
-      .catch((error: any) => console.error(error));
+      .catch((error: any) => {
+        console.error(error);
+        toast({
+          title: "Error fetching your profile...",
+          description: `${error}`,
+        });
+      });
   }, []);
 
   if (!user) {
@@ -150,7 +155,7 @@ export default function ProfilePage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
-                <div className="rounded-lg border border-primary/10 bg-primary/5 p-4 text-center">
+                <div className="border border-primary/10 bg-primary/5 p-4 text-center">
                   <div className="font-mono text-2xl font-bold text-primary">
                     {completedOrders}
                   </div>
@@ -158,7 +163,7 @@ export default function ProfilePage() {
                     Completed Orders
                   </div>
                 </div>
-                <div className="rounded-lg border border-accent/10 bg-accent/5 p-4 text-center">
+                <div className="border border-accent/10 bg-accent/5 p-4 text-center">
                   <div className="font-mono text-xl font-bold text-muted-foreground">
                     {totalSpent.toLocaleString("en-US", {
                       style: "currency",
@@ -171,7 +176,7 @@ export default function ProfilePage() {
                   </div>
                 </div>
               </div>
-              <div className="rounded-lg border border-border bg-muted/20 p-4 text-center">
+              <div className="border border-border bg-muted/20 p-4 text-center">
                 <div className="font-mono text-2xl font-bold">
                   {user.order.length}
                 </div>
@@ -193,8 +198,8 @@ export default function ProfilePage() {
           <CardContent>
             <div className="space-y-4">
               {user.order.map((order, index) => (
-                <Link key={order.id} href={`/order/${order.id}`}>
-                  <div className="flex items-center justify-between rounded-lg border border-border/50 bg-background/50 p-4 transition-colors hover:bg-muted/20">
+                <Link key={order.id} href={`/orders/${order.id}`}>
+                  <div className="flex items-center justify-between border border-border/50 bg-background/50 p-4 transition-colors hover:bg-muted/20">
                     <div className="flex-1">
                       <div className="mb-2 flex items-center gap-3">
                         <h3 className="text-balance font-semibold">

@@ -1,12 +1,11 @@
 "use client";
 
-import { axiosClient } from "@/lib/axiosClient";
+import { api } from "@/lib/axiosClient";
 import { EventCard } from "./eventCard";
 import { useEffect, useState } from "react";
 import { toast } from "@/hooks/use-toast";
 import { AppEventType } from "@/types/global.types";
 import { useTranslations } from "next-intl";
-import { Link } from "@/navigation";
 
 export const UpcomingEvents = () => {
   const [events, setEvents] = useState<AppEventType[]>([]);
@@ -14,15 +13,14 @@ export const UpcomingEvents = () => {
 
   const getEvents = async () => {
     try {
-      const response = await axiosClient.get("/events/upcoming");
-      console.log("upcoming", response.data);
-      setEvents(response.data);
+      const data = await api("/events/upcoming");
+      setEvents(data);
     } catch (error: any) {
       console.error(error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: error.message,
+        description: error,
       });
     }
   };
@@ -32,9 +30,9 @@ export const UpcomingEvents = () => {
   }, []);
 
   return (
-    <div className="my-4">
+    <div className="my-6 space-y-10">
       <header>
-        <h3 className="text-2xl font-bold">{t("upcoming.title")}</h3>
+        <h3 className="text-3xl font-bold">{t("upcoming.title")}</h3>
         <p className="text-sm text-muted-foreground">
           {t("upcoming.description")}
         </p>
@@ -42,9 +40,7 @@ export const UpcomingEvents = () => {
       {events.length ? (
         <div className="grid-cols1 my-4 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {events.map((event) => (
-            <Link href={`/events/${event.id}`}>
-              <EventCard key={event.id} event={event} />
-            </Link>
+            <EventCard key={event.id} event={event} />
           ))}
         </div>
       ) : (

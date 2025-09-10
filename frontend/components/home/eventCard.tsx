@@ -8,13 +8,14 @@ import {
   CardDescription,
 } from "../ui/card";
 import { formatDistanceToNow } from "date-fns";
-import { ShoppingCart } from "lucide-react";
+import { ReceiptJapaneseYen, ShoppingCart } from "lucide-react";
 import { Button } from "../ui/button";
 import { ButtonGroup } from "../ui/button-group";
-import { axiosClient } from "@/lib/axiosClient";
 import { useTicketStore } from "@/store/useTicketStore";
 import { toast } from "@/hooks/use-toast";
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import { BuyModal } from "../events/buy-modal";
 
 type Props = {
   event: AppEventType;
@@ -22,27 +23,14 @@ type Props = {
 
 export const EventCard = ({ event }: Props) => {
   const [isAdded, setIsAdded] = useState(false);
-  const { user } = useTicketStore((state) => state);
+  const { isAuth, user } = useTicketStore((state) => state);
 
   const handleAdd = async () => {
-    try {
-      await axiosClient.put("/cart/add", {
-        userId: user.id,
-        eventId: event.id,
+    if (!isAuth)
+      return toast({
+        title: "First enter in your account",
+        description: "You are not logged.",
       });
-      setIsAdded(true);
-      toast({
-        title: "Added to cart",
-        description: "Event added to cart",
-      });
-    } catch (error: any) {
-      console.error(error);
-      toast({
-        variant: "destructive",
-        title: "Error adding to cart",
-        description: "Failed to add to cart",
-      });
-    }
   };
 
   useEffect(() => {
@@ -57,7 +45,7 @@ export const EventCard = ({ event }: Props) => {
         <img
           src={event.poster}
           alt={event.name}
-          className="max-h-[200px] w-full rounded-lg object-cover"
+          className="max-h-[200px] w-full object-cover"
         />
         <CardTitle className="line-clamp-1">{event.name}</CardTitle>
         <CardDescription>
@@ -76,7 +64,7 @@ export const EventCard = ({ event }: Props) => {
             vip:{" "}
             {event.vipPrice.toLocaleString("en-US", {
               style: "currency",
-              currency: "USD",
+              currency: "COP",
             })}
           </li>
           <li>
@@ -91,15 +79,14 @@ export const EventCard = ({ event }: Props) => {
       </CardContent>
       <CardFooter>
         <ButtonGroup className="w-full">
-          <Button className="w-full">Comprar</Button>
-          <Button
-            size="icon"
-            variant="outline"
-            onClick={handleAdd}
-            disabled={isAdded}
-          >
-            <ShoppingCart />
+          <Button className="w-full" asChild>
+            <Link href={`/events/${event.id}`}>Comprar</Link>
           </Button>
+          <BuyModal event={event} userId={user.id}>
+            <Button variant="ghost" size="icon" disabled={isAdded}>
+              <ReceiptJapaneseYen className="h-4 w-4" />
+            </Button>
+          </BuyModal>
         </ButtonGroup>
       </CardFooter>
     </Card>

@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import {
   ConflictException,
   Injectable,
@@ -10,6 +13,7 @@ import * as bcrypt from 'bcrypt';
 import { RegisterDto } from './dto/register.dto';
 import { roundsOfHashing } from 'src/users/users.service';
 import { MailService } from 'src/mail/mail.service';
+import axios from 'axios';
 
 @Injectable()
 export class AuthService {
@@ -19,13 +23,17 @@ export class AuthService {
     private mailService: MailService,
   ) {}
 
-  async login(email: string, password: string) {
+  async login(email: string, password: string, recaptcha: string) {
     const user = await this.prisma.user.findUnique({ where: { email } });
 
     if (!user)
       throw new NotFoundException(`No user found with ${email} email.`);
 
     if (!user.active) throw new UnauthorizedException('User is inactive.');
+
+    const isHuman = await this.verifyCaptcha(recaptcha);
+
+    if (!isHuman) throw new UnauthorizedException('Are you a robot?');
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
@@ -62,20 +70,31 @@ export class AuthService {
       data: registerDto,
     });
 
-    await this.mailService.sendLoginEmail(user);
+    await this.mailService.sendWelcomeEmail(user);
 
     return {
       message: 'User registered successfully.',
     };
   }
 
-  async activeUser(userId: string) {
+  async activate(userId: string) {
     return await this.prisma.user.update({
       where: {
         id: userId,
       },
       data: {
         active: true,
+      },
+    });
+  }
+
+  async desactivate(userId: string) {
+    return await this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        active: false,
       },
     });
   }
@@ -119,5 +138,20 @@ export class AuthService {
       console.error(error);
       throw new UnauthorizedException('Invalid or expired token.');
     }
+  }
+
+  async verifyCaptcha(captcha: string) {
+    const response = await axios.post(
+      `https://www.google.com/recaptcha/api/siteverify`,
+      null,
+      {
+        params: {
+          secret: process.env.CAPTCHA_SECRET,
+          response: captcha,
+        },
+      },
+    );
+
+    return response.data.success;
   }
 }

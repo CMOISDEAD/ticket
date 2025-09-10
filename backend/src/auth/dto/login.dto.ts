@@ -12,4 +12,10 @@ export class LoginDto {
   @MinLength(6)
   @ApiProperty()
   password: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @MinLength(6)
+  @ApiProperty()
+  recaptcha: string;
 }

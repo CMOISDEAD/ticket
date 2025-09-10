@@ -1,7 +1,7 @@
 "use client";
 
 import { toast } from "@/hooks/use-toast";
-import { axiosClient } from "@/lib/axiosClient";
+import { api } from "@/lib/axiosClient";
 import { useEffect, useState } from "react";
 import {
   Card,
@@ -28,14 +28,14 @@ export const EventList = ({ onEdit }: { onEdit: (id: string) => void }) => {
   const getEvents = async () => {
     try {
       setFetching(true);
-      const response = await axiosClient.get("/events");
-      setEvents(response.data);
+      const data = await api("/events");
+      setEvents(data);
     } catch (error: any) {
       console.error(error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: error.message,
+        description: `${error}`,
       });
     } finally {
       setFetching(false);
@@ -44,7 +44,7 @@ export const EventList = ({ onEdit }: { onEdit: (id: string) => void }) => {
 
   const handleRemove = async (id: string) => {
     try {
-      await axiosClient.delete(`/events/${id}`);
+      await api(`/events/${id}`, { method: "DELETE" });
       getEvents();
       toast({
         title: "Success 🎉",
@@ -55,7 +55,7 @@ export const EventList = ({ onEdit }: { onEdit: (id: string) => void }) => {
       toast({
         variant: "destructive",
         title: "Error",
-        description: error.message,
+        description: `${error}`,
       });
     }
   };
@@ -67,7 +67,7 @@ export const EventList = ({ onEdit }: { onEdit: (id: string) => void }) => {
           <RefreshCw className="size-4" />
         </Button>
       </CardHeader>
-      <CardContent className="flex flex-wrap gap-4">
+      <CardContent className="flex flex-wrap justify-center gap-4">
         {events.map((event: AppEventType) => (
           <Card key={event.id} className="flex w-[14rem] flex-col">
             <CardHeader>

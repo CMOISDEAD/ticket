@@ -7,11 +7,11 @@ import { UpcomingEvents } from "@/components/home/upcoming-events";
 
 export default function Home() {
   return (
-    <div className="contianer mx-auto">
+    <main>
       <EventCarousel />
       <UpcomingEvents />
       <EventList />
       <CategoryList />
-    </div>
+    </main>
   );
 }

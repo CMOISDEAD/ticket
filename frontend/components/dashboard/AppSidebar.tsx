@@ -3,6 +3,7 @@
 import {
   CalendarDays,
   LayoutDashboard,
+  ReceiptJapaneseYen,
   Settings,
   Tag,
   Ticket,
@@ -48,19 +49,19 @@ const links: LinkType[] = [
     },
   },
   {
-    href: "/dashboard/coupons",
-    icon: Tag,
-    text: {
-      en: "Coupons",
-      es: "Cupones",
-    },
-  },
-  {
     href: "/dashboard/users",
     icon: Users,
     text: {
       en: "Users",
       es: "Usuarios",
+    },
+  },
+  {
+    href: "/dashboard/orders",
+    icon: ReceiptJapaneseYen,
+    text: {
+      en: "Orders",
+      es: "Ordenes",
     },
   },
 ];

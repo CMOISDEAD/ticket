@@ -12,6 +12,7 @@ export const Trigger = () => {
       <CldUploadWidget
         uploadPreset="ml_default"
         onSuccess={(result, { widget }) => {
+          // @ts-ignore
           setResource(result?.info); // { public_id, secure_url, etc }
         }}
       >

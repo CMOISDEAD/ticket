@@ -3,7 +3,7 @@
 import { Link } from "@/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Menu, Receipt, Search, ShoppingCart, Ticket } from "lucide-react";
+import { Menu, ReceiptJapaneseYen, Search, Ticket } from "lucide-react";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import {
   DropdownMenu,
@@ -24,7 +24,7 @@ const links: { [key: string]: { name: string; href: string }[] } = {
     },
     {
       name: "Contact",
-      href: "/contact",
+      href: "/help",
     },
   ],
   es: [
@@ -35,7 +35,7 @@ const links: { [key: string]: { name: string; href: string }[] } = {
 
     {
       name: "Contacto",
-      href: "/contact",
+      href: "/help",
     },
   ],
 };
@@ -49,30 +49,36 @@ export default function Navbar() {
       <div className="container mx-auto flex h-16 max-w-6xl items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2" prefetch={false}>
           <Ticket className="h-7 w-7" />
-          <h1 className="text-lg font-bold">QueBoleta</h1>
+          <h1 className="text-lg font-bold">
+            QueBoletas
+            <span className="text-xs text-muted-foreground">.shop</span>
+          </h1>
           <span className="sr-only">QueBoleta</span>
         </Link>
-        <nav className="hidden items-center gap-6 text-sm font-medium md:flex">
-          {links[locale].map((link, i) => (
-            <Link
-              key={i}
-              href={link.href}
-              className="capitalize text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-            >
-              {link.name}
-            </Link>
-          ))}
+        <nav className="items-center gap-6 text-sm font-medium md:flex">
+          <ul className="hidden gap-6 md:flex">
+            {links[locale].map((link, i) => (
+              <li key={i}>
+                <Link
+                  href={link.href}
+                  className="capitalize text-muted-foreground hover:text-foreground"
+                >
+                  {link.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
           <div className="flex items-center gap-4">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="rounded-full">
-                  <Search className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                <Button variant="ghost" size="icon" className="">
+                  <Search className="h-5 w-5" />
                   <span className="sr-only">{t("search")}</span>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-[300px] border-border bg-background p-4 text-foreground">
+              <DropdownMenuContent className="w-[300px] border-border bg-background p-4">
                 <div className="relative">
-                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500 dark:text-gray-400" />
+                  <Search className="absolute left-2.5 top-2.5 h-4 w-4" />
                   <Input
                     type="search"
                     placeholder={`${t("search")}...`}
@@ -90,13 +96,8 @@ export default function Navbar() {
             </div>
             <Sheet>
               <SheetTrigger asChild>
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  className="rounded-full md:hidden"
-                >
-                  <Menu className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                  <span className="sr-only">Toggle navigation menu</span>
+                <Button size="icon" variant="ghost" className="md:hidden">
+                  <Menu className="h-5 w-5 text-muted-foreground" />
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="md:hidden">
@@ -105,7 +106,7 @@ export default function Navbar() {
                     <Link
                       key={i}
                       href={link.href}
-                      className="text-sm font-medium capitalize text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
+                      className="text-sm font-medium capitalize text-muted-foreground hover:text-foreground"
                     >
                       {link.name}
                     </Link>
@@ -131,7 +132,7 @@ const AuthSection = () => {
     <div className="flex content-center gap-4">
       <Button variant="ghost" size="icon" asChild>
         <Link href="/orders">
-          <Receipt className="size-5" />
+          <ReceiptJapaneseYen className="size-5" />
         </Link>
       </Button>
       <UserDropdown />

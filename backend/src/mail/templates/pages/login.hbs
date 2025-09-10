@@ -1,5 +1,50 @@
-{{#> layout}}
-  <h1>⚡ Nuevo inicio de sesión</h1>
-  <p>Hola {{fullnames}}, detectamos un nuevo inicio de sesión en tu cuenta.</p>
-  <p>Si fuiste tú, no necesitas hacer nada. Si no lo reconoces, cambia tu contraseña de inmediato.</p>
-{{/layout}}
+<html lang='es'>
+  <head>
+    <meta charset='utf-8' />
+    <title>Acceso detectado</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: #ffffff;
+        font-family: monospace, monospace;
+        color: #000000;
+      }
+      .email {
+        max-width: 600px;
+        margin: 40px auto;
+        border: 1px solid #000;
+      }
+      .inner {
+        padding: 24px;
+      }
+      h1 {
+        font-size: 20px;
+        margin: 0 0 16px 0;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+      p {
+        margin: 0 0 12px 0;
+        line-height: 1.4;
+      }
+      .footer {
+        border-top: 1px solid #000;
+        padding: 12px 24px;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class='email'>
+      <div class='inner'>
+        <h1>Acceso detectado</h1>
+        <p>Hola
+          {{fullnames}}, hemos registrado un acceso reciente a tu cuenta.</p>
+        <p>Si reconoces este ingreso, no necesitas hacer nada. De lo contrario,
+          cambia tu contraseña de inmediato.</p>
+      </div>
+      <div class='footer'>QueBoleta — Seguridad</div>
+    </div>
+  </body>
+</html>

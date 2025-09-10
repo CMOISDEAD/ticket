@@ -12,7 +12,7 @@ interface Props {
 export const Ticket = ({ event, ticket }: Props) => {
   return (
     <div className="perspective-1000">
-      <div className="ticket-3d shadow-3d group relative h-[290px] w-[700px] overflow-hidden rounded-xl border-2 border-border bg-card">
+      <div className="ticket-3d shadow-3d group relative h-[290px] w-[700px] overflow-hidden  border-2 border-border bg-card">
         <div className="gradient-glow absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
         <div className="relative z-50 flex h-full">

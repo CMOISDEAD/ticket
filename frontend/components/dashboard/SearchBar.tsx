@@ -3,17 +3,16 @@ import { Input } from "../ui/input";
 import { SidebarTrigger } from "../ui/sidebar";
 import { useEffect, useState } from "react";
 import { AppEventType } from "@/types/global.types";
-import { axiosClient } from "@/lib/axiosClient";
+import { api } from "@/lib/axiosClient";
 
 export const SearchBar = () => {
   const t = useTranslations("dashboard");
   const [events, setEvents] = useState<AppEventType[]>([]);
 
   useEffect(() => {
-    axiosClient
-      .get("/events")
-      .then((res) => {
-        setEvents(res.data);
+    api("/events")
+      .then((data) => {
+        setEvents(data);
       })
       .catch((err) => {
         console.error(err);

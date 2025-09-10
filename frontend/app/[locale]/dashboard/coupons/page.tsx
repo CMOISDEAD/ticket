@@ -22,7 +22,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "@/hooks/use-toast";
-import { axiosClient } from "@/lib/axiosClient";
+import { api } from "@/lib/axiosClient";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import {
@@ -70,10 +70,9 @@ export default function Coupons() {
   });
 
   useEffect(() => {
-    axiosClient
-      .get("/users")
-      .then((response) => {
-        setUsers(response.data);
+    api("/users")
+      .then((data) => {
+        setUsers(data);
       })
       .catch((error) => console.error(error));
   }, []);
@@ -82,7 +81,7 @@ export default function Coupons() {
     console.log(values);
     try {
       setLoading(true);
-      const response = await axiosClient.post("/coupons", values);
+      const response = await api("/coupons", { method: "POST", data: values });
       console.log(response);
       toast({
         title: "Success 🎉",
@@ -202,10 +201,10 @@ export default function Coupons() {
                           <SelectContent>
                             {users.length
                               ? users.map((user) => (
-                                <SelectItem key={user.id} value={user.id}>
-                                  {user.email}
-                                </SelectItem>
-                              ))
+                                  <SelectItem key={user.id} value={user.id}>
+                                    {user.email}
+                                  </SelectItem>
+                                ))
                               : null}
                           </SelectContent>
                         </Select>

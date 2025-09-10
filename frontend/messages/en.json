@@ -29,7 +29,11 @@
     "title": "Hot Events",
     "description": "Check out these popular events happening soon",
     "not_found": "No events found",
-    "category": "Categories"
+    "category": "Categories",
+    "upcoming": {
+      "title": "Upcoming Events",
+      "description": "Check out these popular events happening soon"
+    }
   },
   "contact": {
     "title": "Contact us",
@@ -45,7 +49,7 @@
     "send_message": "Send Message"
   },
   "cart": {
-    "title": "Shopping Cart",
+    "title": "Orders Cart",
     "description": "Review the events you've added to the cart",
     "not_found": "No events found",
     "number_of_events": "Number of Events",
@@ -58,7 +62,8 @@
     "detail": "Detail",
     "price": "Price",
     "action": "Action",
-    "coupon_code": "Coupon Code"
+    "coupon_code": "Coupon Code",
+    "no_coupon": "No coupons applied."
   },
   "dashboard": {
     "settings": "Settings",
@@ -177,6 +182,7 @@
   "events": {
     "seats": "Select the seats",
     "cart": "Add to cart",
+    "order": "Add to orders",
     "not_found": "Event not found",
     "per_person": "per person"
   },

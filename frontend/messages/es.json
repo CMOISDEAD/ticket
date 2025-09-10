@@ -29,7 +29,11 @@
     "title": "Eventos en Tendencia",
     "description": "Descubre estos eventos populares que sucederán pronto",
     "not_found": "No se encontraron eventos",
-    "category": "Categorias"
+    "category": "Categorias",
+    "upcoming": {
+      "title": "Proximos Eventos",
+      "description": "Descubre estos eventos populares que sucederán pronto"
+    }
   },
   "contact": {
     "title": "Contáctanos",
@@ -45,7 +49,7 @@
     "send_message": "Enviar Mensaje"
   },
   "cart": {
-    "title": "Carrito de compras",
+    "title": "Carrito de Ordenes",
     "description": "Revisa los eventos que has agregado al carrito",
     "not_found": "No se encontraron eventos",
     "number_of_events": "Número de Eventos",
@@ -59,7 +63,8 @@
     "detail": "Detalle",
     "price": "Precio",
     "action": "Acción",
-    "coupon_code": "Código de cupón"
+    "coupon_code": "Código de cupón",
+    "no_coupon": "No hay cupones aplicados"
   },
   "dashboard": {
     "settings": "Configuracion",
@@ -178,6 +183,7 @@
   "events": {
     "seats": "Selecciona los asientos",
     "cart": "Agregar al carrito",
+    "order": "Agregar a la orden",
     "not_found": "Evento no encontrado",
     "per_person": "por persona"
   },

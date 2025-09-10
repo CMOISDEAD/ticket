@@ -9,6 +9,7 @@ export type AppUserType = {
   phone: string;
   address: string;
   role: "ADMIN" | "USER";
+  active: boolean;
   createdAt: string;
   updatedAt: string;
   order: AppOrderType[]; // relación opcional

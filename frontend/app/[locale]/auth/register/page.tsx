@@ -21,14 +21,14 @@ import { useState } from "react";
 import { Loader2, Ticket } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { PasswordInput } from "@/components/ui/password-input";
-import { axiosClient } from "@/lib/axiosClient";
+import { api } from "@/lib/axiosClient";
 import { useTranslations } from "next-intl";
 
 const schema = z
   .object({
-    fullnames: z.string(),
-    lastnames: z.string(),
-    username: z.string().min(4),
+    fullnames: z.string().min(3),
+    lastnames: z.string().min(3),
+    username: z.string().min(3),
     email: z.string().email(),
     password: z.string().min(6),
     repeatPassword: z.string().min(6).optional(),
@@ -65,27 +65,25 @@ export default function Register() {
     delete values.repeatPassword;
     try {
       setLoading(true);
-      const response = await axiosClient.post("/auth/register", values);
-      console.log(response);
+      const res = await api("/auth/register", {
+        method: "POST",
+        data: values,
+      });
+      console.log("res", res);
 
       toast({
         title: "Success 🎉",
         description:
-          "You have beeen succesfully register, you will be redirect in a few seconds...",
+          "You have beeen succesfully register, you will be receive a email.",
       });
       router.push("/auth/login");
     } catch (error: any) {
-      const codes = [400, 401, 403];
-      const isBadRequest = codes.includes(error.response.status);
-
+      console.error(error);
       toast({
         variant: "destructive",
-        title: isBadRequest ? "Verify your data 🧐" : "Error",
-        description: isBadRequest
-          ? "username or email already in use."
-          : error.message,
+        title: "error creating your account",
+        description: `${error}`,
       });
-      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -296,7 +294,7 @@ export default function Register() {
           alt="login"
           width={undefined}
           height={undefined}
-          className="h-full w-full rounded-lg object-cover object-center"
+          className="h-full w-full object-cover object-center"
         />
         <div className="absolute left-10 top-10 max-w-sm text-white">
           <div className="flex items-center gap-2">

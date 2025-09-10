@@ -40,14 +40,12 @@ export class EventsController {
   }
 
   @Get('/upcoming')
-  @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ type: EventEntity })
   upcoming() {
     return this.eventsService.upcoming();
   }
 
   @Get(':id')
-  @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ type: EventEntity })
   findOne(@Param('id') id: string) {
     return this.eventsService.findOne(id);
